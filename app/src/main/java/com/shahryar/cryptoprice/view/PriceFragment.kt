@@ -13,6 +13,7 @@ import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
 import com.shahryar.cryptoprice.model.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
+import kotlinx.android.synthetic.main.fragment_price.*
 
 class PriceFragment : Fragment() {
 
@@ -35,13 +36,15 @@ class PriceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-        val adapter = PriceAdapter(requireContext(), null)
+        val adapter = PriceAdapter(requireContext())
         binding.recyclerView.adapter = adapter
         viewModel.getData()
 
         viewModel.response.observe(viewLifecycleOwner, {
-            adapter.data = it
-            adapter.notifyDataSetChanged()
+            adapter.submitList(it.data)
+            binding.refreshLayout.isRefreshing = false
         })
+
+        binding.refreshLayout.setOnRefreshListener { viewModel.getData() }
     }
 }

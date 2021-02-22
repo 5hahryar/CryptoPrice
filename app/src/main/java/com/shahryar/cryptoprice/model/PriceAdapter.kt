@@ -1,32 +1,32 @@
 package com.shahryar.cryptoprice.model
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shahryar.cryptoprice.R
+import com.shahryar.cryptoprice.databinding.ItemPriceBinding
+import com.shahryar.cryptoprice.repository.PriceDataDiffCallback
 
-class PriceAdapter(val context: Context, var data: Data?): RecyclerView.Adapter<PriceAdapter.ViewHolder>() {
+class PriceAdapter(private val context: Context): ListAdapter<DataX, PriceAdapter.ViewHolder>(PriceDataDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_price, parent, false)
-        return ViewHolder(view)
+        val binding = ItemPriceBinding.inflate(LayoutInflater.from(context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.setText(data?.data?.get(position)?.name)
-        holder.price.setText(data?.data?.get(position)?.quote?.USD?.price.toString())
+        val priceDifference = getItem(position).quote.USD.percent_change_24h.toString()
+        holder.binding.name.text = getItem(position).name
+        holder.binding.symbol.text = getItem(position).symbol
+        if (priceDifference.toDouble() > 0 ) holder.binding.priceDifference.setTextColor(Color.GREEN)
+        else holder.binding.priceDifference.setTextColor(Color.RED)
+        holder.binding.priceDifference.text = priceDifference
+        holder.binding.price.text = "$${getItem(position).quote.USD.price}"
     }
 
-    override fun getItemCount(): Int {
-        return if (data != null) data!!.data.size
-        else 0
-    }
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name = itemView.findViewById<TextView>(R.id.name)
-        var price = itemView.findViewById<TextView>(R.id.price)
-    }
+    class ViewHolder(val binding: ItemPriceBinding) : RecyclerView.ViewHolder(binding.root)
 }
