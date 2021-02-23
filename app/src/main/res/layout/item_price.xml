@@ -13,7 +13,7 @@
         android:layout_height="150dp"
         app:cardCornerRadius="20dp"
         android:layout_margin="10dp"
-        android:backgroundTint="#FAFAFA"
+        android:backgroundTint="@color/item_price_card"
         app:cardElevation="0dp">
 
         <RelativeLayout
@@ -27,7 +27,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textColor="@color/text_color"/>
 
             <TextView
                 android:id="@+id/symbol"
@@ -35,16 +39,16 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name"
                 android:textSize="14sp"
-                android:textColor="#CCC"/>
+                android:textColor="@color/text_alpha"/>
 
             <TextView
                 android:id="@+id/price_difference"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:textColor="#CCC"
+                android:textColor="@color/text_alpha"
                 android:layout_above="@id/price"
-                android:maxLength="5"
+                android:maxLength="7"
                 android:maxLines="1"/>
 
             <TextView
@@ -55,7 +59,8 @@
                 android:layout_alignParentStart="true"
                 android:textSize="20sp"
                 android:maxLength="9"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:textColor="@color/text_color"/>
 
         </RelativeLayout>
 

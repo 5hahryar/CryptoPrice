@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primary">#000000</color>
+    <color name="red">#D53B3B</color>
+    <color name="green">#28A845</color>
+    <color name="item_price_card">#1A1A1A</color>
+    <color name="text_alpha">#888888</color>
+    <color name="text_color">#FFF</color>
+</resources>

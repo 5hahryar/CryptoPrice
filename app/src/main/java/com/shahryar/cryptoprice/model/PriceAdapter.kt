@@ -22,9 +22,9 @@ class PriceAdapter(private val context: Context): ListAdapter<DataX, PriceAdapte
         val priceDifference = getItem(position).quote.USD.percent_change_24h.toString()
         holder.binding.name.text = getItem(position).name
         holder.binding.symbol.text = getItem(position).symbol
-        if (priceDifference.toDouble() > 0 ) holder.binding.priceDifference.setTextColor(Color.GREEN)
-        else holder.binding.priceDifference.setTextColor(Color.RED)
-        holder.binding.priceDifference.text = priceDifference
+        if (priceDifference.toDouble() > 0 ) holder.binding.priceDifference.setTextColor(context.resources.getColor(R.color.green))
+        else holder.binding.priceDifference.setTextColor(context.resources.getColor(R.color.red))
+        holder.binding.priceDifference.text = "%$priceDifference"
         holder.binding.price.text = "$${getItem(position).quote.USD.price}"
     }
 
