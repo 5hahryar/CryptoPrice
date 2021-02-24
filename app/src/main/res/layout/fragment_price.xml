@@ -9,13 +9,6 @@
             type="com.shahryar.cryptoprice.viewModel.PriceViewModel" />
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".view.PriceFragment"
-            android:background="@color/primary">
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,7 +17,6 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
             app:liftOnScroll="true">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -32,13 +24,21 @@
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:menu="@menu/top_app_bar"
+                app:menu="@menu/top_app_bar_menu"
                 app:title="@string/app_name"
                 app:titleTextColor="@color/text_color"
                 app:navigationIconTint="@color/black"
                 />
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            tools:context=".view.PriceFragment"
+            android:background="@color/primary">
 
         <!-- Note: A RecyclerView can also be used -->
         <androidx.recyclerview.widget.RecyclerView
@@ -48,23 +48,8 @@
             android:background="@color/primary"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-    <!--        android:id="@+id/refreshLayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        tools:context=".view.PriceFragment"-->
-    <!--        android:background="@color/primary">-->
-
-    <!--        &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/recyclerView"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:background="@color/primary" />-->
-
-    <!--    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 </layout>

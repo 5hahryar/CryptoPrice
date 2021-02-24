@@ -14,6 +14,7 @@ import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
 import com.shahryar.cryptoprice.model.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import kotlinx.android.synthetic.main.fragment_price.*
+import kotlinx.android.synthetic.main.fragment_price.view.*
 
 class PriceFragment : Fragment() {
 
@@ -35,16 +36,26 @@ class PriceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-        val adapter = PriceAdapter(requireContext())
+        val layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (position < 2) 2 else 1
+            }
+        }
+        binding.recyclerView.layoutManager = layoutManager
+        val adapter = PriceAdapter()
         binding.recyclerView.adapter = adapter
         viewModel.getData()
 
         viewModel.response.observe(viewLifecycleOwner, {
             adapter.submitList(it.data)
-//            binding.refreshLayout.isRefreshing = false
+            binding.refreshLayout.isRefreshing = false
         })
 
-//        binding.refreshLayout.setOnRefreshListener { viewModel.getData() }
+        recyclerView.setOnScrollChangeListener { view, i, i2, i3, i4 ->
+            if (!view.canScrollVertically(-1)) appBarLayout.elevation = 0f else appBarLayout.elevation = 15f
+        }
+
+        refreshLayout.setOnRefreshListener { viewModel.getData() }
     }
 }

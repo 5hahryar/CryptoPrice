@@ -7,4 +7,5 @@
     <color name="item_price_card">#1A1A1A</color>
     <color name="text_alpha">#888888</color>
     <color name="text_color">#FFF</color>
+    <color name="divider">#292929</color>
 </resources>

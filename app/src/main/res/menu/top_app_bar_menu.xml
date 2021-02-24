@@ -8,4 +8,13 @@
     <item
         android:icon="@drawable/ic_help_24px"
         android:title="Help" />
+    <item
+        android:icon="@drawable/ic_grid_view_24px"
+        android:title="Layout"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/ic_filter_list_24px"
+        android:title="Sort"
+        app:showAsAction="always" />
+
 </menu>

@@ -2,4 +2,7 @@
     <string name="app_name">CryptoPrice</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="market_cap">Market cap</string>
+    <string name="d7">7 day</string>
+    <string name="h24">24 h</string>
 </resources>
