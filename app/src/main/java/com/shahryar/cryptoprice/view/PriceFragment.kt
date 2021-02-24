@@ -42,9 +42,9 @@ class PriceFragment : Fragment() {
 
         viewModel.response.observe(viewLifecycleOwner, {
             adapter.submitList(it.data)
-            binding.refreshLayout.isRefreshing = false
+//            binding.refreshLayout.isRefreshing = false
         })
 
-        binding.refreshLayout.setOnRefreshListener { viewModel.getData() }
+//        binding.refreshLayout.setOnRefreshListener { viewModel.getData() }
     }
 }
