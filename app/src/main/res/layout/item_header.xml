@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="data"
+            type="com.shahryar.cryptoprice.model.String" />
+    </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -22,7 +28,8 @@
                 android:textSize="14sp"
                 android:textColor="@color/text_alpha"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"/>
+                android:layout_alignParentStart="true"
+                android:text="@{data.symbol}"/>
 
             <TextView
                 android:id="@+id/name"
@@ -33,7 +40,8 @@
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 android:textColor="@color/text_color"
-                android:layout_below="@id/symbol"/>
+                android:layout_below="@id/symbol"
+                android:text="@{data.name}"/>
 
             <TextView
                 android:id="@+id/price_difference"
@@ -43,7 +51,8 @@
                 android:textColor="@color/text_alpha"
                 android:layout_above="@id/price"
                 android:maxLength="7"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                priceDifference="@{data.quote.USD.percent_change_24h}"/>
 
             <TextView
                 android:id="@+id/price"
@@ -54,7 +63,8 @@
                 android:textSize="20sp"
                 android:maxLength="9"
                 android:maxLines="1"
-                android:textColor="@color/text_color"/>
+                android:textColor="@color/text_color"
+                android:text="@{@string/price_holder(data.quote.USD.price)}"/>
 
             <View
                 android:id="@+id/divider"
@@ -86,7 +96,8 @@
                 android:maxLength="15"
                 android:textColor="@color/text_color"
                 android:layout_below="@id/marketCapTitle"
-                android:layout_toEndOf="@id/divider" />
+                android:layout_toEndOf="@id/divider"
+                android:text="@{String.valueOf(data.quote.USD.market_cap)}"/>
 
             <TextView
                 android:id="@+id/d7Title"
@@ -111,7 +122,8 @@
                 android:layout_toEndOf="@id/d30"
                 android:maxLength="6"
                 android:layout_marginBottom="2dp"
-                android:layout_marginStart="50dp"/>
+                android:layout_marginStart="50dp"
+                priceDifference="@{data.quote.USD.percent_change_7d}"/>
 
             <TextView
                 android:id="@+id/d30"
@@ -123,7 +135,8 @@
                 android:textSize="17sp"
                 android:singleLine="true"
                 android:maxLength="6"
-                android:textColor="@color/text_color" />
+                android:textColor="@color/text_color"
+                priceDifference="@{data.quote.USD.percent_change_30d}"/>
 
             <TextView
                 android:id="@+id/d30Title"

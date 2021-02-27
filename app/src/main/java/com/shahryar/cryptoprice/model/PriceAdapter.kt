@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.ItemHeaderBinding
 import com.shahryar.cryptoprice.databinding.ItemPriceBinding
 import com.shahryar.cryptoprice.repository.PriceDataDiffCallback
 
-class PriceAdapter: ListAdapter<DataX, RecyclerView.ViewHolder>(PriceDataDiffCallback()) {
+class PriceAdapter: ListAdapter<String, RecyclerView.ViewHolder>(PriceDataDiffCallback()) {
 
     companion object {
         private const val ITEM_VIEW_TYPE_HEADER = 0
@@ -36,32 +35,11 @@ class PriceAdapter: ListAdapter<DataX, RecyclerView.ViewHolder>(PriceDataDiffCal
         when (holder) {
             //Bind views for normal item view
             is ViewHolder -> {
-                val priceDifference = getItem(position).quote.USD.percent_change_24h.toString()
-                holder.binding.name.text = getItem(position).name
-                holder.binding.symbol.text = getItem(position).symbol
-                if (priceDifference.toDouble() > 0 ) holder.binding.priceDifference.setTextColor(context.resources.getColor(R.color.green))
-                else holder.binding.priceDifference.setTextColor(context.resources.getColor(R.color.red))
-                holder.binding.priceDifference.text = "$priceDifference%"
-                holder.binding.price.text = "$${getItem(position).quote.USD.price}"
+                holder.bind(getItem(position))
             }
             //Bind views for header item view
             is HeaderViewHolder -> {
-                val priceDifference = getItem(position).quote.USD.percent_change_24h.toString()
-                val d7Difference = getItem(position).quote.USD.percent_change_7d.toString()
-                val d30Difference = getItem(position).quote.USD.percent_change_30d.toString()
-                holder.binding.name.text = getItem(position).name
-                holder.binding.symbol.text = getItem(position).symbol
-                if (priceDifference.toDouble() > 0 ) holder.binding.priceDifference.setTextColor(context.resources.getColor(R.color.green))
-                else holder.binding.priceDifference.setTextColor(context.resources.getColor(R.color.red))
-                holder.binding.priceDifference.text = "$priceDifference%"
-                holder.binding.price.text = "$${getItem(position).quote.USD.price}"
-                holder.binding.marketCap.text = "$${getItem(position).quote.USD.market_cap}"
-                if (d7Difference.toDouble() > 0 ) holder.binding.d7.setTextColor(context.resources.getColor(R.color.green))
-                else holder.binding.d7.setTextColor(context.resources.getColor(R.color.red))
-                holder.binding.d7.text = "$d7Difference%"
-                if (d30Difference.toDouble() > 0 ) holder.binding.d30.setTextColor(context.resources.getColor(R.color.green))
-                else holder.binding.d30.setTextColor(context.resources.getColor(R.color.red))
-                holder.binding.d30.text = "$d30Difference%"
+                holder.bind(getItem(position))
             }
         }
 
@@ -73,16 +51,16 @@ class PriceAdapter: ListAdapter<DataX, RecyclerView.ViewHolder>(PriceDataDiffCal
     }
 
     //ViewHolder for a normal card item
-    class ViewHolder(val binding: ItemPriceBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(private val binding: ItemPriceBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: String) {
+            binding.priceData = item
+        }
+    }
 
     //ViewHolder for a header item (extended card)
-    class HeaderViewHolder(val binding: ItemHeaderBinding): RecyclerView.ViewHolder(binding.root){
-        companion object {
-            fun from(parent: ViewGroup): HeaderViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return HeaderViewHolder(binding)
-            }
+    class HeaderViewHolder(private val binding: ItemHeaderBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(item: String) {
+            binding.data = item
         }
     }
 

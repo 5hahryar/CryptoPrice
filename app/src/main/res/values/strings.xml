@@ -6,4 +6,5 @@
     <string name="d7">7 day</string>
     <string name="h24">24 h</string>
     <string name="d30">30 day</string>
+    <string name="price_holder">$%s</string>
 </resources>

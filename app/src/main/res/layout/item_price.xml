@@ -5,7 +5,7 @@
     <data>
         <variable
             name="priceData"
-            type="com.shahryar.cryptoprice.model.DataX" />
+            type="com.shahryar.cryptoprice.model.String" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -31,7 +31,8 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-                android:textColor="@color/text_color"/>
+                android:textColor="@color/text_color"
+                android:text="@{priceData.name}"/>
 
             <TextView
                 android:id="@+id/symbol"
@@ -39,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name"
                 android:textSize="14sp"
-                android:textColor="@color/text_alpha"/>
+                android:textColor="@color/text_alpha"
+                android:text="@{priceData.symbol}"/>
 
             <TextView
                 android:id="@+id/price_difference"
@@ -49,7 +51,8 @@
                 android:textColor="@color/text_alpha"
                 android:layout_above="@id/price"
                 android:maxLength="7"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                priceDifference="@{priceData.quote.USD.percent_change_24h}"/>
 
             <TextView
                 android:id="@+id/price"
@@ -60,7 +63,8 @@
                 android:textSize="20sp"
                 android:maxLength="9"
                 android:maxLines="1"
-                android:textColor="@color/text_color"/>
+                android:textColor="@color/text_color"
+                android:text="@{@string/price_holder(priceData.quote.USD.price)}"/>
 
         </RelativeLayout>
 
