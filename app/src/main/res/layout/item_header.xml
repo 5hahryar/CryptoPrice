@@ -95,7 +95,7 @@
                 android:text="@string/d7"
                 android:textSize="12sp"
                 android:textColor="@color/text_alpha"
-                android:layout_toEndOf="@id/h24"
+                android:layout_toEndOf="@id/d30"
                 android:layout_marginStart="50dp"
                 android:layout_above="@id/d7"/>
 
@@ -108,13 +108,13 @@
                 android:singleLine="true"
                 android:textColor="@color/text_color"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@id/h24"
+                android:layout_toEndOf="@id/d30"
                 android:maxLength="6"
                 android:layout_marginBottom="2dp"
                 android:layout_marginStart="50dp"/>
 
             <TextView
-                android:id="@+id/h24"
+                android:id="@+id/d30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -126,14 +126,14 @@
                 android:textColor="@color/text_color" />
 
             <TextView
-                android:id="@+id/h24Title"
+                android:id="@+id/d30Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/h24"
+                android:text="@string/d30"
                 android:textSize="12sp"
                 android:textColor="@color/text_alpha"
                 android:layout_toEndOf="@id/divider"
-                android:layout_above="@id/h24"/>
+                android:layout_above="@id/d30"/>
 
         </RelativeLayout>
 

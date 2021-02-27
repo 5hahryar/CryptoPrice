@@ -1,20 +1,21 @@
 package com.shahryar.cryptoprice.view
 
-import android.database.DatabaseUtils
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.shahryar.cryptoprice.R
+import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
 import com.shahryar.cryptoprice.model.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import kotlinx.android.synthetic.main.fragment_price.*
-import kotlinx.android.synthetic.main.fragment_price.view.*
 
 class PriceFragment : Fragment() {
 
@@ -36,26 +37,79 @@ class PriceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        refreshLayout.isRefreshing = true
+
+        setupRecyclerView()
+
+        //Observe price data in order to update recyclerView
+        viewModel.response.observe(viewLifecycleOwner, {
+            (recyclerView.adapter as PriceAdapter).submitList(it.data)
+            binding.refreshLayout.isRefreshing = false
+        })
+
+        setListeners()
+
+    }
+
+    private fun setListeners() {
+        //Change appBar elevation on recyclerView scroll
+        recyclerView.setOnScrollChangeListener { view, _, _, _, _ ->
+            if (!view.canScrollVertically(-1)) appBarLayout.elevation = 0f else appBarLayout.elevation = 15f
+        }
+
+        refreshLayout.setOnRefreshListener { viewModel.getData() }
+
+        topAppBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.layout -> {
+                    changeRecyclerViewLayout()
+                    swapLayoutMenuItem(it)
+                    true
+                }
+                R.id.sort -> {
+                    false
+                }
+                else -> false
+            }
+        }
+    }
+
+    //Change title and icon of layout menu item
+    private fun swapLayoutMenuItem(menuItem: MenuItem) {
+        menuItem.icon = if (menuItem.title.equals("Grid Layout"))
+            resources.getDrawable(R.drawable.ic_view_list_24px) else
+            resources.getDrawable(R.drawable.ic_grid_view_24px)
+        menuItem.title = if (menuItem.title.equals("Grid Layout")) "Linear Layout" else "Grid Layout"
+    }
+
+    //Setup recyclerView with needed parameters
+    private fun setupRecyclerView() {
         val layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return if (position < 2) 2 else 1
+                return if (position < DEFAULT_HEADER_SIZE) DEFAULT_HEADER_SIZE else 1
             }
         }
         binding.recyclerView.layoutManager = layoutManager
         val adapter = PriceAdapter()
         binding.recyclerView.adapter = adapter
-        viewModel.getData()
+    }
 
-        viewModel.response.observe(viewLifecycleOwner, {
-            adapter.submitList(it.data)
-            binding.refreshLayout.isRefreshing = false
-        })
-
-        recyclerView.setOnScrollChangeListener { view, i, i2, i3, i4 ->
-            if (!view.canScrollVertically(-1)) appBarLayout.elevation = 0f else appBarLayout.elevation = 15f
+    //Swap recyclerView layout manager between list and grid view
+    private fun changeRecyclerViewLayout() {
+        if (recyclerView.layoutManager is GridLayoutManager) {
+            recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            (recyclerView.adapter as PriceAdapter).headerSize = (recyclerView.adapter as PriceAdapter).currentList.size
         }
-
-        refreshLayout.setOnRefreshListener { viewModel.getData() }
+        else {
+            val layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (position < 2) 2 else 1
+                }
+            }
+            recyclerView.layoutManager = layoutManager
+            (recyclerView.adapter as PriceAdapter).headerSize = DEFAULT_HEADER_SIZE
+        }
     }
 }

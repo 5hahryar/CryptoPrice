@@ -9,10 +9,12 @@
         android:icon="@drawable/ic_help_24px"
         android:title="Help" />
     <item
+        android:id="@+id/layout"
         android:icon="@drawable/ic_grid_view_24px"
-        android:title="Layout"
+        android:title="Grid Layout"
         app:showAsAction="always" />
     <item
+        android:id="@+id/sort"
         android:icon="@drawable/ic_filter_list_24px"
         android:title="Sort"
         app:showAsAction="always" />
