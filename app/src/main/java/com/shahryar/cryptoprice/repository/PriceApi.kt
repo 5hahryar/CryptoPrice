@@ -22,7 +22,10 @@ private const val BASE_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrenc
 
     interface ApiService{
         @GET("latest")
-        fun getProperties(@Query("CMC_PRO_API_KEY") key: String): Call<Data>
+        fun getProperties(
+                @Query("CMC_PRO_API_KEY") key: String,
+                @Query("sort") sort: String? = "market_cap"
+        ): Call<Data>
     }
 
     object PriceApi {

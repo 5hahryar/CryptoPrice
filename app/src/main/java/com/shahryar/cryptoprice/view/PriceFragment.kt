@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,7 +18,7 @@ import com.shahryar.cryptoprice.model.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import kotlinx.android.synthetic.main.fragment_price.*
 
-class PriceFragment : Fragment() {
+class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
 
     private lateinit var binding: FragmentPriceBinding
     private lateinit var viewModel: PriceViewModel
@@ -57,7 +58,7 @@ class PriceFragment : Fragment() {
             if (!view.canScrollVertically(-1)) appBarLayout.elevation = 0f else appBarLayout.elevation = 15f
         }
 
-        refreshLayout.setOnRefreshListener { viewModel.getData() }
+        refreshLayout.setOnRefreshListener { viewModel.getData("") }
 
         topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -67,7 +68,8 @@ class PriceFragment : Fragment() {
                     true
                 }
                 R.id.sort -> {
-                    false
+                    SortDialogFragment.newInstance(this).show(requireFragmentManager(), "Sort By")
+                    true
                 }
                 else -> false
             }
@@ -111,5 +113,9 @@ class PriceFragment : Fragment() {
             recyclerView.layoutManager = layoutManager
             (recyclerView.adapter as PriceAdapter).headerSize = DEFAULT_HEADER_SIZE
         }
+    }
+
+    override fun onSortItemSelected(key: String) {
+        viewModel.sort(key)
     }
 }
