@@ -8,4 +8,7 @@
     <string name="d30">30 day</string>
     <string name="price_holder">$%s</string>
     <string name="sort">Sort by</string>
+    <string name="api_key">Api key</string>
+    <string name="touch_and_hold_to_edit">Hold here to edit</string>
+    <string name="settings">Settings</string>
 </resources>

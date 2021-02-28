@@ -9,5 +9,15 @@
         android:id="@+id/priceFragment"
         android:name="com.shahryar.cryptoprice.view.PriceFragment"
         android:label="fragment_price"
-        tools:layout="@layout/fragment_price" />
+        tools:layout="@layout/fragment_price" >
+        <action
+            android:id="@+id/action_priceFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.shahryar.cryptoprice.view.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/settings_fragment"/>
+
 </navigation>

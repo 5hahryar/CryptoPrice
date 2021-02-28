@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shahryar.cryptoprice.R
@@ -69,6 +70,10 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                 }
                 R.id.sort -> {
                     SortDialogFragment.newInstance(this).show(requireFragmentManager(), "Sort By")
+                    true
+                }
+                R.id.settings -> {
+                    findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
                     true
                 }
                 else -> false
