@@ -31,7 +31,7 @@ class SortDialogFragment(private val listener: OnSortItemSelectedListener) : Bot
 
     private inner class ItemAdapter : RecyclerView.Adapter<ViewHolder>() {
 
-        val list = listOf(Pair("market_cap", "Default: Market Cap"),
+        val list = listOf(Pair("market_cap", "Market Cap"),
                 Pair("name", "Name"),
                 Pair("price", "Price"))
 
