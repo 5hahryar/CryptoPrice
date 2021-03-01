@@ -2,7 +2,7 @@ package com.shahryar.cryptoprice.model
 
 data class Data(
         val `data`: List<String>,
-        val status: Status
+        var status: Status
 )
 
 data class String(

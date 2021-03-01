@@ -17,6 +17,7 @@ import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
 import com.shahryar.cryptoprice.model.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
+import com.shahryar.cryptoprice.viewModel.PriceViewModelFactory
 import kotlinx.android.synthetic.main.fragment_price.*
 
 class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
@@ -30,7 +31,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_price, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        this.viewModel = ViewModelProvider(this).get(PriceViewModel::class.java)
+        this.viewModel = ViewModelProvider(this, PriceViewModelFactory(requireContext())).get(PriceViewModel::class.java)
         binding.viewModel = this.viewModel
 
         return binding.root
@@ -69,11 +70,15 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                     true
                 }
                 R.id.sort -> {
-                    SortDialogFragment.newInstance(this).show(requireFragmentManager(), "Sort By")
+                    SortDialogFragment.newInstance(this).show(requireActivity().supportFragmentManager, "Sort By")
                     true
                 }
                 R.id.settings -> {
                     findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
+                    true
+                }
+                R.id.help -> {
+                    AboutDialog().show(requireActivity().supportFragmentManager, "About Dialog")
                     true
                 }
                 else -> false

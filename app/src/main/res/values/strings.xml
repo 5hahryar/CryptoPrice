@@ -11,4 +11,6 @@
     <string name="api_key">Api key</string>
     <string name="touch_and_hold_to_edit">Hold here to edit</string>
     <string name="settings">Settings</string>
+    <string name="support_email">Contact me at\n<a href="shahryar.kh78@gmail.com">shahryar.kh78@gmail.com</a></string>
+    <string name="support_repo">CryptoPrice repository on <a href="https://github.com/5hahryar">github</a></string>
 </resources>
