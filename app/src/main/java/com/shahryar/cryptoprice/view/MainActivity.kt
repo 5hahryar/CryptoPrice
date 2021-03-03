@@ -3,7 +3,6 @@ package com.shahryar.cryptoprice.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.shahryar.cryptoprice.R
-import kotlinx.android.synthetic.main.fragment_price.*
 
 class MainActivity: AppCompatActivity() {
 

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="priceData"
-            type="com.shahryar.cryptoprice.model.String" />
+            type="com.shahryar.cryptoprice.model.Currency" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -52,7 +52,7 @@
                 android:layout_above="@id/price"
                 android:maxLength="7"
                 android:maxLines="1"
-                priceDifference="@{priceData.quote.USD.percent_change_24h}"/>
+                priceDifference="@{priceData.percent_change_24h}"/>
 
             <TextView
                 android:id="@+id/price"
@@ -64,7 +64,7 @@
                 android:maxLength="9"
                 android:maxLines="1"
                 android:textColor="@color/text_color"
-                android:text="@{@string/price_holder(priceData.quote.USD.price)}"/>
+                android:text="@{@string/price_holder(priceData.price)}"/>
 
         </RelativeLayout>
 

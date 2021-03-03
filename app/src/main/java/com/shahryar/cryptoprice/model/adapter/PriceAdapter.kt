@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.model
+package com.shahryar.cryptoprice.model.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.ItemHeaderBinding
 import com.shahryar.cryptoprice.databinding.ItemPriceBinding
-import com.shahryar.cryptoprice.repository.PriceDataDiffCallback
+import com.shahryar.cryptoprice.model.Currency
 
-class PriceAdapter: ListAdapter<String, RecyclerView.ViewHolder>(PriceDataDiffCallback()) {
+class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiffCallback()) {
 
     companion object {
         private const val ITEM_VIEW_TYPE_HEADER = 0
@@ -52,14 +52,14 @@ class PriceAdapter: ListAdapter<String, RecyclerView.ViewHolder>(PriceDataDiffCa
 
     //ViewHolder for a normal card item
     class ViewHolder(private val binding: ItemPriceBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: String) {
+        fun bind(item: Currency) {
             binding.priceData = item
         }
     }
 
     //ViewHolder for a header item (extended card)
     class HeaderViewHolder(private val binding: ItemHeaderBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(item: String) {
+        fun bind(item: Currency) {
             binding.data = item
         }
     }

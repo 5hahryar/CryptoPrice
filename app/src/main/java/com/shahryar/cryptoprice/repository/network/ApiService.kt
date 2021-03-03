@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.repository
+package com.shahryar.cryptoprice.repository.network
 
 import com.shahryar.cryptoprice.model.Data
 import com.squareup.moshi.Moshi
@@ -15,21 +15,23 @@ private const val BASE_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrenc
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    val retrofit = Retrofit.Builder()
+    val retrofit: Retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .baseUrl(BASE_URL)
         .build()
 
-    interface ApiService{
+    interface PriceApi{
         @GET("latest")
-        fun getProperties(
-                @Query("CMC_PRO_API_KEY") key: String,
+        fun getPrices(
+                @Query("CMC_PRO_API_KEY") key: String?,
                 @Query("sort") sort: String? = "market_cap"
         ): Call<Data>
     }
 
-    object PriceApi {
-        val apiService : ApiService by lazy {
-            retrofit.create(ApiService::class.java)
+    object ApiService {
+        val priceApi : PriceApi by lazy {
+            retrofit.create(PriceApi::class.java)
         }
     }
+
+

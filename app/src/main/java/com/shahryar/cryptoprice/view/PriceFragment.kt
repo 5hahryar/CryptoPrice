@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
-import com.shahryar.cryptoprice.model.PriceAdapter
+import com.shahryar.cryptoprice.model.adapter.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import com.shahryar.cryptoprice.viewModel.PriceViewModelFactory
 import kotlinx.android.synthetic.main.fragment_price.*
@@ -45,8 +44,8 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         setupRecyclerView()
 
         //Observe price data in order to update recyclerView
-        viewModel.response.observe(viewLifecycleOwner, {
-            (recyclerView.adapter as PriceAdapter).submitList(it.data)
+        viewModel.currencies.observe(viewLifecycleOwner, {
+            (recyclerView.adapter as PriceAdapter).submitList(it)
             binding.refreshLayout.isRefreshing = false
         })
 
@@ -60,7 +59,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
             if (!view.canScrollVertically(-1)) appBarLayout.elevation = 0f else appBarLayout.elevation = 15f
         }
 
-        refreshLayout.setOnRefreshListener { viewModel.getData("") }
+        refreshLayout.setOnRefreshListener { viewModel.refreshData(requireContext())}
 
         topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -126,6 +125,6 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     }
 
     override fun onSortItemSelected(key: String) {
-        viewModel.sort(key)
+        viewModel.sort(key, requireContext())
     }
 }
