@@ -125,6 +125,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     }
 
     override fun onSortItemSelected(key: String) {
-        viewModel.sort(key, requireContext())
+        viewModel.sort(key)
+        recyclerView.smoothScrollToPosition(0)
     }
 }

@@ -63,5 +63,4 @@ class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiff
             binding.data = item
         }
     }
-
 }
