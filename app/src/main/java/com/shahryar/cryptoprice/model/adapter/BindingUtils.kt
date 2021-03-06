@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.model
+package com.shahryar.cryptoprice.model.adapter
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter

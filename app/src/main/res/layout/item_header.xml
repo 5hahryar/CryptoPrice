@@ -5,7 +5,7 @@
     <data>
         <variable
             name="data"
-            type="com.shahryar.cryptoprice.model.String" />
+            type="com.shahryar.cryptoprice.model.Currency" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -52,7 +52,7 @@
                 android:layout_above="@id/price"
                 android:maxLength="7"
                 android:maxLines="1"
-                priceDifference="@{data.quote.USD.percent_change_24h}"/>
+                priceDifference="@{data.percent_change_24h}"/>
 
             <TextView
                 android:id="@+id/price"
@@ -64,7 +64,7 @@
                 android:maxLength="9"
                 android:maxLines="1"
                 android:textColor="@color/text_color"
-                android:text="@{@string/price_holder(data.quote.USD.price)}"/>
+                android:text="@{@string/price_holder(data.price)}"/>
 
             <View
                 android:id="@+id/divider"
@@ -97,7 +97,7 @@
                 android:textColor="@color/text_color"
                 android:layout_below="@id/marketCapTitle"
                 android:layout_toEndOf="@id/divider"
-                android:text="@{String.valueOf(data.quote.USD.market_cap)}"/>
+                android:text="@{String.valueOf(data.market_cap)}"/>
 
             <TextView
                 android:id="@+id/d7Title"
@@ -123,7 +123,7 @@
                 android:maxLength="6"
                 android:layout_marginBottom="2dp"
                 android:layout_marginStart="50dp"
-                priceDifference="@{data.quote.USD.percent_change_7d}"/>
+                priceDifference="@{data.percent_change_7d}"/>
 
             <TextView
                 android:id="@+id/d30"
@@ -136,7 +136,7 @@
                 android:singleLine="true"
                 android:maxLength="6"
                 android:textColor="@color/text_color"
-                priceDifference="@{data.quote.USD.percent_change_30d}"/>
+                priceDifference="@{data.percent_change_30d}"/>
 
             <TextView
                 android:id="@+id/d30Title"

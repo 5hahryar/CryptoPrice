@@ -28,7 +28,7 @@
                 app:title="@string/settings"
                 app:titleTextColor="@color/text_color"
                 app:navigationIcon="@drawable/ic_arrow_back_24px"
-                app:navigationIconTint="@color/black" />
+                app:navigationIconTint="@color/onPrimary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
