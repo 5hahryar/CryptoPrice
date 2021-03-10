@@ -19,4 +19,7 @@ interface CurrencyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(currencies: List<Currency>)
+
+    @Query("SELECT * FROM currencies WHERE name = 'bitcoin'")
+    fun getCoin(): Currency?
 }

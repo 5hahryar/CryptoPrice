@@ -18,6 +18,7 @@ import retrofit2.Response
 
 class Repository(private val localDatabase: LocalDatabase) {
 
+//    val coin: Currency? = localDatabase.currencyDao.getCoin()
     val currencies: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrencies()
     val currenciesByName: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrenciesByName()
     val currenciesByPrice: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrenciesByPrice()
