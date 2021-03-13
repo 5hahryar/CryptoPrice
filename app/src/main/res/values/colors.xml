@@ -10,7 +10,7 @@
     <color name="red">#D53B3B</color>
     <color name="green">#28A845</color>
     <color name="item_price_card">#F7F7F7</color>
-    <color name="text_alpha">#BFBFBF</color>
+    <color name="text_alpha">#B0B0B0</color>
     <color name="text_color">#000</color>
     <color name="divider">#EEE</color>
 </resources>

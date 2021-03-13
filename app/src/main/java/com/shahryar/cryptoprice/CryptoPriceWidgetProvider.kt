@@ -34,11 +34,28 @@ class CryptoPriceWidgetProvider: AppWidgetProvider(){
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful) {
                     val data = response.body()!!.data[0]
-                    remoteViews.setTextViewText(R.id.name, data?.name)
-                    remoteViews.setTextViewText(R.id.symbol, data?.symbol)
-                    remoteViews.setTextViewText(R.id.price_difference, data?.quote.USD.percent_change_24h.toString())
-                    remoteViews.setTextViewText(R.id.price, data?.quote.USD.price.toString())
-                    appWidgetManager?.updateAppWidget(appWidgetIds!![0], remoteViews)
+                    var priceDiff = String.format("%.2f", data.quote.USD.percent_change_24h)
+                    priceDiff = if (data.quote.USD.percent_change_24h > 0) "+$priceDiff" else "-$priceDiff"
+                    if (appWidgetIds != null) {
+                        for (appWidget in appWidgetIds) {
+                            if (data.quote.USD.percent_change_24h > 0) {
+                                remoteViews.setTextColor(
+                                    R.id.price_difference,
+                                    context.resources.getColor(R.color.green)
+                                )
+                            } else {
+                                remoteViews.setTextColor(
+                                    R.id.price_difference,
+                                    context.resources.getColor(R.color.red)
+                                )
+                            }
+                            remoteViews.setTextViewText(R.id.name, data.name)
+                            remoteViews.setTextViewText(R.id.symbol, data.symbol)
+                            remoteViews.setTextViewText(R.id.price_difference, "$priceDiff%")
+                            remoteViews.setTextViewText(R.id.price, "$${data.quote.USD.price}")
+                            appWidgetManager?.updateAppWidget(appWidget, remoteViews)
+                        }
+                    }
                 }
             }
 
