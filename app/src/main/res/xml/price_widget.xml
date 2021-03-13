@@ -5,7 +5,7 @@
     android:minResizeWidth="120dp"
     android:minResizeHeight="120dp"
     android:updatePeriodMillis="3600000"
-    android:previewImage="@drawable/ic_launcher_foreground"
+    android:previewImage="@drawable/widget_preview_1in1"
     android:initialLayout="@layout/price_widget"
     android:widgetCategory="home_screen">
 </appwidget-provider>

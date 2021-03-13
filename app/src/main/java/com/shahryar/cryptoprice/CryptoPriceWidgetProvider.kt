@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
@@ -29,7 +30,6 @@ class CryptoPriceWidgetProvider: AppWidgetProvider(){
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         val remoteViews = RemoteViews(context?.packageName, R.layout.price_widget)
-
         ApiService.priceApi.getPrices(Utils().readStringPreference(context!!, KEY_PREFS_API_KEY)).enqueue(object : Callback<Data>{
             override fun onResponse(call: Call<Data>, response: Response<Data>) {
                 if (response.isSuccessful) {
@@ -58,23 +58,14 @@ class CryptoPriceWidgetProvider: AppWidgetProvider(){
                     }
                 }
             }
-
             override fun onFailure(call: Call<Data>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
+                if (appWidgetIds != null) {
+                    for (appwidget in appWidgetIds) {
+                        remoteViews.setViewVisibility(R.id.container, View.GONE)
+                        remoteViews.setViewVisibility(R.id.container, View.GONE)
+                    }
+                }
             }
-
         })
-
-//         CoroutineScope(Dispatchers.IO).launch{
-//             var data: Currency?
-//             runBlocking {
-//                 data = getDatabase(context!!).currencyDao.getCoin()
-//             }
-//
-//            remoteViews.setTextViewText(R.id.name, data?.name)
-//            remoteViews.setTextViewText(R.id.symbol, data?.symbol)
-//            remoteViews.setTextViewText(R.id.price_difference, data?.percent_change_24h.toString())
-//            remoteViews.setTextViewText(R.id.price, data?.price.toString())
-//        }
     }
 }
