@@ -18,12 +18,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name="CryptoPriceWidgetProvider" >
+        <receiver android:name="CryptoPriceWidgetProviderSmall" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/price_widget" />
+                android:resource="@xml/widget_small" />
+        </receiver>
+        <receiver android:name=".CryptoPriceWidgetProviderMedium" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_medium" />
+        </receiver>
+        <receiver android:name=".CryptoPriceWidgetProviderLarge" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_large" />
         </receiver>
     </application>
 
