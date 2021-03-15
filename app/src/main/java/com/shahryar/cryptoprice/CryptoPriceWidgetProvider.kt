@@ -23,7 +23,7 @@ class CryptoPriceWidgetProviderSmall: AppWidgetProvider(){
         repo.currencies.observeForever {
             val data = it[0]
             var priceDiff = String.format("%.2f", data.percent_change_24h)
-            priceDiff = if (data.percent_change_24h > 0) "+$priceDiff" else "-$priceDiff"
+            if (data.percent_change_24h > 0) priceDiff = "+$priceDiff"
             if (appWidgetIds != null) {
                 for (appWidget in appWidgetIds) {
                     if (data.percent_change_24h > 0) {
@@ -67,31 +67,18 @@ class CryptoPriceWidgetProviderMedium: AppWidgetProvider(){
             val data = it[0]
             var priceDiff = String.format("%.2f", data.percent_change_24h)
             var priceDiffd7 = String.format("%.2f", data.percent_change_7d)
-            var priceDiffd30 = String.format("%.2f", data.percent_change_30d)
             if (data.percent_change_24h > 0) priceDiff = "+$priceDiff"
-            if (priceDiffd30.toDouble() > 0) priceDiffd30 = "+$priceDiffd30"
             if (priceDiffd7.toDouble() > 0) priceDiffd7 = "+$priceDiffd7"
             if (appWidgetIds != null) {
                 for (appWidget in appWidgetIds) {
-//                    if (data.percent_change_24h > 0) {
-//                        remoteViews.setTextColor(
-//                            R.id.price_difference,
-//                            context.resources.getColor(R.color.green)
-//                        )
-//                    } else {
-//                        remoteViews.setTextColor(
-//                            R.id.price_difference,
-//                            context.resources.getColor(R.color.red)
-//                        )
-//                    }
-                    if (data.percent_change_30d > 0) {
+                    if (data.percent_change_24h > 0) {
                         remoteViews.setTextColor(
-                            R.id.d30,
+                            R.id.h24,
                             context.resources.getColor(R.color.green)
                         )
                     } else {
                         remoteViews.setTextColor(
-                            R.id.d30,
+                            R.id.h24,
                             context.resources.getColor(R.color.red)
                         )
                     }
@@ -108,10 +95,9 @@ class CryptoPriceWidgetProviderMedium: AppWidgetProvider(){
                     }
                     remoteViews.setTextViewText(R.id.name, data.name)
                     remoteViews.setTextViewText(R.id.symbol, data.symbol)
-//                    remoteViews.setTextViewText(R.id.price_difference, "$priceDiff%")
                     remoteViews.setTextViewText(R.id.price, "$${data.price}")
                     remoteViews.setTextViewText(R.id.d7, "$priceDiffd7%")
-                    remoteViews.setTextViewText(R.id.d30, "$priceDiffd30%")
+                    remoteViews.setTextViewText(R.id.h24, "$priceDiff%")
                     appWidgetManager?.updateAppWidget(appWidget, remoteViews)
                 }
             }
@@ -135,35 +121,20 @@ class CryptoPriceWidgetProviderLarge: AppWidgetProvider(){
 
         repo.currencies.observeForever {
             val data = it[0]
-            var priceDiff = String.format("%.2f", data.percent_change_24h)
             var priceDiffd7 = String.format("%.2f", data.percent_change_7d)
-            var priceDiffd30 = String.format("%.2f", data.percent_change_30d)
             var priceDiffh24 = String.format("%.2f", data.percent_change_24h)
-            if (data.percent_change_24h > 0) priceDiff = "+$priceDiff"
-            if (priceDiffd30.toDouble() > 0) priceDiffd30 = "+$priceDiffd30"
             if (priceDiffd7.toDouble() > 0) priceDiffd7 = "+$priceDiffd7"
             if (priceDiffh24.toDouble() > 0) priceDiffh24 = "+$priceDiffh24"
             if (appWidgetIds != null) {
                 for (appWidget in appWidgetIds) {
-//                    if (data.percent_change_24h > 0) {
-//                        remoteViews.setTextColor(
-//                            R.id.price_difference,
-//                            context.resources.getColor(R.color.green)
-//                        )
-//                    } else {
-//                        remoteViews.setTextColor(
-//                            R.id.price_difference,
-//                            context.resources.getColor(R.color.red)
-//                        )
-//                    }
-                    if (data.percent_change_30d > 0) {
+                    if (data.percent_change_24h > 0) {
                         remoteViews.setTextColor(
-                            R.id.d30,
+                            R.id.h24,
                             context.resources.getColor(R.color.green)
                         )
                     } else {
                         remoteViews.setTextColor(
-                            R.id.d30,
+                            R.id.h24,
                             context.resources.getColor(R.color.red)
                         )
                     }
@@ -178,25 +149,13 @@ class CryptoPriceWidgetProviderLarge: AppWidgetProvider(){
                             context.resources.getColor(R.color.red)
                         )
                     }
-                    if (data.percent_change_24h > 0) {
-                        remoteViews.setTextColor(
-                            R.id.h24,
-                            context.resources.getColor(R.color.green)
-                        )
-                    } else {
-                        remoteViews.setTextColor(
-                            R.id.h24,
-                            context.resources.getColor(R.color.red)
-                        )
-                    }
+
                     remoteViews.setTextViewText(R.id.name, data.name)
                     remoteViews.setTextViewText(R.id.symbol, data.symbol)
-//                    remoteViews.setTextViewText(R.id.price_difference, "$priceDiff%")
                     remoteViews.setTextViewText(R.id.price, "$${data.price}")
                     remoteViews.setTextViewText(R.id.d7, "$priceDiffd7%")
-                    remoteViews.setTextViewText(R.id.d30, "$priceDiffd30%")
-                    remoteViews.setTextViewText(R.id.marketCap, "${data.market_cap}")
                     remoteViews.setTextViewText(R.id.h24, "$priceDiffh24%")
+                    remoteViews.setTextViewText(R.id.marketCap, "$${data.market_cap}")
                     appWidgetManager?.updateAppWidget(appWidget, remoteViews)
                 }
             }

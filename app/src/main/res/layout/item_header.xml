@@ -50,7 +50,6 @@
                 android:textSize="14sp"
                 android:textColor="@color/text_alpha"
                 android:layout_above="@id/price"
-                android:maxLength="7"
                 android:maxLines="1"
                 priceDifference="@{data.percent_change_24h}"/>
 
@@ -93,11 +92,12 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:singleLine="true"
-                android:maxLength="15"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
                 android:textColor="@color/text_color"
                 android:layout_below="@id/marketCapTitle"
                 android:layout_toEndOf="@id/divider"
-                android:text="@{String.valueOf(data.market_cap)}"/>
+                android:text="@{@string/data_market_cap(data.market_cap)}"/>
 
             <TextView
                 android:id="@+id/d7Title"
@@ -106,12 +106,12 @@
                 android:text="@string/d7"
                 android:textSize="12sp"
                 android:textColor="@color/text_alpha"
-                android:layout_toEndOf="@id/d30"
+                android:layout_toEndOf="@id/d7"
                 android:layout_marginStart="50dp"
-                android:layout_above="@id/d7"/>
+                android:layout_above="@id/h24"/>
 
             <TextView
-                android:id="@+id/d7"
+                android:id="@+id/h24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -119,14 +119,13 @@
                 android:singleLine="true"
                 android:textColor="@color/text_color"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@id/d30"
-                android:maxLength="6"
+                android:layout_toEndOf="@id/d7"
                 android:layout_marginBottom="2dp"
                 android:layout_marginStart="50dp"
                 priceDifference="@{data.percent_change_7d}"/>
 
             <TextView
-                android:id="@+id/d30"
+                android:id="@+id/d7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -134,7 +133,6 @@
                 android:layout_toEndOf="@id/divider"
                 android:textSize="17sp"
                 android:singleLine="true"
-                android:maxLength="6"
                 android:textColor="@color/text_color"
                 priceDifference="@{data.percent_change_30d}"/>
 
@@ -146,7 +144,7 @@
                 android:textSize="12sp"
                 android:textColor="@color/text_alpha"
                 android:layout_toEndOf="@id/divider"
-                android:layout_above="@id/d30"/>
+                android:layout_above="@id/d7"/>
 
         </RelativeLayout>
 

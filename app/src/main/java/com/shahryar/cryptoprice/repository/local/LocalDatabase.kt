@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.shahryar.cryptoprice.model.Currency
 
-@Database(entities = [Currency::class], version = 1)
+@Database(entities = [Currency::class], version = 2)
 abstract class LocalDatabase: RoomDatabase() {
     abstract val currencyDao: CurrencyDao
 }
