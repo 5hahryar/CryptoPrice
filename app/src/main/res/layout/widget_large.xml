@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:id="@+id/widgetContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="345dp"
     android:layout_height="115dp"
     android:background="@drawable/widget_background"
@@ -8,7 +10,9 @@
     android:paddingStart="15dp"
     android:paddingTop="12dp"
     android:paddingEnd="15dp"
-    android:paddingBottom="12dp">
+    android:paddingBottom="12dp"
+    android:clickable="true"
+    android:focusable="true">
 
     <RelativeLayout
         android:id="@+id/container"

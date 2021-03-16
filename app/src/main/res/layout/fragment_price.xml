@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.shahryar.cryptoprice.viewModel.PriceViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:liftOnScroll="true">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
@@ -27,8 +28,7 @@
                 app:menu="@menu/top_app_bar_menu"
                 app:title="@string/app_name"
                 app:titleTextColor="@color/text_color"
-                app:navigationIconTint="@color/black"
-                />
+                app:navigationIconTint="@color/black" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,8 +36,8 @@
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             tools:context=".view.PriceFragment"
+            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}"
             android:background="@color/primary">
 
         <!-- Note: A RecyclerView can also be used -->
@@ -45,11 +45,55 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/primary"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:background="@color/primary" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.isApiKeyAvailable() ? View.VISIBLE : View.GONE}"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lineSpacingExtra="15dp"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                android:text="Api key not found\nYou need an API key in order to use CryptoPrice"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/getKeyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    app:backgroundTint="@color/onPrimary"
+                    android:textColor="#FFF"
+                    android:text="Get a key"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/enterKeyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:text="Enter key"
+                    android:textColor="@color/text_color"
+                    app:backgroundTint="@color/primary"
+                    android:layout_marginStart="10dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </layout>

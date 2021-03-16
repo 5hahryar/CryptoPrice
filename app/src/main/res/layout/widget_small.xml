@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/widgetContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="115dp"
     android:layout_height="115dp"
     android:background="@drawable/widget_background"
+    android:clickable="true"
+    android:focusable="true"
     android:padding="12dp">
 
     <TextView

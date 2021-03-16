@@ -1,5 +1,7 @@
 package com.shahryar.cryptoprice.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -83,6 +85,12 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                 else -> false
             }
         }
+
+        enterKeyButton.setOnClickListener { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }
+
+        getKeyButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://coinmarketcap.com/api/pricing/")))
+        }
     }
 
     //Change title and icon of layout menu item
@@ -127,5 +135,10 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     override fun onSortItemSelected(key: String) {
         viewModel.sort(key)
         recyclerView.smoothScrollToPosition(0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onFragmentResume(requireContext())
     }
 }

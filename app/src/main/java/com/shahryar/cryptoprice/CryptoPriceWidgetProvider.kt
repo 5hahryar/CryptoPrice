@@ -1,11 +1,14 @@
 package com.shahryar.cryptoprice
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.widget.RemoteViews
 import com.shahryar.cryptoprice.repository.Repository
 import com.shahryar.cryptoprice.repository.local.getDatabase
+import com.shahryar.cryptoprice.view.MainActivity
 
 class CryptoPriceWidgetProviderSmall: AppWidgetProvider(){
     private lateinit var repo: Repository
@@ -17,6 +20,9 @@ class CryptoPriceWidgetProviderSmall: AppWidgetProvider(){
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
         val remoteViews = RemoteViews(context?.packageName, R.layout.widget_small)
+        val pendingIntent = Intent(context, MainActivity::class.java).let {
+            PendingIntent.getActivity(context, 0, it, 0)
+        }
         repo = Repository(getDatabase(context!!))
         repo.refreshData(context)
 
@@ -41,6 +47,7 @@ class CryptoPriceWidgetProviderSmall: AppWidgetProvider(){
                     remoteViews.setTextViewText(R.id.symbol, data.symbol)
                     remoteViews.setTextViewText(R.id.price_difference, "$priceDiff%")
                     remoteViews.setTextViewText(R.id.price, "$${data.price}")
+                    remoteViews.setOnClickPendingIntent(R.id.widgetContainer, pendingIntent)
                     appWidgetManager?.updateAppWidget(appWidget, remoteViews)
                 }
             }
@@ -57,9 +64,10 @@ class CryptoPriceWidgetProviderMedium: AppWidgetProvider(){
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        val remoteViews = RemoteViews(context?.packageName, R.layout.widget_medium
-
-        )
+        val remoteViews = RemoteViews(context?.packageName, R.layout.widget_medium)
+        val pendingIntent = Intent(context, MainActivity::class.java).let {
+            PendingIntent.getActivity(context, 0, it, 0)
+        }
         repo = Repository(getDatabase(context!!))
         repo.refreshData(context)
 
@@ -98,6 +106,7 @@ class CryptoPriceWidgetProviderMedium: AppWidgetProvider(){
                     remoteViews.setTextViewText(R.id.price, "$${data.price}")
                     remoteViews.setTextViewText(R.id.d7, "$priceDiffd7%")
                     remoteViews.setTextViewText(R.id.h24, "$priceDiff%")
+                    remoteViews.setOnClickPendingIntent(R.id.widgetContainer, pendingIntent)
                     appWidgetManager?.updateAppWidget(appWidget, remoteViews)
                 }
             }
@@ -113,9 +122,10 @@ class CryptoPriceWidgetProviderLarge: AppWidgetProvider(){
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        val remoteViews = RemoteViews(context?.packageName, R.layout.widget_large
-
-        )
+        val remoteViews = RemoteViews(context?.packageName, R.layout.widget_large)
+        val pendingIntent = Intent(context, MainActivity::class.java).let {
+            PendingIntent.getActivity(context, 0, it, 0)
+        }
         repo = Repository(getDatabase(context!!))
         repo.refreshData(context)
 
@@ -156,6 +166,7 @@ class CryptoPriceWidgetProviderLarge: AppWidgetProvider(){
                     remoteViews.setTextViewText(R.id.d7, "$priceDiffd7%")
                     remoteViews.setTextViewText(R.id.h24, "$priceDiffh24%")
                     remoteViews.setTextViewText(R.id.marketCap, "$${data.market_cap}")
+                    remoteViews.setOnClickPendingIntent(R.id.widgetContainer, pendingIntent)
                     appWidgetManager?.updateAppWidget(appWidget, remoteViews)
                 }
             }

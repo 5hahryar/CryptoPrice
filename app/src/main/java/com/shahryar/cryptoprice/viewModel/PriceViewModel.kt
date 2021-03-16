@@ -1,9 +1,12 @@
 package com.shahryar.cryptoprice.viewModel
 
 import android.content.Context
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.shahryar.cryptoprice.application.KEY_PREFS_API_KEY
+import com.shahryar.cryptoprice.application.Utils
 import com.shahryar.cryptoprice.model.Currency
 import com.shahryar.cryptoprice.repository.Repository
 import com.shahryar.cryptoprice.repository.local.getDatabase
@@ -15,6 +18,7 @@ class PriceViewModel(context: Context) : ViewModel() {
     private val currenciesByName: LiveData<List<Currency>> = repo.currenciesByName
     private val currenciesByPrice: LiveData<List<Currency>> = repo.currenciesByPrice
     private lateinit var lastSource: LiveData<*>
+    var isApiKeyAvailable: ObservableField<Boolean> = ObservableField(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
 
     val currencies: MediatorLiveData<List<Currency>> = MediatorLiveData()
 
@@ -46,5 +50,9 @@ class PriceViewModel(context: Context) : ViewModel() {
                 lastSource = currenciesByMarket
             }
         }
+    }
+
+    fun onFragmentResume(context: Context) {
+        isApiKeyAvailable.set(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
     }
 }
