@@ -16,4 +16,5 @@
     <string name="no_connection">No Connection</string>
     <string name="data_market_cap">$%s</string>
     <string name="price">Price</string>
+    <string name="select_currency">Select Currency</string>
 </resources>
