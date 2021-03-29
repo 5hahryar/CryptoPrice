@@ -15,7 +15,7 @@ data class Currency(
     val name: String,
     val symbol: String,
     val total_supply: Double,
-    val market_cap: Double,
+    val market_cap: String,
     val percent_change_1h: Double,
     val percent_change_24h: Double,
     val percent_change_30d: Double,

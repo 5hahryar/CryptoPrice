@@ -1,5 +1,7 @@
 package com.shahryar.cryptoprice.model
 
+import android.icu.text.NumberFormat
+
 data class Data(
         val `data`: List<DataX>,
         var status: Status
@@ -59,7 +61,7 @@ fun Data.asDatabaseModel(): List<Currency> {
                         name = it.name,
                         symbol = it.symbol,
                         total_supply = it.total_supply,
-                        market_cap = it.quote.USD.market_cap,
+                        market_cap = "%,d".format(it.quote.USD.market_cap.toLong()),
                         percent_change_1h = it.quote.USD.percent_change_1h,
                         percent_change_24h = it.quote.USD.percent_change_24h,
                         percent_change_30d = it.quote.USD.percent_change_30d,

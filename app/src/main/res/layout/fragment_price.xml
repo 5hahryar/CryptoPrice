@@ -4,20 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.shahryar.cryptoprice.viewModel.PriceViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:liftOnScroll="true">
+            app:elevation="0dp">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/topAppBar"
@@ -25,10 +29,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:menu="@menu/top_app_bar_menu"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/text_color"
                 app:navigationIconTint="@color/black"
-                />
+                app:title="@string/app_name"
+                app:titleTextColor="@color/text_color" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -36,20 +39,107 @@
             android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            tools:context=".view.PriceFragment"
-            android:background="@color/primary">
-
-        <!-- Note: A RecyclerView can also be used -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:background="@color/primary"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}"
+            tools:context=".view.PriceFragment">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!-- Note: A RecyclerView can also be used -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/primary"
+                    android:visibility="@{viewModel.isDataEmpty() ? View.GONE : View.VISIBLE}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.isDataEmpty() ? View.VISIBLE : View.GONE}">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingExtra="15dp"
+                        android:text="Something went wrong :("
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/refreshButton"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Retry"
+                            android:textColor="#FFF"
+                            app:backgroundTint="@color/onPrimary" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.isApiKeyAvailable() ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lineSpacingExtra="15dp"
+                android:text="Api key not found\nYou need an API key in order to use CryptoPrice"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/getKeyButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Get a key"
+                    android:textColor="#FFF"
+                    app:backgroundTint="@color/onPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/enterKeyButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="Enter key"
+                    android:textColor="@color/text_color"
+                    app:backgroundTint="@color/primary" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </layout>

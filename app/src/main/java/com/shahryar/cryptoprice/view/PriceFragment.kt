@@ -1,12 +1,15 @@
 package com.shahryar.cryptoprice.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,7 +33,10 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_price, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        this.viewModel = ViewModelProvider(this, PriceViewModelFactory(requireContext())).get(PriceViewModel::class.java)
+        this.viewModel = ViewModelProvider(
+            this,
+            PriceViewModelFactory(requireContext())
+        ).get(PriceViewModel::class.java)
         binding.viewModel = this.viewModel
 
         return binding.root
@@ -56,10 +62,11 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     private fun setListeners() {
         //Change appBar elevation on recyclerView scroll
         recyclerView.setOnScrollChangeListener { view, _, _, _, _ ->
-            if (!view.canScrollVertically(-1)) appBarLayout.elevation = 0f else appBarLayout.elevation = 15f
+            if (!view.canScrollVertically(-1)) appBarLayout.elevation =
+                0f else appBarLayout.elevation = 15f
         }
 
-        refreshLayout.setOnRefreshListener { viewModel.refreshData(requireContext())}
+        refreshLayout.setOnRefreshListener { viewModel.refreshData(requireContext()) }
 
         topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -69,7 +76,8 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                     true
                 }
                 R.id.sort -> {
-                    SortDialogFragment.newInstance(this).show(requireActivity().supportFragmentManager, "Sort By")
+                    SortDialogFragment.newInstance(this)
+                        .show(requireActivity().supportFragmentManager, "Sort By")
                     true
                 }
                 R.id.settings -> {
@@ -83,6 +91,29 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                 else -> false
             }
         }
+
+        enterKeyButton.setOnClickListener { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }
+
+        getKeyButton.setOnClickListener {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://coinmarketcap.com/api/pricing/")
+                )
+            )
+        }
+
+        refreshButton.setOnClickListener {
+            viewModel.refreshData(requireContext())
+            refreshLayout.isRefreshing = true
+        }
+
+        viewModel.isRefreshing.addOnPropertyChangedCallback(object :
+            Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                refreshLayout.isRefreshing = viewModel.isRefreshing.get()!!
+            }
+        })
     }
 
     //Change title and icon of layout menu item
@@ -90,12 +121,14 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         menuItem.icon = if (menuItem.title.equals("Grid Layout"))
             resources.getDrawable(R.drawable.ic_view_list_24px) else
             resources.getDrawable(R.drawable.ic_grid_view_24px)
-        menuItem.title = if (menuItem.title.equals("Grid Layout")) "Linear Layout" else "Grid Layout"
+        menuItem.title =
+            if (menuItem.title.equals("Grid Layout")) "Linear Layout" else "Grid Layout"
     }
 
     //Setup recyclerView with needed parameters
     private fun setupRecyclerView() {
-        val layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+        val layoutManager =
+            GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return if (position < DEFAULT_HEADER_SIZE) DEFAULT_HEADER_SIZE else 1
@@ -109,11 +142,13 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     //Swap recyclerView layout manager between list and grid view
     private fun changeRecyclerViewLayout() {
         if (recyclerView.layoutManager is GridLayoutManager) {
-            recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            (recyclerView.adapter as PriceAdapter).headerSize = (recyclerView.adapter as PriceAdapter).currentList.size
-        }
-        else {
-            val layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+            recyclerView.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            (recyclerView.adapter as PriceAdapter).headerSize =
+                (recyclerView.adapter as PriceAdapter).currentList.size
+        } else {
+            val layoutManager =
+                GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
             layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return if (position < 2) 2 else 1
@@ -127,5 +162,10 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     override fun onSortItemSelected(key: String) {
         viewModel.sort(key)
         recyclerView.smoothScrollToPosition(0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onFragmentResume(requireContext())
     }
 }
