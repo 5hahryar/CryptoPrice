@@ -21,8 +21,10 @@ class Repository(private val localDatabase: LocalDatabase) {
     val currencies: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrencies()
     val currenciesByName: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrenciesByName()
     val currenciesByPrice: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrenciesByPrice()
+    private var refreshListener: OnRefreshChangeListener? = null
 
     fun refreshData(context: Context) {
+        refreshListener?.onRefreshChanged(true)
         fetchDataFromNetwork(context)
     }
 
@@ -35,16 +37,26 @@ class Repository(private val localDatabase: LocalDatabase) {
                 override fun onResponse(call: Call<Data>, response: Response<Data>) {
                     if (response.isSuccessful) {
                         runBlocking { writeToLocalDatabase(response.body()!!.asDatabaseModel()) }
-                    } else Toast.makeText(context, response.message(), Toast.LENGTH_LONG).show()
+                    } else Toast.makeText(context, "Error code ${response.code()}", Toast.LENGTH_LONG).show()
+                    refreshListener?.onRefreshChanged(false)
                 }
 
                 override fun onFailure(call: Call<Data>, t: Throwable) {
                     Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
+                    refreshListener?.onRefreshChanged(false)
                 }
             })
     }
 
     private suspend fun writeToLocalDatabase(data: List<Currency>) {
         withContext(Dispatchers.IO) {localDatabase.currencyDao.insertAll(data)}
+    }
+
+    fun setOnRefreshChangeListener(listener: OnRefreshChangeListener) {
+        this.refreshListener = listener
+    }
+
+    interface OnRefreshChangeListener {
+        fun onRefreshChanged(isRefreshing: Boolean)
     }
 }

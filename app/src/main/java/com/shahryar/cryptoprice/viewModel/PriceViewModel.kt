@@ -19,6 +19,7 @@ class PriceViewModel(context: Context) : ViewModel() {
     private val currenciesByPrice: LiveData<List<Currency>> = repo.currenciesByPrice
     private lateinit var lastSource: LiveData<*>
     var isApiKeyAvailable: ObservableField<Boolean> = ObservableField(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
+    var isRefreshing: ObservableField<Boolean> = ObservableField(false)
 
     val currencies: MediatorLiveData<List<Currency>> = MediatorLiveData()
 
@@ -28,10 +29,18 @@ class PriceViewModel(context: Context) : ViewModel() {
             lastSource = currenciesByMarket
         }
         refreshData(context)
+
+        repo.setOnRefreshChangeListener(object : Repository.OnRefreshChangeListener {
+            override fun onRefreshChanged(isRefreshing: Boolean) {
+                this@PriceViewModel.isRefreshing.set(isRefreshing)
+            }
+        })
     }
 
     fun refreshData(context: Context) {
         repo.refreshData(context)
+
+        currencies.value?.isEmpty()
     }
 
     fun sort(sortKey: String) {
@@ -54,5 +63,10 @@ class PriceViewModel(context: Context) : ViewModel() {
 
     fun onFragmentResume(context: Context) {
         isApiKeyAvailable.set(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
+    }
+
+    fun isDataEmpty(): Boolean {
+        return if (currencies.value == null) true
+        else currencies.value!!.isEmpty()
     }
 }
