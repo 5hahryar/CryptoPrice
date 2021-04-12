@@ -18,8 +18,9 @@ class PriceViewModel(context: Context) : ViewModel() {
     private val currenciesByName: LiveData<List<Currency>> = repo.currenciesByName
     private val currenciesByPrice: LiveData<List<Currency>> = repo.currenciesByPrice
     private lateinit var lastSource: LiveData<*>
-    var isApiKeyAvailable: ObservableField<Boolean> = ObservableField(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
+    var isApiKeyEmpty: ObservableField<Boolean> = ObservableField(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
     var isRefreshing: ObservableField<Boolean> = ObservableField(false)
+    var isDataEmpty: ObservableField<Boolean> = ObservableField(true)
 
     val currencies: MediatorLiveData<List<Currency>> = MediatorLiveData()
 
@@ -35,6 +36,7 @@ class PriceViewModel(context: Context) : ViewModel() {
                 this@PriceViewModel.isRefreshing.set(isRefreshing)
             }
         })
+
     }
 
     fun refreshData(context: Context) {
@@ -62,7 +64,7 @@ class PriceViewModel(context: Context) : ViewModel() {
     }
 
     fun onFragmentResume(context: Context) {
-        isApiKeyAvailable.set(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
+        isApiKeyEmpty.set(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
     }
 
     fun isDataEmpty(): Boolean {

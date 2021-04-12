@@ -40,27 +40,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/primary"
-            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}"
             tools:context=".view.PriceFragment">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
                 <!-- Note: A RecyclerView can also be used -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/primary"
-                    android:visibility="@{viewModel.isDataEmpty() ? View.GONE : View.VISIBLE}" />
+                    android:visibility="gone"/>
 
                 <LinearLayout
+                    android:id="@+id/emptyContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.isDataEmpty() ? View.VISIBLE : View.GONE}">
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -95,11 +97,12 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
+            android:id="@+id/emptyApiContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{viewModel.isApiKeyAvailable() ? View.VISIBLE : View.GONE}">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
