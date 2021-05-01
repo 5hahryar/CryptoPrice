@@ -22,6 +22,7 @@ class PriceViewModel(context: Context) : ViewModel() {
     var isApiKeyAvailable: ObservableField<Boolean> = ObservableField()
     var isDataEmpty: ObservableField<Boolean> = ObservableField()
     var isRefreshing: ObservableField<Boolean> = ObservableField(false)
+    var latestList: List<Currency> = listOf()
 
     val currencies: MediatorLiveData<List<Currency>> = MediatorLiveData()
 

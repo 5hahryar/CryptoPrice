@@ -24,11 +24,21 @@ class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiff
         this.context = parent.context
 
         //Create binding object for header item (extended card)
-        val headerBinding = ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val headerBinding = ItemHeaderBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         //Create binding object for normal item
-        val itemBinding = ItemPriceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val itemBinding = ItemPriceBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
 
-        return if (viewType == ITEM_VIEW_TYPE_HEADER) HeaderViewHolder(headerBinding) else ViewHolder(itemBinding)
+        return if (viewType == ITEM_VIEW_TYPE_HEADER) HeaderViewHolder(headerBinding) else ViewHolder(
+            itemBinding
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -43,6 +53,13 @@ class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiff
             }
         }
 
+    }
+
+    fun filterList(query: String, latestList: List<Currency>) {
+        val filteredList = latestList.filter {
+            it.name.toLowerCase().contains(query.toLowerCase())
+        }
+        submitList(filteredList)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -63,4 +80,6 @@ class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiff
             binding.data = item
         }
     }
+
+
 }
