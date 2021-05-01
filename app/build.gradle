@@ -68,6 +68,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    // DataStore
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha01"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

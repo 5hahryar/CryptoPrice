@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/primary"
-            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isApiKeyAvailable() ? View.VISIBLE : View.GONE}"
             tools:context=".view.PriceFragment">
 
             <LinearLayout
@@ -95,11 +95,12 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
+            android:id="@+id/noApiWarning"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{viewModel.isApiKeyAvailable() ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}">
 
             <TextView
                 android:layout_width="wrap_content"

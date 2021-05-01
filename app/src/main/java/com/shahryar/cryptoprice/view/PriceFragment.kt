@@ -163,9 +163,4 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         viewModel.sort(key)
         recyclerView.smoothScrollToPosition(0)
     }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.onFragmentResume(requireContext())
-    }
 }

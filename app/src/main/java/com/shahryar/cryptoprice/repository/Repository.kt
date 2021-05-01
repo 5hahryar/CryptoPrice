@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.shahryar.cryptoprice.application.KEY_PREFS_API_KEY
 import com.shahryar.cryptoprice.application.Utils
@@ -22,15 +23,20 @@ class Repository(private val localDatabase: LocalDatabase) {
     val currenciesByName: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrenciesByName()
     val currenciesByPrice: LiveData<List<Currency>> = localDatabase.currencyDao.getCurrenciesByPrice()
     private var refreshListener: OnRefreshChangeListener? = null
+    private var apiKey = ""
 
     fun refreshData(context: Context) {
         refreshListener?.onRefreshChanged(true)
-        fetchDataFromNetwork(context)
+        UserPreferencesRepository.getInstance(context).readOutFromDataStore.asLiveData().observeForever {
+            apiKey = it
+            if (apiKey.isNotEmpty()) fetchDataFromNetwork(context)
+        }
+        if (apiKey.isNotEmpty()) fetchDataFromNetwork(context)
     }
 
     private fun fetchDataFromNetwork(context: Context, sortKey: String? = null) {
         ApiService.priceApi.getPrices(
-            Utils().readStringPreference(context, KEY_PREFS_API_KEY),
+            apiKey,
             sortKey
         )
             .enqueue(object : retrofit2.Callback<Data> {
