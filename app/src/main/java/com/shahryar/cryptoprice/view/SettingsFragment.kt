@@ -4,26 +4,31 @@ import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import android.widget.EditText
+import android.widget.Toolbar
+import androidx.core.widget.doAfterTextChanged
+import androidx.databinding.DataBindingUtil
+import com.google.android.material.appbar.AppBarLayout
+import com.shahryar.cryptoprice.R
+import com.shahryar.cryptoprice.application.KEY_PREFS_API_KEY
+import com.shahryar.cryptoprice.application.Utils
 import com.shahryar.cryptoprice.databinding.SettingsFragmentBinding
-import com.shahryar.cryptoprice.repository.UserPreferencesRepository
 import com.shahryar.cryptoprice.viewModel.SettingsViewModel
 import com.shahryar.cryptoprice.viewModel.SettingsViewModelFactory
-import kotlinx.android.synthetic.main.fragment_sort_dialog_list_dialog_item.*
 import kotlinx.android.synthetic.main.settings_fragment.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SettingsFragment : Fragment() {
+
+    companion object {
+        fun newInstance() = SettingsFragment()
+    }
 
     private lateinit var viewModel: SettingsViewModel
     private lateinit var binding: SettingsFragmentBinding
@@ -37,20 +42,17 @@ class SettingsFragment : Fragment() {
             SettingsViewModel::class.java
         )
         binding.viewModel = viewModel
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         setListeners()
-        viewModel.apiKey.observe(viewLifecycleOwner, {
-            apikeyEditText.setText(it)
-        })
     }
 
     override fun onPause() {
-        viewModel.saveApiKey(apikeyEditText.text.toString())
+        Utils().writePreference(requireContext(), KEY_PREFS_API_KEY, apikeyEditText.text.trim().toString())
         super.onPause()
     }
 

@@ -2,15 +2,14 @@ package com.shahryar.cryptoprice.viewModel
 
 import android.content.Context
 import androidx.databinding.ObservableField
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.ViewModel
 import com.shahryar.cryptoprice.application.KEY_PREFS_API_KEY
 import com.shahryar.cryptoprice.application.Utils
 import com.shahryar.cryptoprice.model.Currency
 import com.shahryar.cryptoprice.repository.Repository
-import com.shahryar.cryptoprice.repository.UserPreferencesRepository
 import com.shahryar.cryptoprice.repository.local.getDatabase
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class PriceViewModel(context: Context) : ViewModel() {
 
@@ -19,24 +18,17 @@ class PriceViewModel(context: Context) : ViewModel() {
     private val currenciesByName: LiveData<List<Currency>> = repo.currenciesByName
     private val currenciesByPrice: LiveData<List<Currency>> = repo.currenciesByPrice
     private lateinit var lastSource: LiveData<*>
-    var isApiKeyAvailable: ObservableField<Boolean> = ObservableField()
-    var isDataEmpty: ObservableField<Boolean> = ObservableField()
+    var isApiKeyEmpty: ObservableField<Boolean> = ObservableField(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
     var isRefreshing: ObservableField<Boolean> = ObservableField(false)
-    var latestList: List<Currency> = listOf()
+    var isDataEmpty: ObservableField<Boolean> = ObservableField(true)
 
     val currencies: MediatorLiveData<List<Currency>> = MediatorLiveData()
 
     init {
-        UserPreferencesRepository.getInstance(context).readOutFromDataStore.asLiveData().observeForever() {
-            if (it.isEmpty()) isApiKeyAvailable.set(false)
-            else isApiKeyAvailable.set(true)
-        }
-
         currencies.addSource(currenciesByMarket) { value ->
             currencies.value = value
             lastSource = currenciesByMarket
         }
-
         refreshData(context)
 
         repo.setOnRefreshChangeListener(object : Repository.OnRefreshChangeListener {
@@ -45,9 +37,6 @@ class PriceViewModel(context: Context) : ViewModel() {
             }
         })
 
-        currencies.observeForever {
-            isDataEmpty.set(it.isEmpty())
-        }
     }
 
     fun refreshData(context: Context) {
@@ -72,5 +61,14 @@ class PriceViewModel(context: Context) : ViewModel() {
                 lastSource = currenciesByMarket
             }
         }
+    }
+
+    fun onFragmentResume(context: Context) {
+        isApiKeyEmpty.set(Utils().readStringPreference(context, KEY_PREFS_API_KEY)?.isEmpty())
+    }
+
+    fun isDataEmpty(): Boolean {
+        return if (currencies.value == null) true
+        else currencies.value!!.isEmpty()
     }
 }
