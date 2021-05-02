@@ -53,7 +53,7 @@
                 android:id="@+id/apikeyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.apiKey}"
+
                 android:enabled="false"
                 android:hint="@string/api_key"/>
 
