@@ -56,7 +56,21 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
 
         }
 
-        setupRecyclerView()
+        if (viewModel.isApiKeyEmpty.get() != null && !viewModel.isApiKeyEmpty.get()!!) {
+            setupRecyclerView()
+
+            //Observe price data in order to update recyclerView
+            viewModel.currencies.observe(viewLifecycleOwner, {
+                (recyclerView.adapter as PriceAdapter).submitList(it)
+                if (it.isEmpty()) {
+                    emptyContainer.visibility = View.VISIBLE
+                    recyclerView.visibility = View.GONE
+                } else {
+                    emptyContainer.visibility = View.GONE
+                    recyclerView.visibility = View.VISIBLE
+                }
+                binding.refreshLayout.isRefreshing = false
+            })
 
         //Observe price data in order to update recyclerView
         viewModel.currencies.observe(viewLifecycleOwner, {
