@@ -22,7 +22,10 @@ import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
 import com.shahryar.cryptoprice.model.adapter.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import com.shahryar.cryptoprice.viewModel.PriceViewModelFactory
+import kotlinx.android.synthetic.main.empty_list_layout.*
 import kotlinx.android.synthetic.main.fragment_price.*
+import kotlinx.android.synthetic.main.no_api_warning.*
+import kotlinx.android.synthetic.main.no_api_warning.view.*
 
 class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
 
@@ -49,7 +52,9 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         super.onViewCreated(view, savedInstanceState)
 
         refreshLayout.isRefreshing = true
-        searchView = (topAppBar.menu.findItem(R.id.search).actionView as SearchView)
+        searchView = (topAppBar.menu.findItem(R.id.search).actionView as SearchView).apply {
+
+        }
 
         setupRecyclerView()
 

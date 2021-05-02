@@ -55,91 +55,22 @@
                     android:background="@color/primary"
                     android:visibility="@{viewModel.isDataEmpty() ? View.GONE : View.VISIBLE}" />
 
-                <LinearLayout
+                <include
+                    layout="@layout/empty_list_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.isDataEmpty() ? View.VISIBLE : View.GONE}">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:lineSpacingExtra="15dp"
-                        android:text="Something went wrong :("
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/refreshButton"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Retry"
-                            android:textColor="#FFF"
-                            app:backgroundTint="@color/onPrimary" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                    android:visibility="@{viewModel.isDataEmpty() ? View.VISIBLE : View.GONE}"/>
 
             </LinearLayout>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <LinearLayout
+        <include
             android:id="@+id/noApiWarning"
+            layout="@layout/no_api_warning"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lineSpacingExtra="15dp"
-                android:text="Api key not found\nYou need an API key in order to use CryptoPrice"
-                android:textColor="@color/text_color"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/getKeyButton"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Get a key"
-                    android:textColor="#FFF"
-                    app:backgroundTint="@color/onPrimary" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/enterKeyButton"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="Enter key"
-                    android:textColor="@color/text_color"
-                    app:backgroundTint="@color/primary" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
+            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}"/>
 
     </LinearLayout>
 

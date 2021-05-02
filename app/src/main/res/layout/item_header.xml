@@ -107,7 +107,7 @@
                 android:textSize="12sp"
                 android:textColor="@color/text_alpha"
                 android:layout_toEndOf="@id/d7"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="40dp"
                 android:layout_above="@id/h24"/>
 
             <TextView
@@ -121,7 +121,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_toEndOf="@id/d7"
                 android:layout_marginBottom="2dp"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="40dp"
                 priceDifference="@{data.percent_change_7d}"/>
 
             <TextView
