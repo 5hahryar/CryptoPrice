@@ -32,6 +32,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
     }
 
     buildFeatures {
@@ -39,8 +40,8 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerVersion "1.4.30"
-        kotlinCompilerExtensionVersion "1.0.0-beta01"
+        kotlinCompilerVersion "1.4.32"
+        kotlinCompilerExtensionVersion "1.0.0-beta07"
     }
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
@@ -79,28 +80,23 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
-    //Compose
-    implementation "androidx.compose.compiler:compiler:1.0.0-beta01"
-    implementation 'androidx.compose.ui:ui:1.0.0-beta01'
-    // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.0.0-beta01'
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation 'androidx.compose.foundation:foundation:1.0.0-beta01'
-    // Material Design
-    implementation 'androidx.compose.material:material:1.0.0-beta01'
-    // Material design icons
-    implementation 'androidx.compose.material:material-icons-core:1.0.0-beta01'
-    implementation 'androidx.compose.material:material-icons-extended:1.0.0-beta01'
-    // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.3.0-alpha03'
-    // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha02'
-    // Integration with observables
-    implementation 'androidx.compose.runtime:runtime-livedata:1.0.0-beta01'
-    implementation 'androidx.compose.runtime:runtime-rxjava2:1.0.0-beta01'
-
-    // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.0-beta01'
+    //Compose - START --->
+        implementation("androidx.compose.ui:ui:1.0.0-beta07")
+        // Tooling support (Previews, etc.)
+        implementation("androidx.compose.ui:ui-tooling:1.0.0-beta07")
+        // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+        implementation("androidx.compose.foundation:foundation:1.0.0-beta07")
+        // Material Design
+        implementation("androidx.compose.material:material:1.0.0-beta07")
+        // Material design icons
+        implementation("androidx.compose.material:material-icons-core:1.0.0-beta07")
+        implementation("androidx.compose.material:material-icons-extended:1.0.0-beta07")
+        // Integration with observables
+        implementation("androidx.compose.runtime:runtime-livedata:1.0.0-beta07")
+        implementation("androidx.compose.runtime:runtime-rxjava2:1.0.0-beta07")
+        // UI Tests
+        androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.0-beta07")
+        //Compose - END <---
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
