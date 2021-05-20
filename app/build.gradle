@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.shahryar.cryptoprice"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -80,6 +80,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
     // Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    //DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0-alpha01")
     //Compose - START --->
         implementation("androidx.compose.ui:ui:1.0.0-beta07")
         // Tooling support (Previews, etc.)

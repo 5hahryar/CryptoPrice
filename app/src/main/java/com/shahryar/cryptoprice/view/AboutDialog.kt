@@ -65,7 +65,7 @@ class AboutDialog: DialogFragment() {
                 tag = "URL"
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = "v1.2.0", color = Color.LightGray)
+            Text(text = "v1.2.0", color = Color.Gray)
         }
     }
 
@@ -87,7 +87,6 @@ class AboutDialog: DialogFragment() {
             val annotations = annotatedText.getStringAnnotations(tag, offset, offset)
                 annotations.firstOrNull()?.let { annotation ->
                     uriHandler.openUri(annotation.item)
-                    startActivity(Intent(Intent.ACTION_VIEW, annotation.item as Uri))
                 }
         })
     }
