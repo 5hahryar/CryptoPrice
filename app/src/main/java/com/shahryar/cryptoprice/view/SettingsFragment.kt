@@ -3,73 +3,81 @@ package com.shahryar.cryptoprice.view
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import com.shahryar.cryptoprice.databinding.SettingsFragmentBinding
-import com.shahryar.cryptoprice.repository.UserPreferencesRepository
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.viewModel.SettingsViewModel
 import com.shahryar.cryptoprice.viewModel.SettingsViewModelFactory
-import kotlinx.android.synthetic.main.fragment_sort_dialog_list_dialog_item.*
-import kotlinx.android.synthetic.main.settings_fragment.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SettingsFragment : Fragment() {
 
     private lateinit var viewModel: SettingsViewModel
-    private lateinit var binding: SettingsFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SettingsFragmentBinding.inflate(inflater)
         viewModel = ViewModelProvider(this, SettingsViewModelFactory(requireContext())).get(
             SettingsViewModel::class.java
         )
-        binding.viewModel = viewModel
-
-        return binding.root
+        
+        return ComposeView(requireContext()).apply { setContent { SettingsCompose() } }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setListeners()
-        viewModel.apiKey.observe(viewLifecycleOwner, {
-            apikeyEditText.setText(it)
-        })
+    @Composable
+    fun SettingsCompose() {
+        Column {
+            TopAppBar(
+                title = { Text(text = "Settings", color = colorResource(id = R.color.onPrimary)) },
+                navigationIcon = {
+                    IconButton(onClick = { activity?.onBackPressed() }) {
+                        Icon(painter = painterResource(id = R.drawable.ic_arrow_back_24px),
+                            contentDescription = "Back",
+                            tint = colorResource(id = R.color.onPrimary))
+                    }
+                },
+                backgroundColor = colorResource(id = R.color.primary)
+            )
+            Body()
+        }
+    }
+
+    @Composable
+    fun Body() {
+        val apiKey = viewModel.apiKey.value
+        Column(modifier = Modifier.padding(20.dp)) {
+            OutlinedTextField(
+                value = apiKey,
+                onValueChange = { viewModel.onApiKeyChanged(it) },
+                label = { Text("API key")},
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+
+    @Composable
+    @Preview
+    fun SettingsPreview() {
+        SettingsCompose()
     }
 
     override fun onPause() {
-        viewModel.saveApiKey(apikeyEditText.text.toString())
+        viewModel.saveApiKey()
         super.onPause()
-    }
-
-    private fun setListeners() {
-        apikeyLayout.setOnLongClickListener {
-            apikeyEditText.isEnabled = true
-            showSoftKeyboard(apikeyEditText)
-            true
-        }
-
-        topAppBar.setNavigationOnClickListener { activity?.onBackPressed() }
-    }
-
-    private fun showSoftKeyboard(view: View) {
-        if (view.requestFocus()) {
-            val imm: InputMethodManager =
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        }
     }
 
 }
