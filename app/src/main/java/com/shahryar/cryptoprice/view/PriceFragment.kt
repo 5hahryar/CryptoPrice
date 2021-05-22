@@ -1,14 +1,10 @@
 package com.shahryar.cryptoprice.view
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,28 +12,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.shahryar.cryptoprice.R
@@ -46,10 +36,6 @@ import com.shahryar.cryptoprice.model.Currency
 import com.shahryar.cryptoprice.model.adapter.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import com.shahryar.cryptoprice.viewModel.PriceViewModelFactory
-import kotlinx.android.synthetic.main.empty_list_layout.*
-import kotlinx.android.synthetic.main.fragment_price.*
-import kotlinx.android.synthetic.main.no_api_warning.*
-import java.util.*
 
 class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
 
@@ -78,75 +64,15 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         val list = viewModel.currencies.observeAsState()
 
         Column {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "CryptoPrice",
-                        color = colorResource(id = R.color.onPrimary),
-                        fontWeight = FontWeight.Medium
-                    )
-                },
-                backgroundColor = colorResource(id = R.color.primary),
-                actions = {
-                    Box {
-                        Row {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_search_black_24dp),
-                                    contentDescription = "Search",
-                                    tint = colorResource(id = R.color.onPrimary)
-                                )
-                            }
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_filter_list_24px),
-                                    contentDescription = "Sort",
-                                    tint = colorResource(id = R.color.onPrimary)
-                                )
-                            }
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_grid_view_24px),
-                                    contentDescription = "Layout",
-                                    tint = colorResource(id = R.color.onPrimary)
-                                )
-                            }
-                            IconButton(onClick = {
-                                isMenuExpanded.value = true
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.MoreVert,
-                                    contentDescription = "Layout",
-                                    tint = colorResource(id = R.color.onPrimary)
-                                )
-                            }
-                        }
-                        DropdownMenu(
-                            expanded = isMenuExpanded.value,
-                            onDismissRequest = { isMenuExpanded.value = false }) {
-                            DropdownMenuItem(onClick = {
-                                findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
-                                isMenuExpanded.value = false
-                            }) {
-                                Text(text = "Settings")
-                            }
-                            DropdownMenuItem(onClick = {
-                                AboutDialog().show(
-                                    requireActivity().supportFragmentManager,
-                                    "AboutDialog"
-                                )
-                                isMenuExpanded.value = false
-                            }) {
-                                Text(text = "About")
-                            }
-                        }
+            Box {
+                Box(modifier = Modifier.absolutePadding(top = dimensionResource(id = R.dimen.actionBarSize))) {
+                    if (list.value.isNullOrEmpty()) {
+                        Text(text = "Something went wrong :(")
+                    } else {
+                        Body(list = list.value!!)
                     }
                 }
-            )
-            if (list.value.isNullOrEmpty()) {
-                Text(text = "Something went wrong :(")
-            } else {
-                Body(list = list.value!!)
+                AppBar(isMenuExpanded)
             }
         }
     }
@@ -154,182 +80,271 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     @Composable
     fun Body(list: List<Currency>) {
         SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing.collectAsState().value),
-            onRefresh = {viewModel.refreshData(requireContext())}
+            onRefresh = { viewModel.refreshData(requireContext()) }
         ) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(list) { item ->
-                    Card(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(150.dp)
-                            .padding(15.dp, 8.dp),
-                        shape = RoundedCornerShape(20.dp),
-                        backgroundColor = colorResource(id = R.color.item_price_card),
-                        elevation = 0.dp
-                    ) {
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(15.dp, 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-//                                    .background(color = Color.Red)
-                            ) {
-                                Column {
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxWidth()
-                                    ) {
-                                        Column(verticalArrangement = Arrangement.aligned(Alignment.CenterVertically)) {
-                                            Text(
-                                                text = item.symbol,
-                                                color = colorResource(id = R.color.text_alpha),
-                                                fontSize = 14.sp,
-                                                maxLines = 1
-                                            )
-                                            Text(
-                                                text = item.name,
-                                                color = colorResource(id = R.color.text_color),
-                                                fontSize = 20.sp,
-                                                maxLines = 1
-                                            )
-                                        }
-                                    }
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxWidth()
-//                                            .background(color = Color.Cyan),
-                                    ) {
-                                        Column(
-                                            modifier = Modifier.fillMaxHeight(),
-                                            verticalArrangement = Arrangement.Center
-                                        ) {
-                                            Text(
-                                                text = "${String.format("%.2f", item.percent_change_24h)}%",
-                                                color = if (item.percent_change_24h >= 0) colorResource(
-                                                    id = R.color.green
-                                                ) else colorResource(
-                                                    id = R.color.red
-                                                ),
-                                                fontSize = 14.sp,
-                                                maxLines = 1,
-//                                                modifier = Modifier.background(Color.Yellow)
-                                            )
-                                            Text(
-                                                text = "$${item.price}",
-                                                color = colorResource(id = R.color.text_color),
-                                                fontSize = 20.sp,
-                                                maxLines = 1,
-//                                            modifier = Modifier.background(Color.Red)
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                            Spacer(
-                                modifier = Modifier
-                                    .weight(0.2f)
-                                    .fillMaxHeight()
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .weight(2f)
-                                    .fillMaxHeight()
-                            ) {
-                                Column {
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxWidth()
-                                    ) {
-                                        Column(verticalArrangement = Arrangement.aligned(Alignment.CenterVertically)) {
-                                            Text(
-                                                text = "Market cap",
-                                                color = colorResource(id = R.color.text_alpha),
-                                                fontSize = 14.sp,
-                                                maxLines = 1
-                                            )
-                                            Text(
-                                                text = "$${item.market_cap}",
-                                                color = colorResource(id = R.color.text_color),
-                                                fontSize = 19.sp,
-                                                maxLines = 1
-                                            )
-                                        }
-                                    }
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxWidth()
-//                                            .background(color = Color.Cyan)
-                                    ) {
-                                        Row {
-                                            Column(
-                                                modifier = Modifier
-                                                    .weight(1f)
-                                                    .fillMaxHeight(),
-                                                verticalArrangement = Arrangement.Center
-                                            ) {
-                                                Text(
-                                                    text = "30 Day",
-                                                    color = colorResource(id = R.color.text_alpha),
-                                                    fontSize = 14.sp,
-                                                    maxLines = 1,
-//                                                    modifier = Modifier.background(Color.Yellow)
-                                                )
-                                                Text(
-                                                    text = "${String.format("%.2f", item.percent_change_30d)}%",
-                                                    color = if (item.percent_change_24h >= 0) colorResource(
-                                                        id = R.color.green
-                                                    ) else colorResource(
-                                                        id = R.color.red
-                                                    ),
-                                                    fontSize = 19.sp,
-                                                    maxLines = 1,
-//                                                    modifier = Modifier.background(Color.Red)
-                                                )
-                                            }
-                                            Column(
-                                                modifier = Modifier
-                                                    .weight(1f)
-                                                    .fillMaxHeight(),
-                                                verticalArrangement = Arrangement.Center
-                                            ) {
-                                                Text(
-                                                    text = "7 Day",
-                                                    color = colorResource(id = R.color.text_alpha),
-                                                    fontSize = 14.sp,
-                                                    maxLines = 1,
-//                                                    modifier = Modifier.background(Color.Yellow)
-                                                )
-                                                Text(
-                                                    text = "${String.format("%.2f", item.percent_change_7d)}%",
-                                                    color = if (item.percent_change_24h >= 0) colorResource(
-                                                        id = R.color.green
-                                                    ) else colorResource(
-                                                        id = R.color.red
-                                                    ),
-                                                    fontSize = 19.sp,
-                                                    maxLines = 1,
-//                                                    modifier = Modifier.background(Color.Red)
-                                                )
-                                            }
-                                        }
-                                    }
-                                }
+                    PriceItem(item)
+                }
+            }
+        }
+    }
 
+    @Composable
+    fun PriceItem(item: Currency) {
+        Card(
+            Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .padding(15.dp, 8.dp),
+            shape = RoundedCornerShape(20.dp),
+            backgroundColor = colorResource(id = R.color.item_price_card),
+            elevation = 0.dp
+        ) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp, 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+//                                    .background(color = Color.Red)
+                ) {
+                    Column {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                        ) {
+                            Column(verticalArrangement = Arrangement.aligned(Alignment.CenterVertically)) {
+                                Text(
+                                    text = item.symbol,
+                                    color = colorResource(id = R.color.text_alpha),
+                                    fontSize = 14.sp,
+                                    maxLines = 1
+                                )
+                                Text(
+                                    text = item.name,
+                                    color = colorResource(id = R.color.text_color),
+                                    fontSize = 20.sp,
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+//                                            .background(color = Color.Cyan),
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxHeight(),
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    text = "${
+                                        String.format(
+                                            "%.2f",
+                                            item.percent_change_24h
+                                        )
+                                    }%",
+                                    color = if (item.percent_change_24h >= 0) colorResource(
+                                        id = R.color.green
+                                    ) else colorResource(
+                                        id = R.color.red
+                                    ),
+                                    fontSize = 14.sp,
+                                    maxLines = 1,
+//                                                modifier = Modifier.background(Color.Yellow)
+                                )
+                                Text(
+                                    text = "$${item.price}",
+                                    color = colorResource(id = R.color.text_color),
+                                    fontSize = 20.sp,
+                                    maxLines = 1,
+//                                            modifier = Modifier.background(Color.Red)
+                                )
                             }
                         }
                     }
                 }
+                Spacer(
+                    modifier = Modifier
+                        .weight(0.5f)
+                        .fillMaxHeight()
+                )
+                Box(
+                    modifier = Modifier
+                        .weight(2f)
+                        .fillMaxHeight()
+                ) {
+                    Column {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                        ) {
+                            Column(verticalArrangement = Arrangement.aligned(Alignment.CenterVertically)) {
+                                Text(
+                                    text = "Market cap",
+                                    color = colorResource(id = R.color.text_alpha),
+                                    fontSize = 14.sp,
+                                    maxLines = 1
+                                )
+                                Text(
+                                    text = "$${item.market_cap}",
+                                    color = colorResource(id = R.color.text_color),
+                                    fontSize = 19.sp,
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+//                                            .background(color = Color.Cyan)
+                        ) {
+                            Row {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight(),
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = "30 Day",
+                                        color = colorResource(id = R.color.text_alpha),
+                                        fontSize = 14.sp,
+                                        maxLines = 1,
+//                                                    modifier = Modifier.background(Color.Yellow)
+                                    )
+                                    Text(
+                                        text = "${
+                                            String.format(
+                                                "%.2f",
+                                                item.percent_change_30d
+                                            )
+                                        }%",
+                                        color = if (item.percent_change_24h >= 0) colorResource(
+                                            id = R.color.green
+                                        ) else colorResource(
+                                            id = R.color.red
+                                        ),
+                                        fontSize = 19.sp,
+                                        maxLines = 1,
+//                                                    modifier = Modifier.background(Color.Red)
+                                    )
+                                }
+                                Column(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight(),
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        text = "7 Day",
+                                        color = colorResource(id = R.color.text_alpha),
+                                        fontSize = 14.sp,
+                                        maxLines = 1,
+//                                                    modifier = Modifier.background(Color.Yellow)
+                                    )
+                                    Text(
+                                        text = "${
+                                            String.format(
+                                                "%.2f",
+                                                item.percent_change_7d
+                                            )
+                                        }%",
+                                        color = if (item.percent_change_24h >= 0) colorResource(
+                                            id = R.color.green
+                                        ) else colorResource(
+                                            id = R.color.red
+                                        ),
+                                        fontSize = 19.sp,
+                                        maxLines = 1,
+//                                                    modifier = Modifier.background(Color.Red)
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                }
             }
         }
+    }
+
+    @Composable
+    fun AppBar(isMenuExpanded: MutableState<Boolean>) {
+        TopAppBar(
+            title = {
+                Text(
+                    text = "CryptoPrice",
+                    color = colorResource(id = R.color.onPrimary),
+                    fontWeight = FontWeight.Medium
+                )
+            },
+            backgroundColor = colorResource(id = R.color.primary),
+            actions = {
+                Box {
+                    Row {
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_search_black_24dp),
+                                contentDescription = "Search",
+                                tint = colorResource(id = R.color.onPrimary)
+                            )
+                        }
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_filter_list_24px),
+                                contentDescription = "Sort",
+                                tint = colorResource(id = R.color.onPrimary)
+                            )
+                        }
+                        IconButton(onClick = { /*TODO*/ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_grid_view_24px),
+                                contentDescription = "Layout",
+                                tint = colorResource(id = R.color.onPrimary)
+                            )
+                        }
+                        IconButton(onClick = {
+                            isMenuExpanded.value = true
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "Layout",
+                                tint = colorResource(id = R.color.onPrimary)
+                            )
+                        }
+                    }
+                    DropdownMenu(
+                        expanded = isMenuExpanded.value,
+                        onDismissRequest = { isMenuExpanded.value = false }) {
+                        DropdownMenuItem(onClick = {
+                            findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
+                            isMenuExpanded.value = false
+                        }) {
+                            Text(text = "Settings")
+                        }
+                        DropdownMenuItem(onClick = {
+                            AboutDialog().show(
+                                requireActivity().supportFragmentManager,
+                                "AboutDialog"
+                            )
+                            isMenuExpanded.value = false
+                        }) {
+                            Text(text = "About")
+                        }
+                    }
+                }
+            }
+        )
     }
 
     @Composable
