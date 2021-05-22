@@ -1,10 +1,13 @@
 package com.shahryar.cryptoprice.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,11 +19,13 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,17 +67,66 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     fun PriceCompose() {
         val isMenuExpanded = remember { mutableStateOf(false) }
         val list = viewModel.currencies.observeAsState()
+        val isApiKeyAvaiable = viewModel.isApiKeyAvailable.collectAsState()
 
         Column {
             Box {
                 Box(modifier = Modifier.absolutePadding(top = dimensionResource(id = R.dimen.actionBarSize))) {
-                    if (list.value.isNullOrEmpty()) {
-                        Text(text = "Something went wrong :(")
+                    if (isApiKeyAvaiable.value) {
+                        if (list.value.isNullOrEmpty()) {
+                            Column(
+                                Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(text = "Something went wrong :(")
+                                Spacer(modifier = Modifier.height(20.dp))
+                                Button(onClick = { viewModel.refreshData(requireContext()) },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color.Black
+                                    )) {
+                                    Text(text = "RETRY", color = Color.White)
+                                }
+                            }
+                        } else {
+                            Body(list = list.value!!)
+                        }
                     } else {
-                        Body(list = list.value!!)
+                        NoApiBody()
                     }
                 }
+
                 AppBar(isMenuExpanded)
+            }
+        }
+    }
+
+    @Composable
+    fun NoApiBody() {
+        Column(
+            Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Api key not found\nYou need an API key in order to use CryptoPrice",
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Row {
+                Button(
+                    onClick = { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://coinmarketcap.com/api/pricing/")))},
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color.Black
+                    )
+                ) {
+                    Text(text = "GET KEY", color = Color.White)
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+                OutlinedButton(
+                    onClick = { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }) {
+                    Text(text = "ENTER KEY", color = Color.Black)
+                }
             }
         }
     }
@@ -350,30 +404,31 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     @Composable
     @Preview
     fun PricePreview() {
-//        PriceCompose()
-        Body(
-            list = listOf(
-                Currency(
-                    12,
-                    1.55555,
-                    1,
-                    "date_added",
-                    "last_updated",
-                    33333.4444,
-                    "Test Coin",
-                    "TST",
-                    10000.0,
-                    "2000.0",
-                    2.1,
-                    2.3,
-                    4.5,
-                    5.0,
-                    4.9,
-                    2341.341
-                )
+        val mockData = listOf(
+            Currency(
+                12,
+                1.55555,
+                1,
+                "date_added",
+                "last_updated",
+                33333.4444,
+                "Test Coin",
+                "TST",
+                10000.0,
+                "2000.0",
+                2.1,
+                2.3,
+                4.5,
+                5.0,
+                4.9,
+                2341.341
             )
         )
+//        PriceCompose()
+//        Body(mockData)
+        NoApiBody()
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

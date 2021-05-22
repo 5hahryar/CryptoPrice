@@ -22,21 +22,22 @@ class PriceViewModel(context: Context) : ViewModel() {
     private val currenciesByName: LiveData<List<Currency>> = repo.currenciesByName
     private val currenciesByPrice: LiveData<List<Currency>> = repo.currenciesByPrice
     private val _isRefreshing = MutableStateFlow(false)
+    private val _isApiKeyAvailable = MutableStateFlow(false)
     private lateinit var lastSource: LiveData<*>
-    var isApiKeyAvailable: ObservableField<Boolean> = ObservableField()
-    var isDataEmpty: ObservableField<Boolean> = ObservableField()
-//    var isRefreshing: ObservableField<Boolean> = ObservableField(false)
     var latestList: List<Currency> = listOf()
 
     val currencies: MediatorLiveData<List<Currency>> = MediatorLiveData()
-    lateinit var observer: Observer<List<Currency>>
+    var observer: Observer<List<Currency>>
     val isRefreshing: StateFlow<Boolean>
         get() = _isRefreshing.asStateFlow()
+    val isApiKeyAvailable: StateFlow<Boolean>
+        get() = _isApiKeyAvailable.asStateFlow()
 
     init {
-        UserPreferencesRepository.getInstance(context).readOutFromDataStore.asLiveData().observeForever() {
-            if (it.isEmpty()) isApiKeyAvailable.set(false)
-            else isApiKeyAvailable.set(true)
+        UserPreferencesRepository.getInstance(context).readOutFromDataStore.asLiveData().observeForever {
+            viewModelScope.launch {
+                _isApiKeyAvailable.emit(it.isNotEmpty())
+            }
         }
 
         currencies.addSource(currenciesByMarket) { value ->
@@ -52,16 +53,6 @@ class PriceViewModel(context: Context) : ViewModel() {
             }
         }
         currencies.observeForever(observer)
-
-//        repo.setOnRefreshChangeListener(object : Repository.OnRefreshChangeListener {
-//            override fun onRefreshChanged(isRefreshing: Boolean) {
-//                this@PriceViewModel._isRefreshing.emit(true)
-//            }
-//        })
-
-        currencies.observeForever {
-            isDataEmpty.set(it.isEmpty())
-        }
     }
 
     fun refreshData(context: Context) {
