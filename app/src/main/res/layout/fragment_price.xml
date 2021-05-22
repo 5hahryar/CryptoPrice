@@ -17,60 +17,60 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="0dp">
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--            android:id="@+id/appBarLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:elevation="0dp">-->
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                style="@style/Widget.MaterialComponents.AppBarLayout.Surface"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:menu="@menu/top_app_bar_menu"
-                app:navigationIconTint="@color/black"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/text_color" />
+<!--            <com.google.android.material.appbar.MaterialToolbar-->
+<!--                android:id="@+id/topAppBar"-->
+<!--                style="@style/Widget.MaterialComponents.AppBarLayout.Surface"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                app:menu="@menu/top_app_bar_menu"-->
+<!--                app:navigationIconTint="@color/black"-->
+<!--                app:title="@string/app_name"-->
+<!--                app:titleTextColor="@color/text_color" />-->
 
-        </com.google.android.material.appbar.AppBarLayout>
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/refreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/primary"
-            android:visibility="@{viewModel.isApiKeyAvailable() ? View.VISIBLE : View.GONE}"
-            tools:context=".view.PriceFragment">
+<!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
+<!--            android:id="@+id/refreshLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="@color/primary"-->
+<!--            android:visibility="@{viewModel.isApiKeyAvailable() ? View.VISIBLE : View.GONE}"-->
+<!--            tools:context=".view.PriceFragment">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <!-- Note: A RecyclerView can also be used -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/primary"
-                    android:visibility="@{viewModel.isDataEmpty() ? View.GONE : View.VISIBLE}" />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="vertical">-->
+<!--                &lt;!&ndash; Note: A RecyclerView can also be used &ndash;&gt;-->
+<!--                <androidx.recyclerview.widget.RecyclerView-->
+<!--                    android:id="@+id/recyclerView"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:background="@color/primary"-->
+<!--                    android:visibility="@{viewModel.isDataEmpty() ? View.GONE : View.VISIBLE}" />-->
 
-                <include
-                    layout="@layout/empty_list_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="@{viewModel.isDataEmpty() ? View.VISIBLE : View.GONE}"/>
+<!--                <include-->
+<!--                    layout="@layout/empty_list_layout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:visibility="@{viewModel.isDataEmpty() ? View.VISIBLE : View.GONE}"/>-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+<!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
-        <include
-            android:id="@+id/noApiWarning"
-            layout="@layout/no_api_warning"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}"/>
+<!--        <include-->
+<!--            android:id="@+id/noApiWarning"-->
+<!--            layout="@layout/no_api_warning"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:visibility="@{viewModel.isApiKeyAvailable() ? View.GONE : View.VISIBLE}"/>-->
 
     </LinearLayout>
 

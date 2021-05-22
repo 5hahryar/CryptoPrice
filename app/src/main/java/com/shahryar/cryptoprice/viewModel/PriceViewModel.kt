@@ -9,6 +9,9 @@ import com.shahryar.cryptoprice.model.Currency
 import com.shahryar.cryptoprice.repository.Repository
 import com.shahryar.cryptoprice.repository.UserPreferencesRepository
 import com.shahryar.cryptoprice.repository.local.getDatabase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -18,13 +21,17 @@ class PriceViewModel(context: Context) : ViewModel() {
     private val currenciesByMarket: LiveData<List<Currency>> = repo.currencies
     private val currenciesByName: LiveData<List<Currency>> = repo.currenciesByName
     private val currenciesByPrice: LiveData<List<Currency>> = repo.currenciesByPrice
+    private val _isRefreshing = MutableStateFlow(false)
     private lateinit var lastSource: LiveData<*>
     var isApiKeyAvailable: ObservableField<Boolean> = ObservableField()
     var isDataEmpty: ObservableField<Boolean> = ObservableField()
-    var isRefreshing: ObservableField<Boolean> = ObservableField(false)
+//    var isRefreshing: ObservableField<Boolean> = ObservableField(false)
     var latestList: List<Currency> = listOf()
 
     val currencies: MediatorLiveData<List<Currency>> = MediatorLiveData()
+    lateinit var observer: Observer<List<Currency>>
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
 
     init {
         UserPreferencesRepository.getInstance(context).readOutFromDataStore.asLiveData().observeForever() {
@@ -39,11 +46,18 @@ class PriceViewModel(context: Context) : ViewModel() {
 
         refreshData(context)
 
-        repo.setOnRefreshChangeListener(object : Repository.OnRefreshChangeListener {
-            override fun onRefreshChanged(isRefreshing: Boolean) {
-                this@PriceViewModel.isRefreshing.set(isRefreshing)
+        observer = Observer {
+            viewModelScope.launch {
+                _isRefreshing.emit(false)
             }
-        })
+        }
+        currencies.observeForever(observer)
+
+//        repo.setOnRefreshChangeListener(object : Repository.OnRefreshChangeListener {
+//            override fun onRefreshChanged(isRefreshing: Boolean) {
+//                this@PriceViewModel._isRefreshing.emit(true)
+//            }
+//        })
 
         currencies.observeForever {
             isDataEmpty.set(it.isEmpty())
@@ -51,9 +65,11 @@ class PriceViewModel(context: Context) : ViewModel() {
     }
 
     fun refreshData(context: Context) {
-        repo.refreshData(context)
-
-        currencies.value?.isEmpty()
+        viewModelScope.launch {
+            _isRefreshing.emit(true)
+            repo.refreshData(context)
+            currencies.value?.isEmpty()
+        }
     }
 
     fun sort(sortKey: String) {

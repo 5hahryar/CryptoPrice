@@ -83,22 +83,24 @@ dependencies {
     //DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0-alpha01")
     //Compose - START --->
-        implementation("androidx.compose.ui:ui:1.0.0-beta07")
-        // Tooling support (Previews, etc.)
-        implementation("androidx.compose.ui:ui-tooling:1.0.0-beta07")
-        // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-        implementation("androidx.compose.foundation:foundation:1.0.0-beta07")
-        // Material Design
-        implementation("androidx.compose.material:material:1.0.0-beta07")
-        // Material design icons
-        implementation("androidx.compose.material:material-icons-core:1.0.0-beta07")
-        implementation("androidx.compose.material:material-icons-extended:1.0.0-beta07")
-        // Integration with observables
-        implementation("androidx.compose.runtime:runtime-livedata:1.0.0-beta07")
-        implementation("androidx.compose.runtime:runtime-rxjava2:1.0.0-beta07")
-        // UI Tests
-        androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.0-beta07")
-        //Compose - END <---
+    implementation("androidx.compose.ui:ui:1.0.0-beta07")
+    // Tooling support (Previews, etc.)
+    implementation("androidx.compose.ui:ui-tooling:1.0.0-beta07")
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation("androidx.compose.foundation:foundation:1.0.0-beta07")
+    // Material Design
+    implementation("androidx.compose.material:material:1.0.0-beta07")
+    // Material design icons
+    implementation("androidx.compose.material:material-icons-core:1.0.0-beta07")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0-beta07")
+    // Integration with observables
+    implementation("androidx.compose.runtime:runtime-livedata:1.0.0-beta07")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.0.0-beta07")
+    //SwipeRefresh
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.10.0"
+    // UI Tests
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.0-beta07")
+    //Compose - END <---
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
