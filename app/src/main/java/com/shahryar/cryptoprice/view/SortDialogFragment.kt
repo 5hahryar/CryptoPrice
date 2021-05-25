@@ -8,53 +8,72 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.shahryar.cryptoprice.R
 import kotlinx.android.synthetic.main.fragment_sort_dialog_list_dialog.*
 
-class SortDialogFragment(private val listener: OnSortItemSelectedListener) : BottomSheetDialogFragment() {
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_sort_dialog_list_dialog, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        list.layoutManager = LinearLayoutManager(context)
-        list.adapter = ItemAdapter()
-    }
-
-    private inner class ViewHolder(inflater: LayoutInflater, parent: ViewGroup)
-        : RecyclerView.ViewHolder(inflater.inflate(R.layout.fragment_sort_dialog_list_dialog_item, parent, false)) {
-
-        val text: TextView = itemView.findViewById(R.id.text)
-    }
-
-    private inner class ItemAdapter : RecyclerView.Adapter<ViewHolder>() {
-
-        val list = listOf(Pair("market_cap", "Market Cap"),
-                Pair("name", "Name"),
-                Pair("price", "Price"))
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder(LayoutInflater.from(parent.context), parent)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.text.text = list[position].second
-            holder.itemView.setOnClickListener {
-                listener.onSortItemSelected(list[position].first)
-                dismiss()
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return list.size
-        }
-    }
+class SortDialogFragment private constructor(private val listener: OnSortItemSelectedListener) :
+    BottomSheetDialogFragment() {
 
     companion object {
-        // TODO: Customize parameters
-        fun newInstance(listener: OnSortItemSelectedListener): SortDialogFragment = SortDialogFragment(listener)
+        fun newInstance(listener: OnSortItemSelectedListener): SortDialogFragment =
+            SortDialogFragment(listener)
+    }
+
+    private val sortItems = listOf(
+        Pair("market_cap", "Market Cap"),
+        Pair("name", "Name"),
+        Pair("price", "Price")
+    )
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(requireContext()).apply {
+            setContent { SortDialogCompose() }
+        }
+    }
+
+    @Composable
+    fun SortDialogCompose() {
+        val onItemClick: (String) -> Unit = {
+            listener.onSortItemSelected(it)
+            dismiss()
+        }
+        Column(modifier = Modifier.padding(20.dp)) {
+            Text(modifier = Modifier.padding(bottom = 10.dp), text = "Sort by", fontWeight = FontWeight.Medium, fontSize = 20.sp)
+            sortItems.forEach {
+                SortItem(it, onItemClick)
+            }
+        }
+    }
+
+    @Composable
+    fun SortItem(item: Pair<String, String>, onItemClick: (String) -> Unit) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .height(50.dp)
+            .clickable { onItemClick(item.first) },
+            verticalArrangement = Arrangement.Center) {
+            Text(
+                modifier = Modifier.padding(start = 5.dp),
+                text = item.second,
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp
+            )
+        }
     }
 
     interface OnSortItemSelectedListener {

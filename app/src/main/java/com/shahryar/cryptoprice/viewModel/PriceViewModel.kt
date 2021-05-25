@@ -63,7 +63,7 @@ class PriceViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun sort(sortKey: String) {
+    fun onSort(sortKey: String) {
         this.currencies.removeSource(lastSource)
         when (sortKey) {
             "name" -> currencies.addSource(currenciesByName) { value ->

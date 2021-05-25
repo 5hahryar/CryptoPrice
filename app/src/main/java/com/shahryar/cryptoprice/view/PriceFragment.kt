@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -67,36 +69,68 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     fun PriceCompose() {
         val isMenuExpanded = remember { mutableStateOf(false) }
         val list = viewModel.currencies.observeAsState()
-        val isApiKeyAvaiable = viewModel.isApiKeyAvailable.collectAsState()
+        val isApiKeyAvailable = viewModel.isApiKeyAvailable.collectAsState()
 
-        Column {
-            Box {
-                Box(modifier = Modifier.absolutePadding(top = dimensionResource(id = R.dimen.actionBarSize))) {
-                    if (isApiKeyAvaiable.value) {
-                        if (list.value.isNullOrEmpty()) {
-                            Column(
-                                Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(text = "Something went wrong :(")
-                                Spacer(modifier = Modifier.height(20.dp))
-                                Button(onClick = { viewModel.refreshData(requireContext()) },
-                                    colors = ButtonDefaults.buttonColors(
-                                        backgroundColor = Color.Black
-                                    )) {
-                                    Text(text = "RETRY", color = Color.White)
+        val onPriceItemClick: (Currency) -> Unit = {}
+        val onSearchClickListener: () -> Unit = {}
+        val onSortClickListener: () -> Unit = {
+            SortDialogFragment.newInstance(object : SortDialogFragment.OnSortItemSelectedListener {
+                override fun onSortItemSelected(key: String) {
+                    viewModel.onSort(key)
+                }
+            }).show(
+                requireActivity().supportFragmentManager, "SortDialog"
+            )
+        }
+        val onSettingsClickListener: () -> Unit = {
+            findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
+            isMenuExpanded.value = false
+        }
+        val onAboutClickListener: () -> Unit = {
+            AboutDialog().show(
+                requireActivity().supportFragmentManager,
+                "AboutDialog"
+            )
+            isMenuExpanded.value = false
+        }
+
+        MaterialTheme {
+            Column {
+                Box {
+                    Box(modifier = Modifier.absolutePadding(top = dimensionResource(id = R.dimen.actionBarSize))) {
+                        if (isApiKeyAvailable.value) {
+                            if (list.value.isNullOrEmpty()) {
+                                Column(
+                                    Modifier.fillMaxSize(),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(text = "Something went wrong :(")
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                    Button(
+                                        onClick = { viewModel.refreshData(requireContext()) },
+                                        colors = ButtonDefaults.buttonColors(
+                                            backgroundColor = Color.Black
+                                        )
+                                    ) {
+                                        Text(text = "RETRY", color = Color.White)
+                                    }
                                 }
+                            } else {
+                                Body(list = list.value!!, onPriceItemClick)
                             }
                         } else {
-                            Body(list = list.value!!)
+                            NoApiBody()
                         }
-                    } else {
-                        NoApiBody()
                     }
+                    AppBar(
+                        isMenuExpanded,
+                        onSearchClickListener,
+                        onSortClickListener,
+                        onSettingsClickListener,
+                        onAboutClickListener
+                    )
                 }
-
-                AppBar(isMenuExpanded)
             }
         }
     }
@@ -115,7 +149,14 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
             Spacer(modifier = Modifier.height(20.dp))
             Row {
                 Button(
-                    onClick = { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://coinmarketcap.com/api/pricing/")))},
+                    onClick = {
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://coinmarketcap.com/api/pricing/")
+                            )
+                        )
+                    },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.Black
                     )
@@ -132,25 +173,34 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     }
 
     @Composable
-    fun Body(list: List<Currency>) {
+    fun Body(list: List<Currency>, onPriceItemClick: (Currency) -> Unit) {
         SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = viewModel.isRefreshing.collectAsState().value),
             onRefresh = { viewModel.refreshData(requireContext()) }
         ) {
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(list) { item ->
-                    PriceItem(item)
+                    PriceItem(item, onPriceItemClick)
                 }
             }
         }
     }
 
     @Composable
-    fun PriceItem(item: Currency) {
+    fun PriceItem(item: Currency, onPriceItemClick: (Currency) -> Unit) {
         Card(
             Modifier
                 .fillMaxWidth()
                 .height(150.dp)
-                .padding(15.dp, 8.dp),
+                .padding(15.dp, 8.dp)
+                .clickable(
+                    indication = rememberRipple(
+                        bounded = true,
+                        color = colorResource(id = R.color.ripple)
+                    ),
+                    onClick = {onPriceItemClick(item)},
+                    enabled = true,
+                    interactionSource = MutableInteractionSource()
+                ),
             shape = RoundedCornerShape(20.dp),
             backgroundColor = colorResource(id = R.color.item_price_card),
             elevation = 0.dp
@@ -283,7 +333,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                                                 item.percent_change_30d
                                             )
                                         }%",
-                                        color = if (item.percent_change_24h >= 0) colorResource(
+                                        color = if (item.percent_change_30d >= 0) colorResource(
                                             id = R.color.green
                                         ) else colorResource(
                                             id = R.color.red
@@ -313,7 +363,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                                                 item.percent_change_7d
                                             )
                                         }%",
-                                        color = if (item.percent_change_24h >= 0) colorResource(
+                                        color = if (item.percent_change_7d >= 0) colorResource(
                                             id = R.color.green
                                         ) else colorResource(
                                             id = R.color.red
@@ -333,7 +383,13 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     }
 
     @Composable
-    fun AppBar(isMenuExpanded: MutableState<Boolean>) {
+    fun AppBar(
+        isMenuExpanded: MutableState<Boolean>,
+        onSearchClickListener: () -> Unit,
+        onSortClickListener: () -> Unit,
+        onSettingsClickListener: () -> Unit,
+        onAboutClickListener: () -> Unit
+    ) {
         TopAppBar(
             title = {
                 Text(
@@ -346,24 +402,17 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
             actions = {
                 Box {
                     Row {
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_search_black_24dp),
-                                contentDescription = "Search",
-                                tint = colorResource(id = R.color.onPrimary)
-                            )
-                        }
-                        IconButton(onClick = { /*TODO*/ }) {
+//                        IconButton(onClick = onSearchClickListener) {
+//                            Icon(
+//                                painter = painterResource(id = R.drawable.ic_search_black_24dp),
+//                                contentDescription = "Search",
+//                                tint = colorResource(id = R.color.onPrimary)
+//                            )
+//                        }
+                        IconButton(onClick = onSortClickListener) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_filter_list_24px),
                                 contentDescription = "Sort",
-                                tint = colorResource(id = R.color.onPrimary)
-                            )
-                        }
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_grid_view_24px),
-                                contentDescription = "Layout",
                                 tint = colorResource(id = R.color.onPrimary)
                             )
                         }
@@ -380,19 +429,10 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                     DropdownMenu(
                         expanded = isMenuExpanded.value,
                         onDismissRequest = { isMenuExpanded.value = false }) {
-                        DropdownMenuItem(onClick = {
-                            findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
-                            isMenuExpanded.value = false
-                        }) {
+                        DropdownMenuItem(onClick = onSettingsClickListener) {
                             Text(text = "Settings")
                         }
-                        DropdownMenuItem(onClick = {
-                            AboutDialog().show(
-                                requireActivity().supportFragmentManager,
-                                "AboutDialog"
-                            )
-                            isMenuExpanded.value = false
-                        }) {
+                        DropdownMenuItem(onClick = onAboutClickListener) {
                             Text(text = "About")
                         }
                     }
@@ -433,7 +473,6 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        refreshLayout.isRefreshing = true
 //        searchView = (topAppBar.menu.findItem(R.id.search).actionView as SearchView).apply {
 //
 //        }
@@ -574,7 +613,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
 //    }
 
     override fun onSortItemSelected(key: String) {
-        viewModel.sort(key)
+        viewModel.onSort(key)
 //        recyclerView.smoothScrollToPosition(0)
     }
 }
