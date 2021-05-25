@@ -44,7 +44,7 @@ import com.shahryar.cryptoprice.model.adapter.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import com.shahryar.cryptoprice.viewModel.PriceViewModelFactory
 
-class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
+class PriceFragment : Fragment(), SortBottomSheetFragment.OnSortItemSelectedListener {
 
     private lateinit var viewModel: PriceViewModel
 //    private lateinit var searchView: SearchView
@@ -71,10 +71,12 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         val list = viewModel.currencies.observeAsState()
         val isApiKeyAvailable = viewModel.isApiKeyAvailable.collectAsState()
 
-        val onPriceItemClick: (Currency) -> Unit = {}
+        val onPriceItemClick: (Currency) -> Unit = {
+            CurrencyBottomSheetFragment(it).show(requireActivity().supportFragmentManager, "CurrencySheet")
+        }
         val onSearchClickListener: () -> Unit = {}
         val onSortClickListener: () -> Unit = {
-            SortDialogFragment.newInstance(object : SortDialogFragment.OnSortItemSelectedListener {
+            SortBottomSheetFragment.newInstance(object : SortBottomSheetFragment.OnSortItemSelectedListener {
                 override fun onSortItemSelected(key: String) {
                     viewModel.onSort(key)
                 }
