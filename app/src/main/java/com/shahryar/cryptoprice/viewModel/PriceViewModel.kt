@@ -56,6 +56,8 @@ class PriceViewModel(context: Context) : ViewModel() {
         currencies.value?.isEmpty()
     }
 
+
+
     fun sort(sortKey: String) {
         this.currencies.removeSource(lastSource)
         when (sortKey) {

@@ -1,7 +1,6 @@
 package com.shahryar.cryptoprice.view
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,13 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
+import com.shahryar.cryptoprice.model.Currency
 import com.shahryar.cryptoprice.model.adapter.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import com.shahryar.cryptoprice.viewModel.PriceViewModelFactory
 import kotlinx.android.synthetic.main.empty_list_layout.*
 import kotlinx.android.synthetic.main.fragment_price.*
 import kotlinx.android.synthetic.main.no_api_warning.*
-import kotlinx.android.synthetic.main.no_api_warning.view.*
 
 class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
 
@@ -168,6 +167,11 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         }
         binding.recyclerView.layoutManager = layoutManager
         val adapter = PriceAdapter()
+        adapter.setOnItemClickedListener(object : PriceAdapter.OnItemClickedListener {
+            override fun onItemClicked(item: Currency) {
+                CurrencyOverviewBottomSheet(item).show(requireActivity().supportFragmentManager, "CurrencyBottomSheet")
+            }
+        })
         binding.recyclerView.adapter = adapter
     }
 

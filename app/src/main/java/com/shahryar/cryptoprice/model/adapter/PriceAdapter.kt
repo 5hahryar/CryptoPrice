@@ -9,6 +9,7 @@ import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.ItemHeaderBinding
 import com.shahryar.cryptoprice.databinding.ItemPriceBinding
 import com.shahryar.cryptoprice.model.Currency
+import com.shahryar.cryptoprice.viewModel.PriceViewModel
 
 class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiffCallback()) {
 
@@ -18,7 +19,9 @@ class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiff
     }
 
     private lateinit var context: Context
+    private var onItemClickedListener: OnItemClickedListener? = null
     var headerSize: Int = DEFAULT_HEADER_SIZE
+    lateinit var viewModel: PriceViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         this.context = parent.context
@@ -46,10 +49,16 @@ class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiff
             //Bind views for normal item view
             is ViewHolder -> {
                 holder.bind(getItem(position))
+                holder.binding.priceCard.setOnClickListener {
+                    onItemClickedListener?.onItemClicked(getItem(position))
+                }
             }
             //Bind views for header item view
             is HeaderViewHolder -> {
                 holder.bind(getItem(position))
+                holder.binding.priceCard.setOnClickListener {
+                    onItemClickedListener?.onItemClicked(getItem(position))
+                }
             }
         }
 
@@ -67,19 +76,26 @@ class PriceAdapter: ListAdapter<Currency, RecyclerView.ViewHolder>(PriceDataDiff
         return if (position < this.headerSize) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
     }
 
+    fun setOnItemClickedListener(listener: OnItemClickedListener) {
+        this.onItemClickedListener = listener
+    }
+
     //ViewHolder for a normal card item
-    class ViewHolder(private val binding: ItemPriceBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ItemPriceBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Currency) {
             binding.priceData = item
         }
     }
 
     //ViewHolder for a header item (extended card)
-    class HeaderViewHolder(private val binding: ItemHeaderBinding): RecyclerView.ViewHolder(binding.root){
+    class HeaderViewHolder(val binding: ItemHeaderBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(item: Currency) {
             binding.data = item
         }
     }
 
+    interface OnItemClickedListener {
+        fun onItemClicked(item: Currency)
+    }
 
 }
