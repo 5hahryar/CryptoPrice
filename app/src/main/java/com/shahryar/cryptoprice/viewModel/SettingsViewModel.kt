@@ -8,7 +8,6 @@ import androidx.lifecycle.*
 import com.shahryar.cryptoprice.application.KEY_PREFS_API_KEY
 import com.shahryar.cryptoprice.application.Utils
 import com.shahryar.cryptoprice.repository.UserPreferencesRepository
-import kotlinx.android.synthetic.main.settings_fragment.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

@@ -15,8 +15,6 @@ import com.shahryar.cryptoprice.model.adapter.WidgetRecyclerViewAdapter
 import com.shahryar.cryptoprice.updateWidget
 import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModel
 import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModelFactory
-import kotlinx.android.synthetic.main.activity_widget_configure.*
-import kotlinx.android.synthetic.main.activity_widget_configure.topAppBar
 
 class WidgetConfigureActivity : AppCompatActivity() {
 
@@ -35,27 +33,27 @@ class WidgetConfigureActivity : AppCompatActivity() {
             )
         binding.viewModel = viewModel
 
-        recyclerView.layoutManager = LinearLayoutManager(
+        binding.recyclerView.layoutManager = LinearLayoutManager(
             applicationContext,
             LinearLayoutManager.VERTICAL,
             false
         )
-        recyclerView.adapter = WidgetRecyclerViewAdapter()
+        binding.recyclerView.adapter = WidgetRecyclerViewAdapter()
 
         viewModel.currencies.observe(this, {
-            (recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
+            (binding.recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
         })
 
         setListeners()
     }
 
     private fun setListeners() {
-        topAppBar.setNavigationOnClickListener {
+        binding.topAppBar.setNavigationOnClickListener {
             setResult(RESULT_CANCELED)
             finish()
         }
 
-        (recyclerView.adapter as WidgetRecyclerViewAdapter).setOnItemClickedListener(object :
+        (binding.recyclerView.adapter as WidgetRecyclerViewAdapter).setOnItemClickedListener(object :
             WidgetRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClicked(item: Currency) {
                 val appWidgetId = intent?.extras?.getInt(

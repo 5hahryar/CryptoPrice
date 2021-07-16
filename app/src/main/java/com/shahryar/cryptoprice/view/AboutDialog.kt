@@ -33,7 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.DialogFragment
 import com.shahryar.cryptoprice.R
-import kotlinx.android.synthetic.main.dialog_about.view.*
 
 class AboutDialog: DialogFragment() {
 

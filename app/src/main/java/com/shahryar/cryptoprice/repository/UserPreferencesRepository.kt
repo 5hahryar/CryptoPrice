@@ -2,17 +2,22 @@ package com.shahryar.cryptoprice.repository
 
 import android.content.Context
 import androidx.datastore.*
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-class UserPreferencesRepository(context: Context) {
+class UserPreferencesRepository private constructor(val context: Context) {
 
-    private val dataStore: DataStore<Preferences> =  context.createDataStore("preferences")
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences")
 
-    val readOutFromDataStore: Flow<String> = dataStore.data
+    val readOutFromDataStore: Flow<String> = context.dataStore.data
         .catch {
             if (this is IOException) {
                 emit(emptyPreferences())
@@ -23,11 +28,11 @@ class UserPreferencesRepository(context: Context) {
         }
 
     object PreferencesKeys {
-        val API_KEY = preferencesKey<String>("api_key")
+        val API_KEY = stringPreferencesKey("api_key")
     }
 
     suspend fun saveToDataStore(key: Preferences.Key<String>, value: String) {
-        dataStore.edit { preference ->
+        context.dataStore.edit { preference ->
             preference[key] = value
         }
     }
