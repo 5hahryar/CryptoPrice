@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import com.shahryar.cryptoprice.application.Utils
-import com.shahryar.cryptoprice.repository.Repository
+import com.shahryar.cryptoprice.repository.RepositoryImpl
 import com.shahryar.cryptoprice.repository.local.getDatabase
 import com.shahryar.cryptoprice.view.MainActivity
 
@@ -33,7 +33,7 @@ private fun updateWidgetLarge(
     val pendingIntent = Intent(context, MainActivity::class.java).let {
         PendingIntent.getActivity(context, 0, it, 0)
     }
-    val repo = Repository(getDatabase(context!!))
+    val repo = RepositoryImpl(getDatabase(context!!))
     repo.refreshData(context)
 
     repo.currencies.observeForever {
@@ -96,7 +96,7 @@ private fun updateWidgetMedium(
     val pendingIntent = Intent(context, MainActivity::class.java).let {
         PendingIntent.getActivity(context, 0, it, 0)
     }
-    val repo = Repository(getDatabase(context!!))
+    val repo = RepositoryImpl(getDatabase(context!!))
     repo.refreshData(context)
 
     repo.currencies.observeForever {
@@ -157,7 +157,7 @@ private fun updateWidgetSmall(
     val pendingIntent = Intent(context, MainActivity::class.java).let {
         PendingIntent.getActivity(context, 0, it, 0)
     }
-    val repo = Repository(getDatabase(context!!))
+    val repo = RepositoryImpl(getDatabase(context!!))
     repo.refreshData(context)
 
     repo.currencies.observeForever {

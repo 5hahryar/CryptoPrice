@@ -3,25 +3,15 @@ package com.shahryar.cryptoprice.view
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import com.shahryar.cryptoprice.databinding.SettingsFragmentBinding
-import com.shahryar.cryptoprice.repository.UserPreferencesRepository
 import com.shahryar.cryptoprice.viewModel.SettingsViewModel
 import com.shahryar.cryptoprice.viewModel.SettingsViewModelFactory
-import kotlinx.android.synthetic.main.fragment_sort_dialog_list_dialog_item.*
 import kotlinx.android.synthetic.main.settings_fragment.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class SettingsFragment : Fragment() {
 

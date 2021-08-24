@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.repository
+package com.shahryar.cryptoprice.repository.preferences
 
 import android.content.Context
 import androidx.datastore.DataStore

@@ -3,18 +3,19 @@ package com.shahryar.cryptoprice.viewModel
 import android.content.Context
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
-import com.shahryar.cryptoprice.application.KEY_PREFS_API_KEY
-import com.shahryar.cryptoprice.application.Utils
 import com.shahryar.cryptoprice.model.Currency
+import com.shahryar.cryptoprice.model.Data
 import com.shahryar.cryptoprice.repository.Repository
-import com.shahryar.cryptoprice.repository.UserPreferencesRepository
+import com.shahryar.cryptoprice.repository.RepositoryImpl
+import com.shahryar.cryptoprice.repository.preferences.UserPreferencesRepository
 import com.shahryar.cryptoprice.repository.local.getDatabase
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 
-class PriceViewModel(context: Context) : ViewModel() {
+class PriceViewModel(private val mRepository: Repository) : ViewModel() {
 
-    private val repo = Repository(getDatabase(context))
+    val currencies: LiveData<List<Currency>> = mRepository.getCurrencies()
+
+    private val repo = RepositoryImpl(getDatabase(context))
     private val currenciesByMarket: LiveData<List<Currency>> = repo.currencies
     private val currenciesByName: LiveData<List<Currency>> = repo.currenciesByName
     private val currenciesByPrice: LiveData<List<Currency>> = repo.currenciesByPrice
@@ -39,7 +40,7 @@ class PriceViewModel(context: Context) : ViewModel() {
 
         refreshData(context)
 
-        repo.setOnRefreshChangeListener(object : Repository.OnRefreshChangeListener {
+        repo.setOnRefreshChangeListener(object : RepositoryImpl.OnRefreshChangeListener {
             override fun onRefreshChanged(isRefreshing: Boolean) {
                 this@PriceViewModel.isRefreshing.set(isRefreshing)
             }
