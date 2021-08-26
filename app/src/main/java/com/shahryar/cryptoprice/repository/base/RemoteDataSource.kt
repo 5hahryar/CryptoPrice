@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.repository.remote
+package com.shahryar.cryptoprice.repository.base
 
 import com.shahryar.cryptoprice.model.Data
 

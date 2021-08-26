@@ -1,15 +1,21 @@
 package com.shahryar.cryptoprice.repository.remote
 
+import androidx.lifecycle.asLiveData
 import com.shahryar.cryptoprice.model.Data
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import com.shahryar.cryptoprice.repository.base.RemoteDataSource
+import com.shahryar.cryptoprice.repository.preferences.UserPreferencesRepository
 
-class RemoteDataSourceImpl(private val priceApi: PriceApi): RemoteDataSource {
+class RemoteDataSourceImpl(private val priceApi: PriceApi, userPreferencesRepository: UserPreferencesRepository):
+    RemoteDataSource {
+
+    private lateinit var apiKey: String
+
+    init {
+        userPreferencesRepository.readOutFromDataStore.asLiveData().observeForever {
+            apiKey = it
+        }
+    }
 
     override suspend fun fetchPrices(): Data =
-        priceApi.getPrices("API_KEY", null)
-
-
+        priceApi.getPrices(apiKey, null)
 }

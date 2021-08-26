@@ -70,6 +70,9 @@ dependencies {
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
     // DataStore
     implementation "androidx.datastore:datastore-preferences:1.0.0-alpha01"
+    //Koin
+    implementation "io.insert-koin:koin-core:3.1.2"
+    implementation "io.insert-koin:koin-android:3.1.2"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

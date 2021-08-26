@@ -12,7 +12,7 @@ class CryptoPriceWidgetProviderSmall : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidget(appWidgetManager, context, appWidgetIds, R.layout.widget_small)
+//        updateWidget(appWidgetManager, context, appWidgetIds, R.layout.widget_small)
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
@@ -32,7 +32,7 @@ class CryptoPriceWidgetProviderMedium : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidget(appWidgetManager, context, appWidgetIds, R.layout.widget_medium)
+//        updateWidget(appWidgetManager, context, appWidgetIds, R.layout.widget_medium)
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
@@ -52,7 +52,7 @@ class CryptoPriceWidgetProviderLarge : AppWidgetProvider() {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidget(appWidgetManager, context, appWidgetIds, R.layout.widget_large)
+//        updateWidget(appWidgetManager, context, appWidgetIds, R.layout.widget_large)
     }
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)

@@ -20,16 +20,17 @@ import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
 import com.shahryar.cryptoprice.model.Currency
 import com.shahryar.cryptoprice.model.adapter.PriceAdapter
+import com.shahryar.cryptoprice.model.asDatabaseModel
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
-import com.shahryar.cryptoprice.viewModel.PriceViewModelFactory
 import kotlinx.android.synthetic.main.empty_list_layout.*
 import kotlinx.android.synthetic.main.fragment_price.*
 import kotlinx.android.synthetic.main.no_api_warning.*
+import org.koin.android.ext.android.inject
 
 class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
 
     private lateinit var binding: FragmentPriceBinding
-    private lateinit var viewModel: PriceViewModel
+    private val viewModel: PriceViewModel by inject()
     private lateinit var searchView: SearchView
 
     override fun onCreateView(
@@ -38,11 +39,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_price, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
-        this.viewModel = ViewModelProvider(
-            this,
-            PriceViewModelFactory(requireContext())
-        ).get(PriceViewModel::class.java)
-        binding.viewModel = this.viewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -50,19 +47,19 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        refreshLayout.isRefreshing = true
-        searchView = (topAppBar.menu.findItem(R.id.search).actionView as SearchView).apply {
-
-        }
-
-        setupRecyclerView()
-
-        //Observe price data in order to update recyclerView
         viewModel.currencies.observe(viewLifecycleOwner, {
-            (recyclerView.adapter as PriceAdapter).submitList(it)
-            viewModel.latestList = it
-            binding.refreshLayout.isRefreshing = false
+            refreshLayout.isRefreshing = false
+            if (it != null) {
+
+                (recyclerView.adapter as PriceAdapter).submitList(it)
+            }
+//            viewModel.latestList = it.data!!
         })
+//        refreshLayout.isRefreshing = true
+
+        searchView = (topAppBar.menu.findItem(R.id.search).actionView as SearchView)
+//
+        setupRecyclerView()
 
         setStyles()
 
@@ -84,7 +81,10 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
             }
         }
 
-        refreshLayout.setOnRefreshListener { viewModel.refreshData(requireContext()) }
+        refreshLayout.setOnRefreshListener {
+            refreshLayout.isRefreshing = true
+            viewModel.refreshData()
+        }
 
         topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -110,18 +110,18 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
             }
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText != null) {
-                    (recyclerView.adapter as PriceAdapter).filterList(newText, viewModel.latestList)
-                }
-                return true
-            }
-        })
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return true
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                if (newText != null) {
+//                    (recyclerView.adapter as PriceAdapter).filterList(newText, viewModel.latestList)
+//                }
+//                return true
+//            }
+//        })
 
         enterKeyButton.setOnClickListener { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }
 
@@ -135,7 +135,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         }
 
         refreshButton.setOnClickListener {
-            viewModel.refreshData(requireContext())
+            viewModel.refreshData()
             refreshLayout.isRefreshing = true
         }
 
@@ -196,7 +196,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
     }
 
     override fun onSortItemSelected(key: String) {
-        viewModel.sort(key)
+//        viewModel.sort(key)
         recyclerView.smoothScrollToPosition(0)
     }
 }

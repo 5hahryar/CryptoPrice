@@ -12,7 +12,7 @@ import com.shahryar.cryptoprice.application.Utils
 import com.shahryar.cryptoprice.databinding.ActivityWidgetConfigureBinding
 import com.shahryar.cryptoprice.model.Currency
 import com.shahryar.cryptoprice.model.adapter.WidgetRecyclerViewAdapter
-import com.shahryar.cryptoprice.updateWidget
+//import com.shahryar.cryptoprice.updateWidget
 import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModel
 import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModelFactory
 import kotlinx.android.synthetic.main.activity_widget_configure.*
@@ -42,9 +42,9 @@ class WidgetConfigureActivity : AppCompatActivity() {
         )
         recyclerView.adapter = WidgetRecyclerViewAdapter()
 
-        viewModel.currencies.observe(this, {
-            (recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
-        })
+//        viewModel.currencies.observe(this, {
+//            (recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
+//        })
 
         setListeners()
     }
@@ -72,12 +72,12 @@ class WidgetConfigureActivity : AppCompatActivity() {
                         )
                     ) {
                         val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
-                        updateWidget(
-                            appWidgetManager,
-                            applicationContext,
-                            intArrayOf(appWidgetId),
-                            appWidgetManager.getAppWidgetInfo(appWidgetId).initialLayout
-                        )
+//                        updateWidget(
+//                            appWidgetManager,
+//                            applicationContext,
+//                            intArrayOf(appWidgetId),
+//                            appWidgetManager.getAppWidgetInfo(appWidgetId).initialLayout
+//                        )
                         val resultValue = Intent().apply {
                             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
                         }
