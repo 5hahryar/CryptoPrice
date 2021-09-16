@@ -1,7 +1,7 @@
 package com.shahryar.cryptoprice
 
-import com.shahryar.cryptoprice.model.Data
-import com.shahryar.cryptoprice.repository.base.RemoteDataSource
+import com.shahryar.cryptoprice.data.model.Data
+import com.shahryar.cryptoprice.data.repository.base.RemoteDataSource
 
 class RemoteDataSourceTest: RemoteDataSource {
 

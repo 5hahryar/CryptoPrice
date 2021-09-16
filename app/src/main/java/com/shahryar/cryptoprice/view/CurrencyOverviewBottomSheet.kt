@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.databinding.BottomSheetCurrencyOverviewBinding
-import com.shahryar.cryptoprice.model.Currency
+import com.shahryar.cryptoprice.data.model.Currency
 
 class CurrencyOverviewBottomSheet (private val currency: Currency) : BottomSheetDialogFragment() {
 

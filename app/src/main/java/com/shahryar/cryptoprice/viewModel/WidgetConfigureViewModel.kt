@@ -1,10 +1,9 @@
 package com.shahryar.cryptoprice.viewModel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.shahryar.cryptoprice.repository.RepositoryImpl
-import com.shahryar.cryptoprice.repository.local.getDatabase
+import com.shahryar.cryptoprice.data.repository.base.Repository
 
-class WidgetConfigureViewModel(context: Context): ViewModel() {
-//    val currencies = RepositoryImpl(getDatabase(context)).currencies
+class WidgetConfigureViewModel(mRepository: Repository): ViewModel() {
+
+    val currencies = mRepository.getCurrencies()
 }

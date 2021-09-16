@@ -1,7 +1,6 @@
 package com.shahryar.cryptoprice.view
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,37 +9,35 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import com.shahryar.cryptoprice.databinding.SettingsFragmentBinding
 import com.shahryar.cryptoprice.viewModel.SettingsViewModel
-import com.shahryar.cryptoprice.viewModel.SettingsViewModelFactory
 import kotlinx.android.synthetic.main.settings_fragment.*
+import org.koin.android.ext.android.inject
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var viewModel: SettingsViewModel
-    private lateinit var binding: SettingsFragmentBinding
+    private val mViewModel: SettingsViewModel by inject()
+    private lateinit var mBinding: SettingsFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = SettingsFragmentBinding.inflate(inflater)
-        viewModel = ViewModelProvider(this, SettingsViewModelFactory(requireContext())).get(
-            SettingsViewModel::class.java
-        )
-        binding.viewModel = viewModel
+        mBinding = SettingsFragmentBinding.inflate(inflater)
+        mBinding.lifecycleOwner = viewLifecycleOwner
+        mBinding.viewModel = mViewModel
 
-        return binding.root
+        return mBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setListeners()
-        viewModel.apiKey.observe(viewLifecycleOwner, {
+        mViewModel.apiKey.observe(viewLifecycleOwner, {
             apikeyEditText.setText(it)
         })
     }
 
     override fun onPause() {
-        viewModel.saveApiKey(apikeyEditText.text.toString())
+        mViewModel.saveApiKey(apikeyEditText.text.toString())
         super.onPause()
     }
 

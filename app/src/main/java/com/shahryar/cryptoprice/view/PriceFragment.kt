@@ -7,69 +7,54 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shahryar.cryptoprice.R
-import com.shahryar.cryptoprice.application.DEFAULT_HEADER_SIZE
+import com.shahryar.cryptoprice.core.DEFAULT_HEADER_SIZE
+import com.shahryar.cryptoprice.data.model.Currency
 import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
-import com.shahryar.cryptoprice.model.Currency
-import com.shahryar.cryptoprice.model.adapter.PriceAdapter
-import com.shahryar.cryptoprice.model.asDatabaseModel
+import com.shahryar.cryptoprice.view.adapter.PriceAdapter
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import kotlinx.android.synthetic.main.empty_list_layout.*
 import kotlinx.android.synthetic.main.fragment_price.*
 import kotlinx.android.synthetic.main.no_api_warning.*
 import org.koin.android.ext.android.inject
 
-class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener {
+class PriceFragment : Fragment() {
 
-    private lateinit var binding: FragmentPriceBinding
-    private val viewModel: PriceViewModel by inject()
-    private lateinit var searchView: SearchView
+    private lateinit var mBinding: FragmentPriceBinding
+    private val mViewModel: PriceViewModel by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_price, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewModel = viewModel
+        mBinding = FragmentPriceBinding.inflate(inflater, container, false)
+        mBinding.lifecycleOwner = viewLifecycleOwner
+        mBinding.viewModel = mViewModel
 
-        return binding.root
+        return mBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.currencies.observe(viewLifecycleOwner, {
+        setupRecyclerView()
+        setListeners()
+        subscribeViews()
+    }
+
+    private fun subscribeViews() {
+        mViewModel.currencies.observe(viewLifecycleOwner, {
             refreshLayout.isRefreshing = false
             if (it != null) {
 
                 (recyclerView.adapter as PriceAdapter).submitList(it)
             }
-//            viewModel.latestList = it.data!!
         })
-//        refreshLayout.isRefreshing = true
-
-        searchView = (topAppBar.menu.findItem(R.id.search).actionView as SearchView)
-//
-        setupRecyclerView()
-
-        setStyles()
-
-        setListeners()
-
-    }
-
-    private fun setStyles() {
-        searchView.queryHint = "Search"
-        searchView.maxWidth = 650
     }
 
     private fun setListeners() {
@@ -83,7 +68,7 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
 
         refreshLayout.setOnRefreshListener {
             refreshLayout.isRefreshing = true
-            viewModel.refreshData()
+            mViewModel.refreshData()
         }
 
         topAppBar.setOnMenuItemClickListener {
@@ -93,11 +78,11 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                     swapLayoutMenuItem(it)
                     true
                 }
-                R.id.sort -> {
-                    SortDialogFragment.newInstance(this)
-                        .show(requireActivity().supportFragmentManager, "Sort By")
-                    true
-                }
+//                R.id.sort -> {
+//                    SortDialogFragment.newInstance(this)
+//                        .show(requireActivity().supportFragmentManager, "Sort By")
+//                    true
+//                }
                 R.id.settings -> {
                     findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
                     true
@@ -109,19 +94,6 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                 else -> false
             }
         }
-
-//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                if (newText != null) {
-//                    (recyclerView.adapter as PriceAdapter).filterList(newText, viewModel.latestList)
-//                }
-//                return true
-//            }
-//        })
 
         enterKeyButton.setOnClickListener { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }
 
@@ -135,14 +107,14 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
         }
 
         refreshButton.setOnClickListener {
-            viewModel.refreshData()
+            mViewModel.refreshData()
             refreshLayout.isRefreshing = true
         }
 
-        viewModel.isRefreshing.addOnPropertyChangedCallback(object :
+        mViewModel.isRefreshing.addOnPropertyChangedCallback(object :
             Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                refreshLayout.isRefreshing = viewModel.isRefreshing.get()!!
+                refreshLayout.isRefreshing = mViewModel.isRefreshing.get()!!
             }
         })
     }
@@ -165,14 +137,14 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
                 return if (position < DEFAULT_HEADER_SIZE) DEFAULT_HEADER_SIZE else 1
             }
         }
-        binding.recyclerView.layoutManager = layoutManager
+        mBinding.recyclerView.layoutManager = layoutManager
         val adapter = PriceAdapter()
         adapter.setOnItemClickedListener(object : PriceAdapter.OnItemClickedListener {
             override fun onItemClicked(item: Currency) {
                 CurrencyOverviewBottomSheet(item).show(requireActivity().supportFragmentManager, "CurrencyBottomSheet")
             }
         })
-        binding.recyclerView.adapter = adapter
+        mBinding.recyclerView.adapter = adapter
     }
 
     //Swap recyclerView layout manager between list and grid view
@@ -193,10 +165,5 @@ class PriceFragment : Fragment(), SortDialogFragment.OnSortItemSelectedListener 
             recyclerView.layoutManager = layoutManager
             (recyclerView.adapter as PriceAdapter).headerSize = DEFAULT_HEADER_SIZE
         }
-    }
-
-    override fun onSortItemSelected(key: String) {
-//        viewModel.sort(key)
-        recyclerView.smoothScrollToPosition(0)
     }
 }

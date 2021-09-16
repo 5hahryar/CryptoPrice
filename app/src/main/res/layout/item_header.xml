@@ -5,7 +5,7 @@
     <data>
         <variable
             name="data"
-            type="com.shahryar.cryptoprice.model.Currency" />
+            type="com.shahryar.cryptoprice.data.model.Currency" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -2,10 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <import type="com.shahryar.cryptoprice.core.common.DoubleExtKt"/>
         <variable
             name="currency"
-            type="com.shahryar.cryptoprice.model.Currency" />
+            type="com.shahryar.cryptoprice.data.model.Currency" />
     </data>
 
     <LinearLayout
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="@{@string/price_holder(currency.total_supply)}"
+                    android:text="@{@string/price_holder(DoubleExtKt.toSeparateMoney(currency.total_supply))}"
                     android:textColor="@color/text_color"
                     android:textSize="16sp" />
 
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="@{@string/price_holder(currency.circulating_supply)}"
+                    android:text="@{@string/price_holder(DoubleExtKt.toSeparateMoney(currency.circulating_supply))}"
                     android:textColor="@color/text_color"
                     android:textSize="16sp" />
 
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:text="@{@string/price_holder(currency.max_supply)}"
+                    android:text="@{@string/price_holder(DoubleExtKt.toSeparateMoney(currency.max_supply))}"
                     android:textColor="@color/text_color"
                     android:textSize="16sp" />
 

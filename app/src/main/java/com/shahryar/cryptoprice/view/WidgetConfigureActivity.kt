@@ -5,23 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shahryar.cryptoprice.R
-import com.shahryar.cryptoprice.application.Utils
+import com.shahryar.cryptoprice.core.common.Utils
 import com.shahryar.cryptoprice.databinding.ActivityWidgetConfigureBinding
-import com.shahryar.cryptoprice.model.Currency
-import com.shahryar.cryptoprice.model.adapter.WidgetRecyclerViewAdapter
-//import com.shahryar.cryptoprice.updateWidget
+import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.cryptoprice.view.adapter.WidgetRecyclerViewAdapter
 import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModel
-import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModelFactory
 import kotlinx.android.synthetic.main.activity_widget_configure.*
 import kotlinx.android.synthetic.main.activity_widget_configure.topAppBar
+import org.koin.android.ext.android.inject
 
 class WidgetConfigureActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWidgetConfigureBinding
-    private lateinit var viewModel: WidgetConfigureViewModel
+    private val viewModel: WidgetConfigureViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +27,7 @@ class WidgetConfigureActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_widget_configure)
-        viewModel =
-            ViewModelProvider(this, WidgetConfigureViewModelFactory(applicationContext)).get(
-                WidgetConfigureViewModel::class.java
-            )
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         recyclerView.layoutManager = LinearLayoutManager(

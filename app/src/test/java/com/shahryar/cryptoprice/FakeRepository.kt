@@ -1,8 +1,8 @@
 package com.shahryar.cryptoprice
 
 import androidx.lifecycle.LiveData
-import com.shahryar.cryptoprice.model.Currency
-import com.shahryar.cryptoprice.repository.base.Repository
+import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.cryptoprice.data.repository.base.Repository
 
 class FakeRepository: Repository {
     override fun getCurrencies(): LiveData<List<Currency>> {
