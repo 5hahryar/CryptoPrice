@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.shahryar.cryptoprice.R
-import com.shahryar.cryptoprice.model.Currency
+import com.shahryar.cryptoprice.data.model.Currency
 
 class CurrencyBottomSheetFragment(private val currency: Currency) : BottomSheetDialogFragment() {
 
@@ -53,13 +50,19 @@ class CurrencyBottomSheetFragment(private val currency: Currency) : BottomSheetD
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                CurrencySheetCompose(currency)
+                CurrencyBottomSheetView(currency)
             }
         }
     }
 
     @Composable
-    fun CurrencySheetCompose(currency: Currency) {
+    @Preview
+    fun Preview() {
+        CurrencyBottomSheetView(mockData)
+    }
+
+    @Composable
+    fun CurrencyBottomSheetView(currency: Currency) {
         Column(
             modifier = Modifier.padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -262,10 +265,4 @@ class CurrencyBottomSheetFragment(private val currency: Currency) : BottomSheetD
             }
         }
     }
-
-//    @Composable
-//    @Preview
-//    fun Preview() {
-//        CurrencySheetCompose(mockData)
-//    }
 }

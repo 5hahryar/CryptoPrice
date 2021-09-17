@@ -21,9 +21,9 @@ val mainModule = module {
             LocalDataSourceImpl(getDatabase(androidContext()).currencyDao)
         )
     }
-    single { UserPreferencesRepository(androidContext()) }
+    single { UserPreferencesRepository.getInstance(androidContext()) }
 
-    viewModel { (PriceViewModel(UserPreferencesRepository(androidContext()), get())) }
+    viewModel { (PriceViewModel(get(), get())) }
     viewModel { SettingsViewModel(get()) }
     viewModel { WidgetConfigureViewModel(get()) }
 }
