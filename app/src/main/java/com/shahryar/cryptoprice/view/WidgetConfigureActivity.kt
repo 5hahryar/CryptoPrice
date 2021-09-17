@@ -5,21 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shahryar.cryptoprice.R
-import com.shahryar.cryptoprice.application.Utils
+import com.shahryar.cryptoprice.core.common.Utils
 import com.shahryar.cryptoprice.databinding.ActivityWidgetConfigureBinding
-import com.shahryar.cryptoprice.model.Currency
-import com.shahryar.cryptoprice.model.adapter.WidgetRecyclerViewAdapter
-import com.shahryar.cryptoprice.updateWidget
+import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.cryptoprice.view.adapter.WidgetRecyclerViewAdapter
 import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModel
-import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModelFactory
+import kotlinx.android.synthetic.main.activity_widget_configure.*
+import kotlinx.android.synthetic.main.activity_widget_configure.topAppBar
+import org.koin.android.ext.android.inject
 
 class WidgetConfigureActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWidgetConfigureBinding
-    private lateinit var viewModel: WidgetConfigureViewModel
+    private val viewModel: WidgetConfigureViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,33 +27,30 @@ class WidgetConfigureActivity : AppCompatActivity() {
         setResult(RESULT_CANCELED)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_widget_configure)
-        viewModel =
-            ViewModelProvider(this, WidgetConfigureViewModelFactory(applicationContext)).get(
-                WidgetConfigureViewModel::class.java
-            )
+        binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(
+        recyclerView.layoutManager = LinearLayoutManager(
             applicationContext,
             LinearLayoutManager.VERTICAL,
             false
         )
-        binding.recyclerView.adapter = WidgetRecyclerViewAdapter()
+        recyclerView.adapter = WidgetRecyclerViewAdapter()
 
-        viewModel.currencies.observe(this, {
-            (binding.recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
-        })
+//        viewModel.currencies.observe(this, {
+//            (recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
+//        })
 
         setListeners()
     }
 
     private fun setListeners() {
-        binding.topAppBar.setNavigationOnClickListener {
+        topAppBar.setNavigationOnClickListener {
             setResult(RESULT_CANCELED)
             finish()
         }
 
-        (binding.recyclerView.adapter as WidgetRecyclerViewAdapter).setOnItemClickedListener(object :
+        (recyclerView.adapter as WidgetRecyclerViewAdapter).setOnItemClickedListener(object :
             WidgetRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClicked(item: Currency) {
                 val appWidgetId = intent?.extras?.getInt(
@@ -70,12 +67,12 @@ class WidgetConfigureActivity : AppCompatActivity() {
                         )
                     ) {
                         val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
-                        updateWidget(
-                            appWidgetManager,
-                            applicationContext,
-                            intArrayOf(appWidgetId),
-                            appWidgetManager.getAppWidgetInfo(appWidgetId).initialLayout
-                        )
+//                        updateWidget(
+//                            appWidgetManager,
+//                            applicationContext,
+//                            intArrayOf(appWidgetId),
+//                            appWidgetManager.getAppWidgetInfo(appWidgetId).initialLayout
+//                        )
                         val resultValue = Intent().apply {
                             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
                         }

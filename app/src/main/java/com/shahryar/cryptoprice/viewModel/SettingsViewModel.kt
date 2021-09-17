@@ -1,44 +1,19 @@
 package com.shahryar.cryptoprice.viewModel
 
-import android.content.Context
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.databinding.ObservableField
-import androidx.lifecycle.*
-import com.shahryar.cryptoprice.application.KEY_PREFS_API_KEY
-import com.shahryar.cryptoprice.application.Utils
-import com.shahryar.cryptoprice.repository.UserPreferencesRepository
-import kotlinx.coroutines.CoroutineDispatcher
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
-class SettingsViewModel(context: Context) : ViewModel() {
+class SettingsViewModel(private val preferencesRepository: UserPreferencesRepository) : ViewModel() {
 
-    private val dataStore = UserPreferencesRepository.getInstance(context)
-    private val _apiKey = dataStore.readOutFromDataStore.asLiveData()
-    val apiKey = mutableStateOf("")
-    var apiKeyObserver: Observer<String> = Observer{
-        apiKey.value = it
-    }
+    val apiKey = preferencesRepository.readOutFromDataStore.asLiveData()
 
-    init {
-        _apiKey.observeForever(apiKeyObserver)
-    }
-
-    fun saveApiKey() {
+    fun saveApiKey(apiKey: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            dataStore.saveToDataStore(UserPreferencesRepository.PreferencesKeys.API_KEY, apiKey.value)
+            preferencesRepository.saveToDataStore(UserPreferencesRepository.PreferencesKeys.API_KEY, apiKey)
         }
-    }
-
-    fun onApiKeyChanged(text: String) {
-        apiKey.value = text
-    }
-
-    override fun onCleared() {
-        _apiKey.removeObserver(apiKeyObserver)
-        super.onCleared()
     }
 }

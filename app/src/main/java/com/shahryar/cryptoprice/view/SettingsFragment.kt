@@ -1,83 +1,62 @@
 package com.shahryar.cryptoprice.view
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.shahryar.cryptoprice.R
+import com.shahryar.cryptoprice.databinding.SettingsFragmentBinding
 import com.shahryar.cryptoprice.viewModel.SettingsViewModel
-import com.shahryar.cryptoprice.viewModel.SettingsViewModelFactory
+import kotlinx.android.synthetic.main.settings_fragment.*
+import org.koin.android.ext.android.inject
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val mViewModel: SettingsViewModel by inject()
+    private lateinit var mBinding: SettingsFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this, SettingsViewModelFactory(requireContext())).get(
-            SettingsViewModel::class.java
-        )
-        
-        return ComposeView(requireContext()).apply { setContent { SettingsCompose() } }
+        mBinding = SettingsFragmentBinding.inflate(inflater)
+        mBinding.lifecycleOwner = viewLifecycleOwner
+        mBinding.viewModel = mViewModel
+
+        return mBinding.root
     }
 
-    @Composable
-    fun SettingsCompose() {
-        Column {
-            TopAppBar(
-                title = { Text(text = "Settings", color = colorResource(id = R.color.onPrimary)) },
-                navigationIcon = {
-                    IconButton(onClick = { activity?.onBackPressed() }) {
-                        Icon(painter = painterResource(id = R.drawable.ic_arrow_back_24px),
-                            contentDescription = "Back",
-                            tint = colorResource(id = R.color.onPrimary))
-                    }
-                },
-                backgroundColor = colorResource(id = R.color.primary)
-            )
-            Body()
-        }
-    }
-
-    @Composable
-    fun Body() {
-        val apiKey = viewModel.apiKey.value
-        Column(modifier = Modifier.padding(20.dp)) {
-            OutlinedTextField(
-                value = apiKey,
-                onValueChange = { viewModel.onApiKeyChanged(it) },
-                label = { Text("API key")},
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-    }
-
-    @Composable
-    @Preview
-    fun SettingsPreview() {
-        SettingsCompose()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setListeners()
+        mViewModel.apiKey.observe(viewLifecycleOwner, {
+            apikeyEditText.setText(it)
+        })
     }
 
     override fun onPause() {
-        viewModel.saveApiKey()
+        mViewModel.saveApiKey(apikeyEditText.text.toString())
         super.onPause()
+    }
+
+    private fun setListeners() {
+        apikeyLayout.setOnLongClickListener {
+            apikeyEditText.isEnabled = true
+            showSoftKeyboard(apikeyEditText)
+            true
+        }
+
+        topAppBar.setNavigationOnClickListener { activity?.onBackPressed() }
+    }
+
+    private fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm: InputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+        }
     }
 
 }

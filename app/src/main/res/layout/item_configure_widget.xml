@@ -4,10 +4,10 @@
     <data>
         <variable
             name="data"
-            type="com.shahryar.cryptoprice.model.Currency" />
+            type="com.shahryar.cryptoprice.data.model.Currency" />
         <variable
             name="clickListener"
-            type="com.shahryar.cryptoprice.model.adapter.WidgetRecyclerViewAdapter.OnItemClickListener" />
+            type="com.shahryar.cryptoprice.view.adapter.WidgetRecyclerViewAdapter.OnItemClickListener" />
     </data>
 
     <LinearLayout
