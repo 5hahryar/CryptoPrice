@@ -37,9 +37,9 @@ class WidgetConfigureActivity : AppCompatActivity() {
         )
         recyclerView.adapter = WidgetRecyclerViewAdapter()
 
-//        viewModel.currencies.observe(this, {
-//            (recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
-//        })
+        viewModel.currencies.observe(this, {
+            (recyclerView.adapter as WidgetRecyclerViewAdapter).submitList(it)
+        })
 
         setListeners()
     }

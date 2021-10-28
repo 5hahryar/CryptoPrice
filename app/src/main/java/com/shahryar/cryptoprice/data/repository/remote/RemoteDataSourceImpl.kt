@@ -8,7 +8,7 @@ import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepos
 class RemoteDataSourceImpl(private val priceApi: PriceApi, userPreferencesRepository: UserPreferencesRepository):
     RemoteDataSource {
 
-    private lateinit var apiKey: String
+    private var apiKey: String = ""
 
     init {
         userPreferencesRepository.readOutFromDataStore.asLiveData().observeForever {

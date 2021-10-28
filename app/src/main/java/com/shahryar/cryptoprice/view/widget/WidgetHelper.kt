@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.RemoteViews
 import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.core.common.Utils
@@ -15,13 +16,26 @@ fun updateWidget(
     appWidgetManager: AppWidgetManager?,
     context: Context,
     appWidgetIds: IntArray?,
-    layoutId: Int,
     repo: Repository
 ) {
-    when (layoutId) {
-        R.layout.widget_small -> updateWidgetSmall(context, appWidgetIds, appWidgetManager, repo)
-        R.layout.widget_medium -> updateWidgetMedium(context, appWidgetIds, appWidgetManager, repo)
-        R.layout.widget_large -> updateWidgetLarge(context, appWidgetIds, appWidgetManager, repo)
+    if (appWidgetIds != null) {
+        for (id in appWidgetIds) {
+            val options = appWidgetManager?.getAppWidgetOptions(id)
+            val minWidth = options?.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+            minWidth?.let {
+                when (it) {
+                    in 115..229 -> {
+                        updateWidgetSmall(context, intArrayOf(id), appWidgetManager, repo)
+                    }
+                    in 230..344 -> {
+                        updateWidgetMedium(context, intArrayOf(id), appWidgetManager, repo)
+                    }
+                    else -> {
+                        updateWidgetLarge(context, intArrayOf(id), appWidgetManager, repo)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -31,7 +45,7 @@ private fun updateWidgetLarge(
     appWidgetManager: AppWidgetManager?,
     repo: Repository
 ) {
-    val remoteViews = RemoteViews(context?.packageName, R.layout.widget_large)
+    val remoteViews = RemoteViews(context.packageName, R.layout.widget_large)
     val pendingIntent = Intent(context, MainActivity::class.java).let {
         PendingIntent.getActivity(context, 0, it, 0)
     }

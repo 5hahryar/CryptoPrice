@@ -3,6 +3,7 @@
     android:id="@+id/widgetContainer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="345dp"
+    android:maxWidth="345dp"
     android:layout_height="115dp"
     android:background="@drawable/widget_background"
     android:baselineAligned="false"
