@@ -3,6 +3,7 @@ package com.shahryar.cryptoprice.viewModel
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.cryptoprice.data.model.UserPreferences
 import com.shahryar.cryptoprice.data.repository.base.Repository
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
 import kotlinx.coroutines.launch
@@ -14,8 +15,8 @@ class PriceViewModel(preferences: UserPreferencesRepository, private val mReposi
     var isDataEmpty: ObservableField<Boolean> = ObservableField()
     var isRefreshing: ObservableField<Boolean> = ObservableField(false)
 
-    private val preferencesObserver = Observer<String> {
-        if (it.isEmpty()) isApiKeyAvailable.set(false)
+    private val preferencesObserver = Observer<UserPreferences> {
+        if (it.apiKey.isEmpty()) isApiKeyAvailable.set(false)
         else {
             isApiKeyAvailable.set(true)
             refreshData()

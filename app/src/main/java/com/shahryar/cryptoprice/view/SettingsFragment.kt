@@ -32,7 +32,7 @@ class SettingsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setListeners()
         mViewModel.apiKey.observe(viewLifecycleOwner, {
-            apikeyEditText.setText(it)
+//            apikeyEditText.text = it.apiKey
         })
     }
 
