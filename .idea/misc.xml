@@ -8,12 +8,14 @@
         <entry key="../../../../layout/compose-model-1631864592126.xml" value="0.3087330873308733" />
         <entry key="../../../../layout/compose-model-1631865126497.xml" value="0.25" />
         <entry key="../../../../layout/compose-model-1631865308186.xml" value="0.16113161131611317" />
+        <entry key="../../../../layout/compose-model-1635445908187.xml" value="0.335" />
         <entry key="app/src/main/res/drawable/widget_background.xml" value="0.28802083333333334" />
-        <entry key="app/src/main/res/layout/fragment_price.xml" value="0.5396825396825397" />
+        <entry key="app/src/main/res/layout/fragment_price.xml" value="0.4879725085910653" />
         <entry key="app/src/main/res/layout/item_configure_widget.xml" value="0.1286231884057971" />
         <entry key="app/src/main/res/layout/widget_large.xml" value="0.2677083333333333" />
         <entry key="app/src/main/res/layout/widget_medium.xml" value="0.2677083333333333" />
         <entry key="app/src/main/res/layout/widget_small.xml" value="0.1296670030272452" />
+        <entry key="app/src/main/res/menu/top_app_bar_menu.xml" value="0.26251276813074564" />
       </map>
     </option>
   </component>

@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,12 +17,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -298,11 +300,20 @@ class PriceFragment : Fragment() {
     @Composable
     fun PriceTopAppBar() {
         TopAppBar(
-            title = { Text(text = getString(R.string.app_name)) },
+            title = {
+                Text(
+                    text = getString(R.string.app_name),
+                    color = colorResource(id = R.color.onPrimary)
+                )
+            },
             backgroundColor = colorResource(id = R.color.primary),
             actions = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                IconButton(onClick = { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }) {
+                    Icon(
+                        Icons.Filled.Settings,
+                        contentDescription = "Menu",
+                        tint = colorResource(id = R.color.onPrimary)
+                    )
                 }
             }
         )
@@ -434,6 +445,7 @@ class PriceFragment : Fragment() {
     @Composable
     @Preview
     fun Preview() {
-        PriceFragmentView()
+        PriceTopAppBar()
+//        PriceFragmentView()
     }
 }
