@@ -4,11 +4,10 @@ import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
 import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.core.common.Utils
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.repository.Repository
 import com.shahryar.cryptoprice.view.MainActivity
 
 

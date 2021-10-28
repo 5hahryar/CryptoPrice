@@ -4,9 +4,8 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.os.Bundle
-import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.core.common.Utils
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.repository.Repository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

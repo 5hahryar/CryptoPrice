@@ -4,7 +4,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.shahryar.cryptoprice.data.model.Currency
 import com.shahryar.cryptoprice.data.model.UserPreferences
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.repository.Repository
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
 import kotlinx.coroutines.launch
 

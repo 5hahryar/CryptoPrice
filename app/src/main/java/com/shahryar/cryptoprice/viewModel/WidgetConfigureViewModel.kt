@@ -1,7 +1,7 @@
 package com.shahryar.cryptoprice.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.repository.Repository
 
 class WidgetConfigureViewModel(mRepository: Repository): ViewModel() {
 

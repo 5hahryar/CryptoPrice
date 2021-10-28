@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.data.repository.remote
+package com.shahryar.cryptoprice.data.source.remote
 
 import com.shahryar.cryptoprice.BuildConfig
 import com.squareup.moshi.Moshi
@@ -22,11 +22,11 @@ val retrofit: Retrofit = Retrofit.Builder()
 
 fun getOkhttpClient(): OkHttpClient {
     val client = OkHttpClient.Builder()
-//    if (BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG) {
         val httpInterceptor = HttpLoggingInterceptor()
         httpInterceptor.level = HttpLoggingInterceptor.Level.BASIC
         client.addInterceptor(httpInterceptor)
-//    }
+    }
 
     return client.build()
 }

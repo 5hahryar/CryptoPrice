@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.data.repository.local
+package com.shahryar.cryptoprice.data.source.local
 
 import android.content.Context
 import androidx.room.Database

@@ -2,13 +2,13 @@ package com.shahryar.cryptoprice.core.di
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.repository.Repository
 import com.shahryar.cryptoprice.data.repository.RepositoryImpl
-import com.shahryar.cryptoprice.data.repository.local.LocalDataSourceImpl
-import com.shahryar.cryptoprice.data.repository.local.getDatabase
+import com.shahryar.cryptoprice.data.source.local.LocalDataSourceImpl
+import com.shahryar.cryptoprice.data.source.local.getDatabase
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
-import com.shahryar.cryptoprice.data.repository.remote.ApiService
-import com.shahryar.cryptoprice.data.repository.remote.RemoteDataSourceImpl
+import com.shahryar.cryptoprice.data.source.remote.ApiService
+import com.shahryar.cryptoprice.data.source.remote.RemoteDataSourceImpl
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import com.shahryar.cryptoprice.viewModel.SettingsViewModel
 import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModel
