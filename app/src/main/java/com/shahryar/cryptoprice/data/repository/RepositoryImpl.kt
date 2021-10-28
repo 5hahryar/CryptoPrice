@@ -2,9 +2,8 @@ package com.shahryar.cryptoprice.data.repository
 
 import com.shahryar.cryptoprice.data.model.Currency
 import com.shahryar.cryptoprice.data.model.asDatabaseModel
-import com.shahryar.cryptoprice.data.repository.base.LocalDataSource
-import com.shahryar.cryptoprice.data.repository.base.RemoteDataSource
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.source.local.LocalDataSource
+import com.shahryar.cryptoprice.data.source.remote.RemoteDataSource
 
 class RepositoryImpl(
     private val remoteDataSource: RemoteDataSource,

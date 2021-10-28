@@ -12,12 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CryptoPrice">
-        <activity android:name=".view.WidgetConfigureActivity">
+        <activity android:name=".view.WidgetConfigureActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +27,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".view.widget.CryptoPriceWidgetProviderSmall">
+        <receiver android:name=".view.widget.CryptoPriceWidgetProviderSmall"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -34,7 +37,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_small" />
         </receiver>
-        <receiver android:name=".view.widget.CryptoPriceWidgetProviderMedium">
+        <receiver android:name=".view.widget.CryptoPriceWidgetProviderMedium"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -43,7 +47,8 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_medium" />
         </receiver>
-        <receiver android:name=".view.widget.CryptoPriceWidgetProviderLarge">
+        <receiver android:name=".view.widget.CryptoPriceWidgetProviderLarge"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

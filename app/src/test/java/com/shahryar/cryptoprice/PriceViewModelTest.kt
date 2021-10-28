@@ -3,7 +3,7 @@ package com.shahryar.cryptoprice
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.shahryar.cryptoprice.data.repository.RepositoryImpl
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.repository.Repository
 import com.shahryar.cryptoprice.viewModel.PriceViewModel
 import org.junit.Before
 import org.junit.Test

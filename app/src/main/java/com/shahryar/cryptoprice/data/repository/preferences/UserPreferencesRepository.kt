@@ -1,30 +1,28 @@
 package com.shahryar.cryptoprice.data.repository.preferences
 
-import android.content.Context
-import androidx.datastore.*
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.*
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.shahryar.cryptoprice.CryptoPriceApplication
+import com.shahryar.cryptoprice.data.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
-class UserPreferencesRepository private constructor(val context: Context) {
+class UserPreferencesRepository(private val userPreferencesStore: DataStore<Preferences>) {
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences")
-
-    val readOutFromDataStore: Flow<String> = context.dataStore.data
+    val readOutFromDataStore: Flow<UserPreferences> = userPreferencesStore.data
         .catch {
             if (this is IOException) {
                 emit(emptyPreferences())
             }
         }.map { preference ->
             val apiKey: String = preference[PreferencesKeys.API_KEY] ?: ""
-            apiKey
+            CryptoPriceApplication.apiKey = apiKey
+            UserPreferences(apiKey)
         }
 
     object PreferencesKeys {
@@ -32,25 +30,9 @@ class UserPreferencesRepository private constructor(val context: Context) {
     }
 
     suspend fun saveToDataStore(key: Preferences.Key<String>, value: String) {
-        context.dataStore.edit { preference ->
+        // TODO: This is a memory leak
+        userPreferencesStore.edit { preference ->
             preference[key] = value
-        }
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: UserPreferencesRepository? = null
-
-        fun getInstance(context: Context): UserPreferencesRepository {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE?.let {
-                    return it
-                }
-
-                val instance = UserPreferencesRepository(context)
-                INSTANCE = instance
-                instance
-            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.data.repository.remote
+package com.shahryar.cryptoprice.data.source.remote
 
 import com.shahryar.cryptoprice.data.model.Data
 import retrofit2.http.GET

@@ -3,9 +3,9 @@ package com.shahryar.cryptoprice.view.widget
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import com.shahryar.cryptoprice.R
+import android.os.Bundle
 import com.shahryar.cryptoprice.core.common.Utils
-import com.shahryar.cryptoprice.data.repository.base.Repository
+import com.shahryar.cryptoprice.data.repository.Repository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -19,7 +19,7 @@ class CryptoPriceWidgetProviderSmall : AppWidgetProvider(), KoinComponent {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidget(appWidgetManager, context!!, appWidgetIds, R.layout.widget_small, mRepository)
+        updateWidget(appWidgetManager, context!!, appWidgetIds, mRepository)
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
@@ -29,6 +29,16 @@ class CryptoPriceWidgetProviderSmall : AppWidgetProvider(), KoinComponent {
                 Utils().removePreference(context!!, appWidgetId.toString())
             }
         }
+    }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetId: Int,
+        newOptions: Bundle?
+    ) {
+        updateWidget(appWidgetManager, context!!, intArrayOf(appWidgetId), mRepository)
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
     }
 }
 
@@ -42,7 +52,17 @@ class CryptoPriceWidgetProviderMedium : AppWidgetProvider(), KoinComponent {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidget(appWidgetManager, context!!, appWidgetIds, R.layout.widget_medium, mRepository)
+        updateWidget(appWidgetManager, context!!, appWidgetIds, mRepository)
+    }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetId: Int,
+        newOptions: Bundle?
+    ) {
+        updateWidget(appWidgetManager, context!!, intArrayOf(appWidgetId), mRepository)
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
     }
 
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
@@ -65,8 +85,19 @@ class CryptoPriceWidgetProviderLarge : AppWidgetProvider(), KoinComponent {
         appWidgetIds: IntArray?
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
-        updateWidget(appWidgetManager, context!!, appWidgetIds, R.layout.widget_large, mRepository)
+        updateWidget(appWidgetManager, context!!, appWidgetIds, mRepository)
     }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context?,
+        appWidgetManager: AppWidgetManager?,
+        appWidgetId: Int,
+        newOptions: Bundle?
+    ) {
+        updateWidget(appWidgetManager, context!!, intArrayOf(appWidgetId), mRepository)
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+    }
+
     override fun onDeleted(context: Context?, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
         if (appWidgetIds != null) {
