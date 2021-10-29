@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.view
+package com.shahryar.cryptoprice.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

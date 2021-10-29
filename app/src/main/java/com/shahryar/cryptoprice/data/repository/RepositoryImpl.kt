@@ -1,6 +1,8 @@
 package com.shahryar.cryptoprice.data.repository
 
 import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.cryptoprice.data.model.Data
+import com.shahryar.cryptoprice.data.model.Resource
 import com.shahryar.cryptoprice.data.model.asDatabaseModel
 import com.shahryar.cryptoprice.data.source.local.LocalDataSource
 import com.shahryar.cryptoprice.data.source.remote.RemoteDataSource
@@ -19,9 +21,10 @@ class RepositoryImpl(
         localDataSource.insertAll(currencies)
     }
 
-    override suspend fun refresh() {
-        remoteDataSource.fetchPrices().let {
-            localDataSource.insertAll(it.asDatabaseModel())
+    override suspend fun refresh(): Resource<Data> {
+        return remoteDataSource.fetchPrices().let { resource ->
+            if (resource.status == Resource.Status.SUCCESS) localDataSource.insertAll(resource.data!!.asDatabaseModel())
+            resource
         }
     }
 

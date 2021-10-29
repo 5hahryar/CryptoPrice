@@ -12,13 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CryptoPrice">
-        <activity android:name=".view.WidgetConfigureActivity"
+        <activity android:name=".widgets.WidgetConfigureActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"
+        <activity android:name=".main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".view.widget.CryptoPriceWidgetProviderSmall"
+        <receiver android:name=".widgets.CryptoPriceWidgetProviderSmall"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -37,7 +37,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_small" />
         </receiver>
-        <receiver android:name=".view.widget.CryptoPriceWidgetProviderMedium"
+        <receiver android:name=".widgets.CryptoPriceWidgetProviderMedium"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -47,7 +47,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_medium" />
         </receiver>
-        <receiver android:name=".view.widget.CryptoPriceWidgetProviderLarge"
+        <receiver android:name=".widgets.CryptoPriceWidgetProviderLarge"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

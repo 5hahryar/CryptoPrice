@@ -7,17 +7,19 @@
 
     <fragment
         android:id="@+id/priceFragment"
-        android:name="com.shahryar.cryptoprice.view.PriceFragment"
-        android:label="fragment_price"
-        tools:layout="@layout/fragment_price" >
+        android:name="com.shahryar.cryptoprice.prices.PriceFragment"
+        android:label="fragment_price" >
         <action
             android:id="@+id/action_priceFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.shahryar.cryptoprice.view.SettingsFragment"
-        android:label="SettingsFragment"
-        tools:layout="@layout/settings_fragment"/>
+        android:name="com.shahryar.cryptoprice.settings.SettingsFragment"
+        android:label="SettingsFragment"/>
 
 </navigation>

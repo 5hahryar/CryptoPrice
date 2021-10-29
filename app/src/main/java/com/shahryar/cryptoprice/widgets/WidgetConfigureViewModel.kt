@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.viewModel
+package com.shahryar.cryptoprice.widgets
 
 import androidx.lifecycle.ViewModel
 import com.shahryar.cryptoprice.data.repository.Repository

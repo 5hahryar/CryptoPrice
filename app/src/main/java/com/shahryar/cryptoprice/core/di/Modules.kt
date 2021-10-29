@@ -9,9 +9,9 @@ import com.shahryar.cryptoprice.data.source.local.getDatabase
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
 import com.shahryar.cryptoprice.data.source.remote.ApiService
 import com.shahryar.cryptoprice.data.source.remote.RemoteDataSourceImpl
-import com.shahryar.cryptoprice.viewModel.PriceViewModel
-import com.shahryar.cryptoprice.viewModel.SettingsViewModel
-import com.shahryar.cryptoprice.viewModel.WidgetConfigureViewModel
+import com.shahryar.cryptoprice.prices.viewmodel.PriceViewModel
+import com.shahryar.cryptoprice.settings.SettingsViewModel
+import com.shahryar.cryptoprice.widgets.WidgetConfigureViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel

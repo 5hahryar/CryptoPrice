@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.view.widget
+package com.shahryar.cryptoprice.widgets
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider

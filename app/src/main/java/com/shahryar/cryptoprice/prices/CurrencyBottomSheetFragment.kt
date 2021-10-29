@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.view
+package com.shahryar.cryptoprice.prices
 
 import android.os.Bundle
 import android.view.LayoutInflater

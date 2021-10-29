@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.viewModel
+package com.shahryar.cryptoprice.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

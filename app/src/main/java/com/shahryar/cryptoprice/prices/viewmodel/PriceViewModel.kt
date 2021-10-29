@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.viewModel
+package com.shahryar.cryptoprice.prices.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
@@ -15,7 +15,6 @@ class PriceViewModel(preferences: UserPreferencesRepository, private val mReposi
 
     val currencies: LiveData<List<Currency>> = mRepository.getCurrencies()
     var isApiKeyAvailable: ObservableField<Boolean> = ObservableField()
-    var isDataEmpty: ObservableField<Boolean> = ObservableField()
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
@@ -40,7 +39,10 @@ class PriceViewModel(preferences: UserPreferencesRepository, private val mReposi
 
     fun refreshData() {
         _isRefreshing.value = true
-        viewModelScope.launch { mRepository.refresh() }
+        viewModelScope.launch {
+            mRepository.refresh()
+            _isRefreshing.value = false
+        }
     }
 
     override fun onCleared() {

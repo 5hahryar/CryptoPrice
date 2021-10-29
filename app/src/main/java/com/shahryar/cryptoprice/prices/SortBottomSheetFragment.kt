@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.view
+package com.shahryar.cryptoprice.prices
 
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

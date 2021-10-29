@@ -1,22 +1,17 @@
-package com.shahryar.cryptoprice.view
+package com.shahryar.cryptoprice.prices
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
@@ -24,33 +19,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.shahryar.cryptoprice.R
-import com.shahryar.cryptoprice.core.DEFAULT_HEADER_SIZE
 import com.shahryar.cryptoprice.data.model.Currency
-import com.shahryar.cryptoprice.databinding.FragmentPriceBinding
-import com.shahryar.cryptoprice.view.adapter.PriceAdapter
-import com.shahryar.cryptoprice.viewModel.PriceViewModel
-import kotlinx.android.synthetic.main.empty_list_layout.*
-import kotlinx.android.synthetic.main.fragment_price.*
-import kotlinx.android.synthetic.main.no_api_warning.*
+import com.shahryar.cryptoprice.prices.viewmodel.PriceViewModel
 import org.koin.android.ext.android.inject
 
 class PriceFragment : Fragment() {
 
-    private lateinit var mBinding: FragmentPriceBinding
     private val mViewModel: PriceViewModel by inject()
 
     override fun onCreateView(
@@ -62,14 +46,6 @@ class PriceFragment : Fragment() {
                 PriceFragmentView()
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        setupRecyclerView()
-//        setListeners()
-//        subscribeViews()
     }
 
     @Composable
@@ -319,133 +295,10 @@ class PriceFragment : Fragment() {
         )
     }
 
-    private fun subscribeViews() {
-        mViewModel.currencies.observe(viewLifecycleOwner, {
-            refreshLayout.isRefreshing = false
-            if (it != null) {
-
-                (recyclerView.adapter as PriceAdapter).submitList(it)
-            }
-        })
-    }
-
-    private fun setListeners() {
-        //Change appBar elevation on recyclerView scroll
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            recyclerView.setOnScrollChangeListener { view, _, _, _, _ ->
-                if (!view.canScrollVertically(-1)) appBarLayout.elevation =
-                    0f else appBarLayout.elevation = 15f
-            }
-        }
-
-        refreshLayout.setOnRefreshListener {
-            refreshLayout.isRefreshing = true
-            mViewModel.refreshData()
-        }
-
-        topAppBar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.layout -> {
-                    changeRecyclerViewLayout()
-                    swapLayoutMenuItem(it)
-                    true
-                }
-//                R.id.sort -> {
-//                    SortDialogFragment.newInstance(this)
-//                        .show(requireActivity().supportFragmentManager, "Sort By")
-//                    true
-//                }
-                R.id.settings -> {
-                    findNavController().navigate(R.id.action_priceFragment_to_settingsFragment)
-                    true
-                }
-                R.id.help -> {
-                    AboutDialog().show(requireActivity().supportFragmentManager, "About Dialog")
-                    true
-                }
-                else -> false
-            }
-        }
-
-        enterKeyButton.setOnClickListener { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }
-
-        getKeyButton.setOnClickListener {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://coinmarketcap.com/api/pricing/")
-                )
-            )
-        }
-
-        refreshButton.setOnClickListener {
-            mViewModel.refreshData()
-            refreshLayout.isRefreshing = true
-        }
-
-//        mViewModel.isRefreshing.addOnPropertyChangedCallback(object :
-//            Observable.OnPropertyChangedCallback() {
-//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-//                refreshLayout.isRefreshing = mViewModel.isRefreshing.get()!!
-//            }
-//        })
-    }
-
-    //Change title and icon of layout menu item
-    private fun swapLayoutMenuItem(menuItem: MenuItem) {
-        menuItem.icon = if (menuItem.title.equals("Grid Layout"))
-            resources.getDrawable(R.drawable.ic_view_list_24px) else
-            resources.getDrawable(R.drawable.ic_grid_view_24px)
-        menuItem.title =
-            if (menuItem.title.equals("Grid Layout")) "Linear Layout" else "Grid Layout"
-    }
-
-    //Setup recyclerView with needed parameters
-    private fun setupRecyclerView() {
-        val layoutManager =
-            GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return if (position < DEFAULT_HEADER_SIZE) DEFAULT_HEADER_SIZE else 1
-            }
-        }
-        mBinding.recyclerView.layoutManager = layoutManager
-        val adapter = PriceAdapter()
-        adapter.setOnItemClickedListener(object : PriceAdapter.OnItemClickedListener {
-            override fun onItemClicked(item: Currency) {
-                CurrencyBottomSheetFragment(item).show(
-                    requireActivity().supportFragmentManager,
-                    "CurrencyBottomSheet"
-                )
-            }
-        })
-        mBinding.recyclerView.adapter = adapter
-    }
-
-    //Swap recyclerView layout manager between list and grid view
-    private fun changeRecyclerViewLayout() {
-        if (recyclerView.layoutManager is GridLayoutManager) {
-            recyclerView.layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            (recyclerView.adapter as PriceAdapter).headerSize =
-                (recyclerView.adapter as PriceAdapter).currentList.size
-        } else {
-            val layoutManager =
-                GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
-            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (position < 2) 2 else 1
-                }
-            }
-            recyclerView.layoutManager = layoutManager
-            (recyclerView.adapter as PriceAdapter).headerSize = DEFAULT_HEADER_SIZE
-        }
-    }
-
     @Composable
     @Preview
     fun Preview() {
         PriceTopAppBar()
-//        PriceFragmentView()
+        PriceFragmentView()
     }
 }

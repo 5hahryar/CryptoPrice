@@ -5,7 +5,7 @@
     android:minResizeWidth="115dp"
     android:minHeight="70dp"
     android:previewImage="@drawable/widget_preview_large"
-    android:configure="com.shahryar.cryptoprice.view.WidgetConfigureActivity"
+    android:configure="com.shahryar.cryptoprice.widgets.WidgetConfigureActivity"
     android:initialLayout="@layout/widget_large"
     android:resizeMode="horizontal"
     android:widgetCategory="home_screen">
