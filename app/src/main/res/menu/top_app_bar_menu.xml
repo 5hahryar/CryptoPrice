@@ -16,17 +16,22 @@
         android:icon="@drawable/ic_search_black_24dp"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="Search"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:enabled="false"
+        android:visible="false"/>
 
     <item
         android:id="@+id/layout"
         android:icon="@drawable/ic_grid_view_24px"
         android:title="Grid Layout"
         app:showAsAction="always" />
+
     <item
         android:id="@+id/sort"
         android:icon="@drawable/ic_filter_list_24px"
         android:title="Sort"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:enabled="false"
+        android:visible="false"/>
 
 </menu>
