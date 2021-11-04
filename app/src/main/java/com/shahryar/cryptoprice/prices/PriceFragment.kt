@@ -1,5 +1,6 @@
 package com.shahryar.cryptoprice.prices
 
+import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,9 +53,11 @@ class PriceFragment : Fragment() {
 
     @Composable
     fun PriceFragmentView() {
-        Column {
-            PriceTopAppBar()
-            PriceContent(mViewModel.currencies.observeAsState().value)
+        MaterialTheme() {
+            Column {
+                PriceTopAppBar()
+                PriceContent(mViewModel.currencies.observeAsState().value)
+            }
         }
     }
 
@@ -275,14 +280,14 @@ class PriceFragment : Fragment() {
 
     @Composable
     fun PriceTopAppBar() {
-        TopAppBar(
+        SmallTopAppBar(
             title = {
                 Text(
                     text = getString(R.string.app_name),
+                    fontWeight = FontWeight.Bold,
                     color = colorResource(id = R.color.onPrimary)
                 )
             },
-            backgroundColor = colorResource(id = R.color.primary),
             actions = {
                 IconButton(onClick = { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }) {
                     Icon(

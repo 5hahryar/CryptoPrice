@@ -3,6 +3,7 @@ package com.shahryar.cryptoprice.prices.viewmodel
 import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.cryptoprice.data.model.Resource
 import com.shahryar.cryptoprice.data.model.UserPreferences
 import com.shahryar.cryptoprice.data.repository.Repository
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
@@ -15,6 +16,9 @@ class PriceViewModel(preferences: UserPreferencesRepository, private val mReposi
 
     val currencies: LiveData<List<Currency>> = mRepository.getCurrencies()
     var isApiKeyAvailable: ObservableField<Boolean> = ObservableField()
+
+    private val _uiState = MutableLiveData<UiState>()
+    val uiState: LiveData<UiState> = _uiState
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean>
@@ -40,8 +44,11 @@ class PriceViewModel(preferences: UserPreferencesRepository, private val mReposi
     fun refreshData() {
         _isRefreshing.value = true
         viewModelScope.launch {
-            mRepository.refresh()
-            _isRefreshing.value = false
+            val result = mRepository.refresh()
+            if (result.status == Resource.Status.ERROR) {
+                _uiState.value = _uiState.value?.copy(isRefreshing = false, errorMessage = result.message)
+            }
+//            _isRefreshing.value = false
         }
     }
 
@@ -49,4 +56,10 @@ class PriceViewModel(preferences: UserPreferencesRepository, private val mReposi
         super.onCleared()
         currencies.removeObserver(currenciesObserver)
     }
+
+    data class UiState(
+        val isRefreshing: Boolean,
+        val currencies: List<Currency>? = null,
+        val errorMessage: String? = null
+    )
 }
