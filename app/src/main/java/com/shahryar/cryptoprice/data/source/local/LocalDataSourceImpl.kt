@@ -4,7 +4,7 @@ import com.shahryar.cryptoprice.data.model.Currency
 
 class LocalDataSourceImpl(private val currencyDao: CurrencyDao): LocalDataSource {
 
-    override fun getCurrencies() =
+    override suspend fun getCurrencies() =
         currencyDao.getCurrencies()
 
     override suspend fun insertAll(currencies: List<Currency>) {

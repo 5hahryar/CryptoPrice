@@ -5,13 +5,14 @@ import com.shahryar.cryptoprice.data.model.Data
 import com.shahryar.cryptoprice.data.model.Resource
 import com.shahryar.cryptoprice.data.model.Status
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
+import kotlinx.coroutines.flow.collect
 
-class RemoteDataSourceImpl(private val priceApi: PriceApi, userPreferencesRepository: UserPreferencesRepository):
+class RemoteDataSourceImpl(private val priceApi: PriceApi, private val userPreferencesRepository: UserPreferencesRepository):
     RemoteDataSource {
 
     override suspend fun fetchPrices(): Resource<Data> {
         return try {
-            priceApi.getPrices(CryptoPriceApplication.apiKey, null).let {
+            priceApi.getPrices(userPreferencesRepository.apiKey, null).let {
                 if (!it.data.isNullOrEmpty()) Resource.success(it)
                 else Resource.error(null, "Error fetching data")
             }

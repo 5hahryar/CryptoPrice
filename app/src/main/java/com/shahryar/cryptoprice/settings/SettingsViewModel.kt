@@ -1,19 +1,37 @@
 package com.shahryar.cryptoprice.settings
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(private val preferencesRepository: UserPreferencesRepository) : ViewModel() {
+class SettingsViewModel(private val preferencesRepository: UserPreferencesRepository) :
+    ViewModel() {
 
-    val apiKey = preferencesRepository.readOutFromDataStore.asLiveData()
+    private val _apiKey = MutableLiveData("")
+    val apiKey: LiveData<String> = _apiKey
 
-    fun saveApiKey(apiKey: String) {
+    init {
+        viewModelScope.launch {
+            preferencesRepository.readOutFromDataStore.collect {
+                _apiKey.value = it.apiKey
+            }
+        }
+    }
+
+    fun onApiKeyChange(value: String) {
+        _apiKey.value = value
+    }
+
+    fun saveApiKey() {
         viewModelScope.launch(Dispatchers.IO) {
-            preferencesRepository.saveToDataStore(UserPreferencesRepository.PreferencesKeys.API_KEY, apiKey)
+            _apiKey.value?.let {
+                preferencesRepository.saveToDataStore(
+                    UserPreferencesRepository.PreferencesKeys.API_KEY,
+                    it
+                )
+            }
         }
     }
 }

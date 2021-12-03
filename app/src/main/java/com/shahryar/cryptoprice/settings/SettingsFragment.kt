@@ -1,18 +1,16 @@
 package com.shahryar.cryptoprice.settings
 
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -42,14 +40,21 @@ class SettingsFragment : Fragment() {
 
     @Composable
     fun SettingsView() {
+        val apiKey = mViewModel.apiKey.observeAsState().value ?: ""
+
         Column {
-            TopAppBarView()
-            ContentView()
+            TopAppBarView {
+                mViewModel.saveApiKey()
+                findNavController().navigateUp()
+            }
+            ContentView(apiKey) {
+                mViewModel.onApiKeyChange(it)
+            }
         }
     }
 
     @Composable
-    fun TopAppBarView() {
+    fun TopAppBarView(onSaveClicked: () -> Unit) {
         TopAppBar(
             title = {
                 Text(text = "Settings", color = colorResource(id = R.color.onPrimary))
@@ -63,14 +68,21 @@ class SettingsFragment : Fragment() {
                         tint = colorResource(id = R.color.onPrimary)
                     )
                 }
+            },
+            actions = {
+                IconButton(onSaveClicked) {
+                    androidx.compose.material3.Icon(
+                        Icons.Filled.Check,
+                        contentDescription = "Save",
+                        tint = colorResource(id = R.color.onPrimary)
+                    )
+                }
             }
         )
     }
 
     @Composable
-    fun ContentView() {
-        var text = mViewModel.apiKey.observeAsState().value?.apiKey ?: ""
-
+    fun ContentView(apiKey: String, onApiKeyChanged: (String) -> Unit) {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -78,12 +90,10 @@ class SettingsFragment : Fragment() {
         ) {
             OutlinedTextField(
                 label = { Text(text = "API Key") },
-                modifier = Modifier.fillMaxWidth(),
-                value = text,
-                onValueChange = {
-                    text = it
-                    mViewModel.saveApiKey(it)
-                })
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = apiKey,
+                onValueChange = onApiKeyChanged)
         }
     }
 
@@ -92,37 +102,5 @@ class SettingsFragment : Fragment() {
     fun Preview() {
         SettingsView()
     }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        setListeners()
-//        mViewModel.apiKey.observe(viewLifecycleOwner, {
-//            apikeyEditText.setText(it.apiKey)
-//        })
-//    }
-//
-//    override fun onPause() {
-//        mViewModel.saveApiKey(apikeyEditText.text.toString())
-//        super.onPause()
-//    }
-//
-//    private fun setListeners() {
-//        apikeyLayout.setOnLongClickListener {
-//            apikeyEditText.isEnabled = true
-//            showSoftKeyboard(apikeyEditText)
-//            true
-//        }
-//
-//        topAppBar.setNavigationOnClickListener { activity?.onBackPressed() }
-//    }
-//
-//    private fun showSoftKeyboard(view: View) {
-//        if (view.requestFocus()) {
-//            val imm: InputMethodManager =
-//            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-//        }
-//    }
-
 }
 

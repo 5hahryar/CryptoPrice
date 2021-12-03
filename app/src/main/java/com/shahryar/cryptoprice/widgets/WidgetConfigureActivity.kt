@@ -24,11 +24,13 @@ import androidx.compose.ui.unit.sp
 import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.core.common.Utils
 import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.cryptoprice.data.repository.Repository
 import org.koin.android.ext.android.inject
 
 class WidgetConfigureActivity : AppCompatActivity() {
 
     private val viewModel: WidgetConfigureViewModel by inject()
+    private val repository: Repository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,12 +122,12 @@ class WidgetConfigureActivity : AppCompatActivity() {
                 )
             ) {
                 val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
-//                        updateWidget(
-//                            appWidgetManager,
-//                            applicationContext,
-//                            intArrayOf(appWidgetId),
-//                            appWidgetManager.getAppWidgetInfo(appWidgetId).initialLayout
-//                        )
+                        updateWidget(
+                            appWidgetManager,
+                            applicationContext,
+                            intArrayOf(appWidgetId),
+                            repository
+                        )
                 val resultValue = Intent().apply {
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
                 }

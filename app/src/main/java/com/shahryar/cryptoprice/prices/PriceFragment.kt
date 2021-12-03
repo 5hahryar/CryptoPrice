@@ -1,10 +1,12 @@
 package com.shahryar.cryptoprice.prices
 
-import android.graphics.fonts.FontStyle
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -17,13 +19,15 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,31 +50,73 @@ class PriceFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                PriceFragmentView()
+                PriceFragmentView(mViewModel.uiState.observeAsState())
+            }
+
+            mViewModel.toastMessage.observe(viewLifecycleOwner) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             }
         }
     }
 
     @Composable
-    fun PriceFragmentView() {
-        MaterialTheme() {
+    fun PriceFragmentView(uiState: State<PriceViewModel.UiState?>) {
+        MaterialTheme {
             Column {
                 PriceTopAppBar()
-                PriceContent(mViewModel.currencies.observeAsState().value)
+                PriceContent(uiState)
             }
         }
     }
 
     @Composable
-    private fun PriceContent(currencies: List<Currency>?) {
+    private fun PriceContent(uiState: State<PriceViewModel.UiState?>) {
         SwipeRefresh(
-            state = rememberSwipeRefreshState(isRefreshing = mViewModel.isRefreshing.collectAsState().value),
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            state = rememberSwipeRefreshState(isRefreshing = uiState.value?.isRefreshing ?: true),
             onRefresh = { mViewModel.refreshData() }) {
-            if (!currencies.isNullOrEmpty()) {
+            if (!uiState.value?.currencies.isNullOrEmpty()) {
                 LazyColumn {
-                    items(currencies) { item ->
+                    items(uiState.value?.currencies!!) { item ->
                         PriceItemView(item = item)
                     }
+                }
+            } else if (uiState.value?.isApiKeyAvailable == false) {
+                NoApiKeyView()
+            } else {
+                Text(text = uiState.value?.errorMessage ?: "Error loading data")
+            }
+        }
+    }
+
+    @Composable
+    private fun NoApiKeyView() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = getString(R.string.no_api_key_message), textAlign = TextAlign.Center)
+            Spacer(modifier = Modifier.height(20.dp))
+            Row(modifier = Modifier) {
+                Button(onClick = {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://coinmarketcap.com/api/pricing/")
+                        )
+                    )
+                }, colors = ButtonDefaults.buttonColors(containerColor = Color.Black)) {
+                    Text(text = getString(R.string.get_api_key))
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+                OutlinedButton(
+                    onClick = { findNavController().navigate(R.id.action_priceFragment_to_settingsFragment) }) {
+                    Text(text = getString(R.string.enter_api_key), color = Color.Black)
                 }
             }
         }
@@ -284,7 +330,7 @@ class PriceFragment : Fragment() {
             title = {
                 Text(
                     text = getString(R.string.app_name),
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     color = colorResource(id = R.color.onPrimary)
                 )
             },
@@ -303,7 +349,6 @@ class PriceFragment : Fragment() {
     @Composable
     @Preview
     fun Preview() {
-        PriceTopAppBar()
-        PriceFragmentView()
+        NoApiKeyView()
     }
 }

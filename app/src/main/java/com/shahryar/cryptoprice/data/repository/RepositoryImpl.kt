@@ -13,7 +13,7 @@ class RepositoryImpl(
 ) :
     Repository {
 
-    override fun getCurrencies() =
+    override suspend fun getCurrencies() =
         localDataSource.getCurrencies()
 
 

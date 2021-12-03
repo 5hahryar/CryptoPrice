@@ -8,7 +8,7 @@ import com.shahryar.cryptoprice.data.model.Currency
 interface CurrencyDao {
 
     @Query("select * from currencies")
-    fun getCurrencies(): LiveData<List<Currency>>
+    suspend fun getCurrencies(): List<Currency>
 
     @Query("SELECT * FROM currencies ORDER BY name")
     fun getCurrenciesByName(): LiveData<List<Currency>>

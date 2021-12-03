@@ -7,7 +7,7 @@ import com.shahryar.cryptoprice.data.model.Resource
 
 interface Repository {
 
-    fun getCurrencies(): LiveData<List<Currency>>
+    suspend fun getCurrencies(): List<Currency>
 
     suspend fun insertCurrencies(currencies: List<Currency>)
 

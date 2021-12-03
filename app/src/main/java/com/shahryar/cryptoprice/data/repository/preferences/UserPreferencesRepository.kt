@@ -1,5 +1,6 @@
 package com.shahryar.cryptoprice.data.repository.preferences
 
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -9,10 +10,14 @@ import com.shahryar.cryptoprice.CryptoPriceApplication
 import com.shahryar.cryptoprice.data.model.UserPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
 class UserPreferencesRepository(private val userPreferencesStore: DataStore<Preferences>) {
+
+    var apiKey: String = runBlocking { userPreferencesStore.data.first()[PreferencesKeys.API_KEY].toString() }
 
     val readOutFromDataStore: Flow<UserPreferences> = userPreferencesStore.data
         .catch {
@@ -20,8 +25,8 @@ class UserPreferencesRepository(private val userPreferencesStore: DataStore<Pref
                 emit(emptyPreferences())
             }
         }.map { preference ->
-            val apiKey: String = preference[PreferencesKeys.API_KEY] ?: ""
-            CryptoPriceApplication.apiKey = apiKey
+            apiKey = preference[PreferencesKeys.API_KEY] ?: ""
+            Log.d("API", "read from datastore $apiKey")
             UserPreferences(apiKey)
         }
 

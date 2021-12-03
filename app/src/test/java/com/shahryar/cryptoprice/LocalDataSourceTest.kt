@@ -5,7 +5,7 @@ import com.shahryar.cryptoprice.data.model.Currency
 import com.shahryar.cryptoprice.data.source.local.LocalDataSource
 
 class LocalDataSourceTest: LocalDataSource {
-    override fun getCurrencies(): LiveData<List<Currency>> {
+    override suspend fun getCurrencies(): LiveData<List<Currency>> {
         TODO("Not yet implemented")
     }
 
