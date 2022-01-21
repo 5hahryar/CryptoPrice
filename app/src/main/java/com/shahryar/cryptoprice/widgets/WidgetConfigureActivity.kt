@@ -51,7 +51,7 @@ class WidgetConfigureActivity : AppCompatActivity() {
 
     @Composable
     fun ContentView() {
-        CurrencyListView(currencies = viewModel.currencies.observeAsState().value)
+//        CurrencyListView(currencies = viewModel.currencies.observeAsState().value)
     }
 
     @Composable

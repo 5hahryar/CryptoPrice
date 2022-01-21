@@ -6,6 +6,7 @@ import com.shahryar.cryptoprice.data.model.Resource
 import com.shahryar.cryptoprice.data.model.asDatabaseModel
 import com.shahryar.cryptoprice.data.source.local.LocalDataSource
 import com.shahryar.cryptoprice.data.source.remote.RemoteDataSource
+import kotlinx.coroutines.flow.Flow
 
 class RepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
@@ -13,9 +14,8 @@ class RepositoryImpl(
 ) :
     Repository {
 
-    override suspend fun getCurrencies() =
+    override fun getCurrencies(): Flow<List<Currency>> =
         localDataSource.getCurrencies()
-
 
     override suspend fun insertCurrencies(currencies: List<Currency>) {
         localDataSource.insertAll(currencies)

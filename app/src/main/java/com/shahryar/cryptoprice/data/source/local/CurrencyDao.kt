@@ -3,12 +3,13 @@ package com.shahryar.cryptoprice.data.source.local
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.shahryar.cryptoprice.data.model.Currency
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CurrencyDao {
 
     @Query("select * from currencies")
-    suspend fun getCurrencies(): List<Currency>
+    fun getCurrencies(): Flow<List<Currency>>
 
     @Query("SELECT * FROM currencies ORDER BY name")
     fun getCurrenciesByName(): LiveData<List<Currency>>

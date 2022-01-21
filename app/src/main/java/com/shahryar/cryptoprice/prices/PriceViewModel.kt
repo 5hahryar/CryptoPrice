@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.prices.viewmodel
+package com.shahryar.cryptoprice.prices
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,24 +11,38 @@ import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepos
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class PriceViewModel(private val preferences: UserPreferencesRepository, private val mRepository: Repository) :
+class PriceViewModel(
+    private val preferences: UserPreferencesRepository,
+    private val mRepository: Repository
+) :
     BaseViewModel() {
 
     private val _uiState = MutableLiveData(UiState(true))
     val uiState: LiveData<UiState> = _uiState
 
+    private var apiKey: String = ""
+
     init {
+        observeApiKey()
         refreshData()
         getCurrencies()
     }
 
-    private fun getCurrencies() {
+    private fun observeApiKey() {
         viewModelScope.launch {
             preferences.readOutFromDataStore.collect {
+                apiKey = it.apiKey
                 if (it.apiKey.isEmpty()) _uiState.value =
                     UiState(isRefreshing = false, isApiKeyAvailable = false)
-                else {
-                    val currencies = mRepository.getCurrencies()
+                else refreshData()
+            }
+        }
+    }
+
+    private fun getCurrencies() {
+        if (apiKey.isNotEmpty()) {
+            viewModelScope.launch {
+                mRepository.getCurrencies().collect { currencies ->
                     if (!currencies.isNullOrEmpty()) _uiState.value =
                         UiState(isRefreshing = false, currencies = currencies)
                     else _uiState.value = UiState(
@@ -41,16 +55,18 @@ class PriceViewModel(private val preferences: UserPreferencesRepository, private
     }
 
     fun refreshData() {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value?.copy(isRefreshing = true)
-            val result = mRepository.refresh()
-            _uiState.value = _uiState.value?.copy(isRefreshing = false)
-            result.message?.let {
-                toastMessage.value = it
-            }
-            if (result.status == Resource.Status.ERROR) {
-                _uiState.value =
-                    _uiState.value?.copy(isRefreshing = false, errorMessage = result.message)
+        if (apiKey.isNotEmpty()) {
+            viewModelScope.launch {
+                _uiState.value = _uiState.value?.copy(isRefreshing = true)
+                val result = mRepository.refresh()
+                _uiState.value = _uiState.value?.copy(isRefreshing = false)
+                result.message?.let {
+                    toastMessage.value = it
+                }
+                if (result.status == Resource.Status.ERROR) {
+                    _uiState.value =
+                        _uiState.value?.copy(isRefreshing = false, errorMessage = result.message)
+                }
             }
         }
     }
