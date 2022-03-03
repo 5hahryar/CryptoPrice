@@ -1,4 +1,4 @@
-package com.shahryar.cryptoprice.views
+package com.shahryar.cryptoprice.prices
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

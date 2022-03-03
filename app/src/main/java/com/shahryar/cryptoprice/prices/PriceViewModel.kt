@@ -17,8 +17,14 @@ class PriceViewModel(
 ) :
     BaseViewModel() {
 
-    private val _uiState = MutableLiveData(UiState(true))
+    private val _uiState = MutableLiveData<UiState>(UiState.Loading)
     val uiState: LiveData<UiState> = _uiState
+
+    private val _isRefreshing = MutableLiveData(false)
+    val isRefreshing: LiveData<Boolean> = _isRefreshing
+
+    private val _selectedCurrency = MutableLiveData<Currency>()
+    val selectedCurrency: LiveData<Currency> = _selectedCurrency
 
     private var apiKey: String = ""
 
@@ -33,7 +39,7 @@ class PriceViewModel(
             preferences.readOutFromDataStore.collect {
                 apiKey = it.apiKey
                 if (it.apiKey.isEmpty()) _uiState.value =
-                    UiState(isRefreshing = false, isApiKeyAvailable = false)
+                    UiState.Error("Api key not found")
                 else refreshData()
             }
         }
@@ -44,37 +50,44 @@ class PriceViewModel(
             viewModelScope.launch {
                 mRepository.getCurrencies().collect { currencies ->
                     if (!currencies.isNullOrEmpty()) _uiState.value =
-                        UiState(isRefreshing = false, currencies = currencies)
-                    else _uiState.value = UiState(
-                        isRefreshing = false,
-                        errorMessage = "Error fetching from database"
-                    )
+                        UiState.Success(currencies)
+                    else _uiState.value = UiState.Error("Error fetching from database")
                 }
             }
         }
+    }
+
+    fun selectCurrency(currency: Currency) {
+        _selectedCurrency.value = currency
     }
 
     fun refreshData() {
         if (apiKey.isNotEmpty()) {
             viewModelScope.launch {
-                _uiState.value = _uiState.value?.copy(isRefreshing = true)
+                _isRefreshing.value = true
                 val result = mRepository.refresh()
-                _uiState.value = _uiState.value?.copy(isRefreshing = false)
+                _isRefreshing.value = false
                 result.message?.let {
                     toastMessage.value = it
                 }
                 if (result.status == Resource.Status.ERROR) {
+                    _isRefreshing.value = false
                     _uiState.value =
-                        _uiState.value?.copy(isRefreshing = false, errorMessage = result.message)
+                        UiState.Error(result.message.toString())
                 }
             }
         }
     }
 
-    data class UiState(
-        val isRefreshing: Boolean,
-        val isApiKeyAvailable: Boolean = true,
-        val currencies: List<Currency>? = null,
-        val errorMessage: String? = null
-    )
+    sealed class UiState {
+        object Loading: UiState()
+        class Error(val message: String): UiState()
+        class Success(val currencies: List<Currency>): UiState()
+    }
+//    data class UiState(
+//        val isRefreshing: Boolean,
+//        val isApiKeyAvailable: Boolean = true,
+//        val currencies: List<Currency>? = null,
+//        val errorMessage: String? = null
+//    )
 }

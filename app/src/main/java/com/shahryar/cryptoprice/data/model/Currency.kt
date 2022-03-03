@@ -1,10 +1,7 @@
 package com.shahryar.cryptoprice.data.model
 
-import android.icu.text.NumberFormat
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.math.BigDecimal
-import java.util.*
 
 @Entity(tableName = "currencies")
 data class Currency(
@@ -25,4 +22,27 @@ data class Currency(
     val percent_change_7d: Double,
     val price: Double,
     val volume_24h: Double
-)
+) {
+
+}
+
+fun getFakeCurrency(): Currency {
+    return Currency(
+        1,
+        230000.2,
+        1,
+        "",
+        "",
+        2.0,
+        "Bitcoin",
+        "BTC",
+        23.45,
+        "235",
+        1.23,
+        44.3,
+        12.4,
+        4.34,
+        54600.56,
+        23490345.4
+    )
+}
