@@ -2,18 +2,15 @@ package com.shahryar.cryptoprice.core.di
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
-import com.shahryar.cryptoprice.data.repository.Repository
-import com.shahryar.cryptoprice.data.repository.RepositoryImpl
-import com.shahryar.cryptoprice.data.source.local.LocalDataSourceImpl
-import com.shahryar.cryptoprice.data.source.local.getDatabase
 import com.shahryar.cryptoprice.data.repository.preferences.UserPreferencesRepository
-import com.shahryar.cryptoprice.data.source.remote.ApiService
-import com.shahryar.cryptoprice.data.source.remote.RemoteDataSourceImpl
 import com.shahryar.cryptoprice.prices.PriceViewModel
 import com.shahryar.cryptoprice.settings.SettingsViewModel
 import com.shahryar.cryptoprice.widgets.WidgetConfigureViewModel
+import com.shahryar.shared.data.repository.Repository
+import com.shahryar.shared.data.repository.RepositoryImpl
+import com.shahryar.shared.data.source.remote.PriceApi
+import com.shahryar.shared.data.source.remote.RemoteDataSourceImpl
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -24,8 +21,7 @@ val mainModule = module {
     single { UserPreferencesRepository(get()) }
     single<Repository> {
         RepositoryImpl(
-            RemoteDataSourceImpl(ApiService.priceApi, get()),
-            LocalDataSourceImpl(getDatabase(androidContext()).currencyDao)
+            RemoteDataSourceImpl(PriceApi()),
         )
     }
 
@@ -34,4 +30,5 @@ val mainModule = module {
     viewModel { WidgetConfigureViewModel(get()) }
 }
 
-val cryptoPriceModules = listOf(mainModule)
+val cryptoPriceModules = listOf(
+    mainModule)

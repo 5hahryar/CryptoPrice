@@ -21,7 +21,7 @@ import com.shahryar.cryptoprice.data.model.Currency
 import com.shahryar.cryptoprice.data.model.getFakeCurrency
 
 @Composable
-fun PriceItem(item: Currency, onItemClick: (currency: Currency) -> Unit) {
+fun PriceItem(item: com.shahryar.shared.data.model.Currency, onItemClick: (currency: com.shahryar.shared.data.model.Currency) -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()
@@ -221,6 +221,6 @@ fun PriceItem(item: Currency, onItemClick: (currency: Currency) -> Unit) {
 @Preview
 private fun Preview() {
     MaterialTheme {
-        PriceItem(item = getFakeCurrency(), onItemClick = {})
+//        PriceItem(item = getFakeCurrency(), onItemClick = {})
     }
 }

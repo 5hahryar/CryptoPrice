@@ -25,6 +25,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.shahryar.cryptoprice.R
 import com.shahryar.cryptoprice.data.model.Currency
+import com.shahryar.shared.Greeting
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -51,7 +52,10 @@ fun PriceScreen(navController: NavController) {
             },
             sheetShape = androidx.compose.material.MaterialTheme.shapes.large
         ) {
-            Column(Modifier.fillMaxSize().background(color = Color.Black)) {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(color = Color.Black)) {
                 PriceTopBar {
                     navController.navigate("settingsScreen")
                 }
@@ -60,26 +64,27 @@ fun PriceScreen(navController: NavController) {
                         modifier = Modifier.fillMaxSize(),
                         state = SwipeRefreshState(isRefreshing),
                         onRefresh = { priceViewModel.refreshData() }) {
-                        Surface(
-                            Modifier
-                                .fillMaxSize()
-                                .background(color = Color.Blue)) {
-                            Text(text = "helo")
-                        }
-//                    when (uiState) {
-//                        is PriceViewModel.UiState.Error -> {
-//                            Text(text = (uiState as PriceViewModel.UiState.Error).message)
+//                        Surface(
+//                            Modifier
+//                                .fillMaxSize()
+//                                .background(color = Color.Blue)) {
+//                            val state = priceViewModel.uiState.observeAsState().value
+//                            if (state is PriceViewModel.UiState.Success) Text(text = state.currencies.toString())
 //                        }
-//                        is PriceViewModel.UiState.Success -> {
-//                            Prices((uiState as PriceViewModel.UiState.Success).currencies) {
-//                                coroutineScope.launch {
+                    when (uiState) {
+                        is PriceViewModel.UiState.Error -> {
+                            Text(text = (uiState as PriceViewModel.UiState.Error).message)
+                        }
+                        is PriceViewModel.UiState.Success -> {
+                            Prices((uiState as PriceViewModel.UiState.Success).currencies) {
+                                coroutineScope.launch {
 //                                    priceViewModel.selectCurrency(it)
 //                                    sheetState.show()
-//                                }
-//                            }
-//                        }
-//                        else -> {}
-//                    }
+                                }
+                            }
+                        }
+                        else -> {}
+                    }
                     }
                 }
             }
@@ -89,7 +94,7 @@ fun PriceScreen(navController: NavController) {
 
 @ExperimentalMaterialApi
 @Composable
-fun Prices(currencies: List<Currency>, onCurrencyClicked: (currency: Currency) -> Unit) {
+fun Prices(currencies: List<com.shahryar.shared.data.model.Currency>, onCurrencyClicked: (currency: com.shahryar.shared.data.model.Currency) -> Unit) {
     LazyColumn {
         items(currencies) { item ->
             PriceItem(item = item, onCurrencyClicked)

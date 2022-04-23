@@ -13,7 +13,7 @@ import com.shahryar.cryptoprice.settings.SettingsScreen
 
 class MainActivity: AppCompatActivity() {
 
-    @ExperimentalMaterialApi
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
