@@ -26,6 +26,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-logging:1.6.7")
 
                 implementation("ch.qos.logback:logback-classic:1.2.11")
+                implementation("io.github.aakira:napier:2.5.0")
 
                 implementation("io.insert-koin:koin-core:3.1.4")
 

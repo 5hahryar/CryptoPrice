@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PriceApi {
+
     private val client = HttpClient {
         install(Logging) {
             logger = Logger.DEFAULT

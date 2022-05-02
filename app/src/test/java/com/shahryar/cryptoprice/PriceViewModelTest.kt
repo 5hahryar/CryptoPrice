@@ -4,7 +4,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.shahryar.cryptoprice.data.repository.RepositoryImpl
 import com.shahryar.cryptoprice.data.repository.Repository
-import com.shahryar.cryptoprice.prices.PriceViewModel
+import com.shahryar.cryptoprice.ui.prices.PriceViewModel
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,6 +41,6 @@ class PriceViewModelTest: KoinComponent {
 
     @Test
     fun getCurrencies() {
-        mViewModel.refreshData()
+        mViewModel.refreshPrices()
     }
 }

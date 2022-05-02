@@ -9,24 +9,29 @@ import org.koin.core.component.inject
 
 object CryptoPriceSettings: KoinComponent {
 
-    private val settings: ObservableSettings by inject()
-
     object KEYS {
         const val TOKEN = "token"
     }
 
+    @OptIn(ExperimentalSettingsApi::class)
+    private val settings: ObservableSettings by inject()
+
+    @OptIn(ExperimentalSettingsApi::class)
     fun observeToken(onChange: (String?) -> Unit) {
         settings.addStringOrNullListener(TOKEN, onChange)
     }
 
+    @OptIn(ExperimentalSettingsApi::class)
     fun deleteSetting(key: String) {
         settings.remove(key)
     }
 
+    @OptIn(ExperimentalSettingsApi::class)
     fun saveSetting(key: String, value: String) {
         settings[key] = value
     }
 
+    @OptIn(ExperimentalSettingsApi::class)
     fun getSetting(key: String): String? {
         return settings[key]
     }
