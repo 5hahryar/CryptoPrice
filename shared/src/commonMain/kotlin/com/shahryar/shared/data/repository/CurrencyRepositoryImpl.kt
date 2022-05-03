@@ -7,12 +7,13 @@ import com.shahryar.shared.data.source.local.LocalDataSource
 import com.shahryar.shared.data.source.remote.RemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class CurrencyRepositoryImpl(
-    private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
-) :
-    CurrencyRepository {
+class CurrencyRepositoryImpl: CurrencyRepository, KoinComponent {
+
+    private val remoteDataSource: RemoteDataSource by inject()
+    private val localDataSource: LocalDataSource by inject()
 
     override fun getCurrencies(fetchFromRemote: Boolean): Flow<Resource<List<CurrencyDto>>> {
         return flow {

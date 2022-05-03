@@ -4,8 +4,10 @@ import com.shahryar.shared.data.CryptoPriceSettings
 import com.shahryar.shared.data.repository.CurrencyRepository
 import com.shahryar.shared.data.repository.CurrencyRepositoryImpl
 import com.shahryar.shared.data.source.local.CurrencyDaoImpl
+import com.shahryar.shared.data.source.local.LocalDataSource
 import com.shahryar.shared.data.source.local.LocalDataSourceImpl
 import com.shahryar.shared.data.source.remote.PriceApi
+import com.shahryar.shared.data.source.remote.RemoteDataSource
 import com.shahryar.shared.data.source.remote.RemoteDataSourceImpl
 import io.github.aakira.napier.Napier
 import org.koin.core.context.startKoin
@@ -26,10 +28,15 @@ val commonModule = module {
         CryptoPriceSettings
     }
 
+    single<RemoteDataSource> {
+        RemoteDataSourceImpl(PriceApi())
+    }
+
+    single<LocalDataSource> {
+        LocalDataSourceImpl(CurrencyDaoImpl(get()))
+    }
+    
     single<CurrencyRepository> {
-        CurrencyRepositoryImpl(
-            RemoteDataSourceImpl(PriceApi()),
-            LocalDataSourceImpl(CurrencyDaoImpl(get()))
-        )
+        CurrencyRepositoryImpl()
     }
 }

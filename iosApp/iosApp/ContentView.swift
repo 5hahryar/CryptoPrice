@@ -10,7 +10,17 @@ import shared
 
 struct ContentView: View {
     var body: some View {
-        PricesScreen()
+        NavigationView {
+            PricesScreen()
+                .navigationTitle("Prices")
+                .toolbar(content: {
+                    NavigationLink(destination: {
+                        SettingsScreen()
+                    }, label: {
+                        Image(systemName: "gear")
+                    })
+                })
+        }
     }
 }
 
