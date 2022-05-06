@@ -7,23 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D82488B127D0CF7A00DD3D5E /* iosAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82488B027D0CF7A00DD3D5E /* iosAppApp.swift */; };
+		D82488B127D0CF7A00DD3D5E /* CryptoPriceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82488B027D0CF7A00DD3D5E /* CryptoPriceApp.swift */; };
 		D82488B327D0CF7A00DD3D5E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82488B227D0CF7A00DD3D5E /* ContentView.swift */; };
 		D82488B527D0CF7C00DD3D5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D82488B427D0CF7C00DD3D5E /* Assets.xcassets */; };
 		D82488B827D0CF7C00DD3D5E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D82488B727D0CF7C00DD3D5E /* Preview Assets.xcassets */; };
 		D858396927D2461000B0EEEB /* PricesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858396827D2461000B0EEEB /* PricesScreen.swift */; };
 		D858396B27D247B100B0EEEB /* PricesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858396A27D247B100B0EEEB /* PricesViewModel.swift */; };
+		D8A1E886282516BB00124C5D /* CurrencyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1E885282516BB00124C5D /* CurrencyItem.swift */; };
+		D8A1E88828251D8600124C5D /* PriceSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1E88728251D8600124C5D /* PriceSheet.swift */; };
+		D8A1E88A28251DF500124C5D /* CurrencyExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A1E88928251DF500124C5D /* CurrencyExt.swift */; };
+		D8E4B14C28203AE300AAD0DE /* Collector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E4B14B28203AE300AAD0DE /* Collector.swift */; };
+		D8F6787B2820F35E00464F4A /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6787A2820F35E00464F4A /* SettingsScreen.swift */; };
+		D8F6787D2821010F00464F4A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6787C2821010F00464F4A /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D82488AD27D0CF7A00DD3D5E /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D82488B027D0CF7A00DD3D5E /* iosAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosAppApp.swift; sourceTree = "<group>"; };
+		D82488B027D0CF7A00DD3D5E /* CryptoPriceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPriceApp.swift; sourceTree = "<group>"; };
 		D82488B227D0CF7A00DD3D5E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D82488B427D0CF7C00DD3D5E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D82488B727D0CF7C00DD3D5E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D82488B927D0CF7C00DD3D5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D858396827D2461000B0EEEB /* PricesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricesScreen.swift; sourceTree = "<group>"; };
 		D858396A27D247B100B0EEEB /* PricesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PricesViewModel.swift; sourceTree = "<group>"; };
+		D8A1E885282516BB00124C5D /* CurrencyItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyItem.swift; sourceTree = "<group>"; };
+		D8A1E88728251D8600124C5D /* PriceSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceSheet.swift; sourceTree = "<group>"; };
+		D8A1E88928251DF500124C5D /* CurrencyExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyExt.swift; sourceTree = "<group>"; };
+		D8E4B14B28203AE300AAD0DE /* Collector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collector.swift; sourceTree = "<group>"; };
+		D8F6787A2820F35E00464F4A /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		D8F6787C2821010F00464F4A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,12 +68,15 @@
 		D82488AF27D0CF7A00DD3D5E /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				D8F678792820F35400464F4A /* settings */,
 				D858396727D245E700B0EEEB /* prices */,
-				D82488B027D0CF7A00DD3D5E /* iosAppApp.swift */,
+				D82488B027D0CF7A00DD3D5E /* CryptoPriceApp.swift */,
 				D82488B227D0CF7A00DD3D5E /* ContentView.swift */,
 				D82488B427D0CF7C00DD3D5E /* Assets.xcassets */,
 				D82488B927D0CF7C00DD3D5E /* Info.plist */,
 				D82488B627D0CF7C00DD3D5E /* Preview Content */,
+				D8E4B14B28203AE300AAD0DE /* Collector.swift */,
+				D8A1E88928251DF500124C5D /* CurrencyExt.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -79,8 +94,19 @@
 			children = (
 				D858396827D2461000B0EEEB /* PricesScreen.swift */,
 				D858396A27D247B100B0EEEB /* PricesViewModel.swift */,
+				D8A1E885282516BB00124C5D /* CurrencyItem.swift */,
+				D8A1E88728251D8600124C5D /* PriceSheet.swift */,
 			);
 			path = prices;
+			sourceTree = "<group>";
+		};
+		D8F678792820F35400464F4A /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				D8F6787A2820F35E00464F4A /* SettingsScreen.swift */,
+				D8F6787C2821010F00464F4A /* SettingsViewModel.swift */,
+			);
+			path = settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,10 +199,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8A1E88A28251DF500124C5D /* CurrencyExt.swift in Sources */,
 				D82488B327D0CF7A00DD3D5E /* ContentView.swift in Sources */,
+				D8E4B14C28203AE300AAD0DE /* Collector.swift in Sources */,
+				D8F6787B2820F35E00464F4A /* SettingsScreen.swift in Sources */,
 				D858396927D2461000B0EEEB /* PricesScreen.swift in Sources */,
 				D858396B27D247B100B0EEEB /* PricesViewModel.swift in Sources */,
-				D82488B127D0CF7A00DD3D5E /* iosAppApp.swift in Sources */,
+				D82488B127D0CF7A00DD3D5E /* CryptoPriceApp.swift in Sources */,
+				D8F6787D2821010F00464F4A /* SettingsViewModel.swift in Sources */,
+				D8A1E886282516BB00124C5D /* CurrencyItem.swift in Sources */,
+				D8A1E88828251D8600124C5D /* PriceSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,7 +342,7 @@
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)";
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -338,7 +370,7 @@
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)\n";
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

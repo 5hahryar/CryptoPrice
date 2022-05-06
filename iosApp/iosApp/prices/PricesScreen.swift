@@ -29,80 +29,37 @@ struct PricesScreen: View {
 private struct PricesList: View {
     
     var currencies: [CurrencyDto]
+    @State private var showSheet: Bool = false
+    @State private var selectedCurrency: CurrencyDto?
     
     var body: some View {
-        
         ScrollView {
-            ForEach(currencies, id: \.id) { item in
-                CurrencyItem(currency: item)
-            }
-        }
-    }
-    
-    struct CurrencyItem: View {
-        
-        let currency: CurrencyDto
-        
-        var body: some View {
-            ZStack(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color(red: 255, green: 245, blue: 158))
-                    .shadow(radius: 1)
-                
-                
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(currency.symbol).font(.subheadline
-                        ).foregroundColor(.secondary)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                        Text(currency.name).font(.headline)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                        Spacer().frame(height: 10)
-                        
-                        Text("\(currency.percent_change_24h, specifier: "%.2f")%").font(.subheadline).foregroundColor(currency.percent_change_24h > 0 ? .green : .red)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                        Text("$\(currency.price, specifier: "%.2f")").font(.headline)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                    }.padding(15)
-                    Spacer()
-                    VStack(alignment: .leading) {
-                        Text("Market cap").foregroundColor(.secondary)
-                            .lineLimit(1)
-                        let markCap = Double(currency.market_cap) ?? 0.0
-                        Text("$\(markCap, specifier: "%.2f")").font(.headline)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                        Spacer().frame(height: 10)
-                        
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("30 Day").font(.subheadline).foregroundColor(.secondary)
-                                    .lineLimit(1)
-                                Text("\(currency.percent_change_30d, specifier: "%.2f")%"
-                                ).lineLimit(1).foregroundColor(currency.percent_change_30d > 0 ? .green : .red).font(.headline)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.01)
-                            }
-                            Spacer().frame(width: 20)
-                            VStack(alignment: .leading) {
-                                Text("7 Day").font(.subheadline).foregroundColor(.secondary)
-                                Text("\(currency.percent_change_7d, specifier: "%.2f")%").lineLimit(1).foregroundColor(currency.percent_change_7d > 0 ? .green : .red).font(.headline)
-                                    .minimumScaleFactor(0.01)
-                            }
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())]) {
+                ForEach(currencies, id: \.id) { item in
+                    CurrencyItem(currency: item)
+                        .onTapGesture {
+                            selectedCurrency = item
+                            showSheet = true
                         }
-                    }.padding(20)
+                        .sheet(isPresented: $showSheet, content: {
+                            if selectedCurrency != nil {
+                                SheetView(currency: selectedCurrency!)
+                            }
+                        })
                 }
-                
-            }
-            .frame(width: .infinity)
-            .padding()
+            }.padding(10)
         }
     }
     
+    
+    struct SheetView: View {
+        @Environment(\.dismiss) var dismiss
+        let currency: CurrencyDto
+
+        var body: some View {
+            PriceSheet(currency: currency)
+        }
+    }
     
     struct CardModifier: ViewModifier {
         func body(content: Content) -> some View {
