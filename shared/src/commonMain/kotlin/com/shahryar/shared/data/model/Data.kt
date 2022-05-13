@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Data(
-    val `data`: List<DataX>,
+    val `data`: List<DataX>?,
     var status: Status
 )
 
@@ -30,8 +30,9 @@ data class Status(
     val credit_count: Int,
     val elapsed: Int,
     val error_code: Int,
+    val error_message: String?,
     val timestamp: String,
-    val total_count: Int
+    val total_count: Int?
 )
 
 @Serializable
@@ -52,7 +53,7 @@ data class USD(
 )
 
 fun Data.asCurrency(): List<CurrencyDto> {
-    return data.map {
+    return data!!.map {
         CurrencyDto(
             id = it.id,
             circulating_supply = it.circulating_supply,

@@ -21,9 +21,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-core:1.6.7")
-                implementation("io.ktor:ktor-client-serialization:1.6.7")
-                implementation("io.ktor:ktor-client-logging:1.6.7")
+                implementation("io.ktor:ktor-client-core:2.0.1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
+                implementation("io.ktor:ktor-client-logging:2.0.1")
+                implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
 
                 implementation("ch.qos.logback:logback-classic:1.2.11")
                 implementation("io.github.aakira:napier:2.5.0")
@@ -42,7 +43,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-android:1.6.7")
+                implementation("io.ktor:ktor-client-android:2.0.1")
 
                 implementation("com.russhwolf:multiplatform-settings:0.8.1")
 
@@ -52,17 +53,17 @@ kotlin {
 //        val androidTest by getting
         val iosX64Main by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-ios:1.6.7")
+                implementation("io.ktor:ktor-client-ios:2.0.1")
             }
         }
         val iosArm64Main by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-ios:1.6.7")
+                implementation("io.ktor:ktor-client-ios:2.0.1")
             }
         }
         val iosSimulatorArm64Main by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-ios:1.6.7")
+                implementation("io.ktor:ktor-client-ios:2.0.1")
             }
         }
         val iosMain by creating {
@@ -71,7 +72,7 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-                implementation("io.ktor:ktor-client-ios:1.6.7")
+                implementation("io.ktor:ktor-client-ios:2.0.1")
 
                 implementation("com.russhwolf:multiplatform-settings:0.8.1")
 
