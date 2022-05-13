@@ -13,13 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shahryar.cryptoprice.R
+import com.shahryar.shared.data.model.CurrencyDto
 
 @Composable
-fun PriceItem(item: com.shahryar.shared.data.model.CurrencyDto, onItemClick: (currency: com.shahryar.shared.data.model.CurrencyDto) -> Unit) {
+fun PriceItem(item: CurrencyDto, onItemClick: (currency: CurrencyDto) -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()
@@ -48,7 +50,6 @@ fun PriceItem(item: com.shahryar.shared.data.model.CurrencyDto, onItemClick: (cu
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-//                                    .background(color = Color.Red)
             ) {
                 Column {
                     Box(
@@ -75,7 +76,6 @@ fun PriceItem(item: com.shahryar.shared.data.model.CurrencyDto, onItemClick: (cu
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
-//                                            .background(color = Color.Cyan),
                     ) {
                         Column(
                             modifier = Modifier.fillMaxHeight(),
@@ -95,14 +95,12 @@ fun PriceItem(item: com.shahryar.shared.data.model.CurrencyDto, onItemClick: (cu
                                 ),
                                 fontSize = 14.sp,
                                 maxLines = 1,
-//                                                modifier = Modifier.background(Color.Yellow)
                             )
                             Text(
                                 text = "$${item.price}",
                                 color = colorResource(id = R.color.text_color),
                                 fontSize = 20.sp,
                                 maxLines = 1,
-//                                            modifier = Modifier.background(Color.Red)
                             )
                         }
                     }
@@ -126,7 +124,7 @@ fun PriceItem(item: com.shahryar.shared.data.model.CurrencyDto, onItemClick: (cu
                     ) {
                         Column(verticalArrangement = Arrangement.aligned(Alignment.CenterVertically)) {
                             Text(
-                                text = "Market cap",
+                                text = stringResource(R.string.market_cap),
                                 color = colorResource(id = R.color.text_alpha),
                                 fontSize = 14.sp,
                                 maxLines = 1
@@ -153,7 +151,7 @@ fun PriceItem(item: com.shahryar.shared.data.model.CurrencyDto, onItemClick: (cu
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = "30 Day",
+                                    text = stringResource(R.string.day_30),
                                     color = colorResource(id = R.color.text_alpha),
                                     fontSize = 14.sp,
                                     maxLines = 1,
@@ -183,7 +181,7 @@ fun PriceItem(item: com.shahryar.shared.data.model.CurrencyDto, onItemClick: (cu
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = "7 Day",
+                                    text = stringResource(R.string.day_7),
                                     color = colorResource(id = R.color.text_alpha),
                                     fontSize = 14.sp,
                                     maxLines = 1,

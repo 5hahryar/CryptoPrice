@@ -18,8 +18,8 @@ object CryptoPriceSettings: KoinComponent {
     private val settings: ObservableSettings by inject()
 
     @OptIn(ExperimentalSettingsApi::class)
-    fun observeToken(onChange: (String?) -> Unit) {
-        settings.addStringOrNullListener(TOKEN, onChange)
+    fun observeToken(onChange: (String) -> Unit) {
+        settings.addStringListener(TOKEN, "", onChange)
     }
 
     @OptIn(ExperimentalSettingsApi::class)

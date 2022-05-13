@@ -1,50 +1,71 @@
 package com.shahryar.cryptoprice.ui.prices
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.shahryar.cryptoprice.core.base.BaseViewModel
+import com.shahryar.shared.data.CryptoPriceSettings
 import com.shahryar.shared.data.model.CurrencyDto
+import com.shahryar.shared.data.model.Resource
+import com.shahryar.shared.data.repository.CurrencyRepository
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 
 class PriceViewModel(
-    private val mCurrencyRepository: com.shahryar.shared.data.repository.CurrencyRepository
+    private val currencyRepository: CurrencyRepository
 ) :
     BaseViewModel() {
 
-    private val _uiState = MutableLiveData(UiState(true))
-    val uiState: LiveData<UiState> = _uiState
+    var uiState by mutableStateOf(UiState(true,
+        isApiKeyAvailable = !CryptoPriceSettings.getSetting(CryptoPriceSettings.KEYS.TOKEN)
+            .isNullOrEmpty()
+    )
+    )
+        private set
 
-    private val _selectedCurrency = MutableLiveData<CurrencyDto>()
-    val selectedCurrency: LiveData<CurrencyDto> = _selectedCurrency
+    var selectedCurrency by mutableStateOf<CurrencyDto?>(null)
+        private set
 
     init {
+        CryptoPriceSettings.observeToken { token ->
+            uiState = uiState.copy(isApiKeyAvailable = !token.isNullOrEmpty())
+            Log.d("OBS", "is empty: ${token.isNullOrEmpty()}")
+        }
         getCurrencies(true)
     }
 
     private fun getCurrencies(fetchFromRemote: Boolean = false) {
-        _uiState.value = _uiState.value?.copy(isRefreshing = true)
+        uiState = uiState.copy(isRefreshing = true)
         viewModelScope.launch {
-            mCurrencyRepository.getCurrencies(fetchFromRemote).collect {
-                if (it.status == com.shahryar.shared.data.model.Resource.Status.SUCCESS) {
-                    _uiState.value = _uiState.value?.copy(isRefreshing = false, prices = it.data)
-                } else _uiState.value =
-                    _uiState.value?.copy(isRefreshing = false, error = it.message)
-            }
+            currencyRepository.getCurrencies(fetchFromRemote)
+                .onCompletion {
+                    uiState = uiState.copy(isRefreshing = false)
+                }.collect {
+                    uiState = if (it.status == Resource.Status.SUCCESS) {
+                        uiState.copy(prices = it.data)
+                    } else uiState.copy(error = it.message, prices = it.data)
+                }
         }
     }
 
     fun selectCurrency(currency: CurrencyDto) {
-        _selectedCurrency.value = currency
+        selectedCurrency = currency
     }
 
     fun refreshPrices() {
         getCurrencies(true)
     }
 
+    fun errorShown() {
+        uiState = uiState.copy(error = null)
+    }
+
     data class UiState(
         val isRefreshing: Boolean,
+        val isApiKeyAvailable: Boolean = false,
         val prices: List<CurrencyDto>? = null,
         val error: String? = null
     )

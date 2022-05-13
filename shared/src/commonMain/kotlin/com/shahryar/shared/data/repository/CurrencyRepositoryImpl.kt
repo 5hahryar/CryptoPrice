@@ -18,11 +18,14 @@ class CurrencyRepositoryImpl: CurrencyRepository, KoinComponent {
     override fun getCurrencies(fetchFromRemote: Boolean): Flow<Resource<List<CurrencyDto>>> {
         return flow {
             val currencies = localDataSource.getCurrencies()
+            if (currencies.data?.isNotEmpty() == true) emit(Resource.success(currencies.data))
             if (currencies.data.isNullOrEmpty() || fetchFromRemote) {
                 with(remoteDataSource.getPrices()) {
                     if (status == Resource.Status.SUCCESS && data != null) {
                         localDataSource.insertCurrencies(data)
                         emit(this)
+                    } else {
+                        emit(Resource.error(currencies.data, message.toString()))
                     }
                 }
             } else emit(currencies)

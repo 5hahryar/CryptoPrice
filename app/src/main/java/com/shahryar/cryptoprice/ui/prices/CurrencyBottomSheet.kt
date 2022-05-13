@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -67,7 +68,7 @@ fun OverView(currency: CurrencyDto) {
         Row {
             Column(modifier = Modifier
                 .weight(1f)) {
-                ItemOverview(label = "Total supply", value = "$${String.format("%.2f", currency.total_supply)}")
+                ItemOverview(label = stringResource(R.string.total_supply), value = "$${String.format("%.2f", currency.total_supply)}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
@@ -80,21 +81,21 @@ fun OverView(currency: CurrencyDto) {
         Spacer(modifier = Modifier.height(20.dp))
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = "Max supply", value = "$${String.format("%.2f",currency.max_supply)}")
+                ItemOverview(label = stringResource(R.string.max_supply), value = "$${String.format("%.2f",currency.max_supply)}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = "24 Hour volume", value = "$${String.format("%.2f", currency.volume_24h)}")
+                ItemOverview(label = stringResource(R.string.hour_volume_24), value = "$${String.format("%.2f", currency.volume_24h)}")
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = "Market cap", value = "$${currency.market_cap}")
+                ItemOverview(label = stringResource(id = R.string.market_cap), value = "$${currency.market_cap}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = "CMC Rank", value = "${currency.cmc_rank}")
+                ItemOverview(label = stringResource(R.string.cmc_rank), value = "${currency.cmc_rank}")
             }
         }
     }
@@ -145,7 +146,7 @@ fun PercentCard(currency: CurrencyDto) {
                 Text(
                     modifier = Modifier
                         .padding(bottom = 5.dp),
-                    text = "1 Hour",
+                    text = stringResource(R.string.hour_1),
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
                     color = colorResource(
@@ -171,7 +172,7 @@ fun PercentCard(currency: CurrencyDto) {
                 Text(
                     modifier = Modifier
                         .padding(bottom = 5.dp),
-                    text = "24 Hour",
+                    text = stringResource(R.string.hour_24),
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
                     color = colorResource(
@@ -197,7 +198,7 @@ fun PercentCard(currency: CurrencyDto) {
                 Text(
                     modifier = Modifier
                         .padding(bottom = 5.dp),
-                    text = "7 Days",
+                    text = stringResource(id = R.string.day_7),
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
                     color = colorResource(

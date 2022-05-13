@@ -30,11 +30,9 @@ kotlin {
 
                 implementation("io.insert-koin:koin-core:3.1.4")
 
-                implementation("com.russhwolf:multiplatform-settings:0.8.1")
-                implementation("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
-                implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:0.8.1")
-
-                implementation("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
+                implementation("com.russhwolf:multiplatform-settings:0.9")
+                implementation("com.russhwolf:multiplatform-settings-no-arg:0.9")
+                implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:0.9")
             }
         }
         val commonTest by getting {

@@ -1,23 +1,22 @@
 package com.shahryar.cryptoprice.ui.settings
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import com.shahryar.shared.data.CryptoPriceSettings
 
 class SettingsViewModel(private val appSettings: CryptoPriceSettings) :
     ViewModel() {
 
-    private val _apiKey = MutableLiveData("")
-    val apiKey: LiveData<String> = _apiKey
-
-    init {
-        _apiKey.postValue(appSettings.getSetting(CryptoPriceSettings.KEYS.TOKEN))
-    }
+    var apiKey by mutableStateOf(appSettings.getSetting(CryptoPriceSettings.KEYS.TOKEN))
+        private set
 
     fun onApiKeyChange(value: String) {
-        _apiKey.value = value
+        apiKey = value
     }
 
     fun saveApiKey() {
-        appSettings.saveSetting(CryptoPriceSettings.KEYS.TOKEN, _apiKey.value.toString())
+        apiKey?.let { appSettings.saveSetting(CryptoPriceSettings.KEYS.TOKEN, it) }
     }
 }
