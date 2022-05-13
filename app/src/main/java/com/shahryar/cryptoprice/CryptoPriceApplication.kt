@@ -7,7 +7,7 @@ import com.shahryar.shared.data.CryptoPriceSettings
 import com.shahryar.shared.di.initKoin
 import org.koin.android.ext.koin.androidContext
 
-class CryptoPriceApplication: Application() {
+open class CryptoPriceApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()

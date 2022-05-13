@@ -17,7 +17,7 @@ struct PricesScreen: View {
             ProgressView()
         } else {
             if !viewModel.currencies.isEmpty {
-                PricesList(currencies: viewModel.currencies)
+                PricesList(currencies: viewModel.currencies, onRefresh: { viewModel.refresh() })
             } else {
                 Text("Prices not found")
             }
@@ -29,6 +29,7 @@ struct PricesScreen: View {
 private struct PricesList: View {
     
     var currencies: [CurrencyDto]
+    let onRefresh: () -> Void
     @State private var showSheet: Bool = false
     @State private var selectedCurrency: CurrencyDto?
     
@@ -48,6 +49,9 @@ private struct PricesList: View {
                         })
                 }
             }.padding(10)
+                .refreshable {
+                    onRefresh()
+                }
         }
     }
     

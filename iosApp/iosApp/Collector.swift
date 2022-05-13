@@ -17,7 +17,6 @@ class Collector<T>: Kotlinx_coroutines_coreFlowCollector {
     }
     
     func emit(value: Any?, completionHandler: @escaping (KotlinUnit?, Error?) -> Void) {
-        print(value.debugDescription)
         callback(value as! T)        
         completionHandler(KotlinUnit(), nil)
     }

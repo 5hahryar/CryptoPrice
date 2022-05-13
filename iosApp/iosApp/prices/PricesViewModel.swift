@@ -28,6 +28,11 @@ class PricesViewModel: ObservableObject {
             }
         }, completionHandler: { result, error in
             // Flow completed
+            print("Flow completed")
         })
+    }
+    
+    func refresh() {
+        getPrices(fetchFromRemote: true)
     }
 }

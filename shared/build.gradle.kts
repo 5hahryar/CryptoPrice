@@ -29,6 +29,8 @@ kotlin {
                 implementation("ch.qos.logback:logback-classic:1.2.11")
                 implementation("io.github.aakira:napier:2.5.0")
 
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+
                 implementation("io.insert-koin:koin-core:3.1.4")
 
                 implementation("com.russhwolf:multiplatform-settings:0.9")

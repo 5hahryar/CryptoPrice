@@ -14,11 +14,11 @@ class CurrencyDaoImpl(
 
     private val database: CryptoPriceDb = CryptoPriceDb(sqlDriver)
 
-    override suspend fun getCurrencies(): List<CurrencyDto> = withContext(Dispatchers.Default) {
-        database.currencyEntityQueries.getCurrencies().executeAsList().map { it.mapToCurrencyDto() }
+    override suspend fun getCurrencies(): List<CurrencyDto> {
+        return database.currencyEntityQueries.getCurrencies().executeAsList().map { it.mapToCurrencyDto() }
     }
 
-    override suspend fun addCurrencies(currencies: List<CurrencyDto>) = withContext(Dispatchers.Default) {
+    override suspend fun addCurrencies(currencies: List<CurrencyDto>) {
         for (currency in currencies) {
             database.currencyEntityQueries.addCurrency(currency.mapToCurrency())
         }
