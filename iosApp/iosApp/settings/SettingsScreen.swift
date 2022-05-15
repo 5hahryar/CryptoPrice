@@ -13,21 +13,19 @@ struct SettingsScreen: View {
     @ObservedObject var viewModel: SettingsViewModel = SettingsViewModel()
     
     var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Api"), content: {
-                    TextField("Api key", text: $viewModel.apiKey)
-                })
-            }
-            .navigationTitle("Settings")
-            .toolbar(content: {
-                Button(action: {
-                    CryptoPriceSettings().saveSetting(key: "token", value: viewModel.apiKey)
-                }, label: {
-                    Image(systemName: "checkmark.circle")
-                })
+        Form {
+            Section(header: Text("Api Key"), content: {
+                TextField("Api key", text: $viewModel.apiKey)
             })
         }
+        .navigationTitle("Settings")
+        .toolbar(content: {
+            Button(action: {
+                CryptoPriceSettings().saveSetting(key: "token", value: viewModel.apiKey)
+            }, label: {
+                Image(systemName: "checkmark.circle")
+            })
+        })
     }
 }
 

@@ -19,7 +19,12 @@ struct PricesScreen: View {
             if !viewModel.currencies.isEmpty {
                 PricesList(currencies: viewModel.currencies, onRefresh: { viewModel.refresh() })
             } else {
-                Text("Prices not found")
+                VStack {
+                    Text(viewModel.errorMessage ?? "Prices not found")
+                    Button(action: { viewModel.refresh() }, label: {
+                        Text("Try again")
+                    })
+                }
             }
         }
         
@@ -42,11 +47,9 @@ private struct PricesList: View {
                             selectedCurrency = item
                             showSheet = true
                         }
-                        .sheet(isPresented: $showSheet, content: {
-                            if selectedCurrency != nil {
-                                SheetView(currency: selectedCurrency!)
-                            }
-                        })
+                        .adaptiveSheet(isPresented: $showSheet, detents: [.medium()], smallestUndimmedDetentIdentifier: .large) {
+                            Text("Modal sheet is not implemented yet!")
+                        }
                 }
             }.padding(10)
                 .refreshable {
@@ -59,7 +62,7 @@ private struct PricesList: View {
     struct SheetView: View {
         @Environment(\.dismiss) var dismiss
         let currency: CurrencyDto
-
+        
         var body: some View {
             PriceSheet(currency: currency)
         }
