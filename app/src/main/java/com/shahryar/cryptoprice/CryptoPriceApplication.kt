@@ -1,27 +1,24 @@
 package com.shahryar.cryptoprice
 
 import android.app.Application
-import android.content.Context
+import android.util.Log
 import com.shahryar.cryptoprice.core.di.cryptoPriceModules
+import com.shahryar.shared.data.CryptoPriceSettings
+import com.shahryar.shared.di.initKoin
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
 
-class CryptoPriceApplication: Application() {
-
-    companion object {
-        //TODO: Fix these
-        var context: Context = CryptoPriceApplication.context
-        var apiKey: String = ""
-    }
+open class CryptoPriceApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
 
-        context = applicationContext
-
-        startKoin {
+        initKoin {
             androidContext(applicationContext)
             modules(cryptoPriceModules)
+        }
+
+        CryptoPriceSettings.observeToken { token ->
+            Log.d("OBS", "is empty: ${token.isNullOrEmpty()}")
         }
     }
 }

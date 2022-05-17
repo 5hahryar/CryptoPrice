@@ -1,0 +1,24 @@
+CREATE TABLE currency (
+    id INTEGER NOT NULL PRIMARY KEY,
+    cmc_rank INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    symbol TEXT NOT NULL,
+    market_cap TEXT NOT NULL,
+    date_added TEXT NOT NULL,
+    last_updated TEXT NOT NULL,
+    price REAL NOT NULL,
+    circulating_supply REAL NOT NULL,
+    max_supply REAL,
+    total_supply REAL NOT NULL ,
+    volume_24h REAL NOT NULL ,
+    percent_change_1h REAL NOT NULL,
+    percent_change_24h REAL NOT NULL,
+    percent_change_30d REAL NOT NULL,
+    percent_change_7d REAL NOT NULL
+);
+
+getCurrencies:
+    SELECT * FROM currency;
+
+addCurrency:
+    INSERT OR REPLACE INTO currency(id, cmc_rank, name, symbol, market_cap, date_added, last_updated, price, circulating_supply, max_supply, total_supply, volume_24h, percent_change_1h, percent_change_24h, percent_change_30d, percent_change_7d) VALUES ?;

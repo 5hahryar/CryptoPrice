@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CryptoPrice</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="market_cap">Market cap</string>
     <string name="d7">7 Day</string>
@@ -17,4 +16,18 @@
     <string name="data_market_cap">$%s</string>
     <string name="price">Price</string>
     <string name="select_currency">Select Currency</string>
+    <string name="no_api_key_message">Api key not found\nYou need an API key in order to use CryptoPrice</string>
+    <string name="get_api_key">Get Key</string>
+    <string name="enter_api_key">Enter Key</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="menu">Menu</string>
+    <string name="day_30">30 Day</string>
+    <string name="day_7">7 Day</string>
+    <string name="total_supply">Total supply</string>
+    <string name="max_supply">Max supply</string>
+    <string name="hour_volume_24">24 Hour volume</string>
+    <string name="cmc_rank">CMC Rank</string>
+    <string name="hour_1">1 Hour</string>
+    <string name="hour_24">24 Hour</string>
 </resources>
