@@ -1,12 +1,11 @@
-![alt text](https://github.com/5hahryar/CryptoPrice/blob/master/CryptoPrice.png?raw=true)
+![alt text](https://github.com/5hahryar/CryptoPrice/blob/master/ScreenShot.png?raw=true)
 
 # CryptoPrice
-Live cryptocurrency prices for android
+CryptoPrice is a simple app made with the help of Kotlin Multiplatform.
+It uses Kotlin to share business login between android and iOS. 
+
+The Ui is made with Jetpack Compose and SwiftUi.
+CryptoPrice uses Koin, SqlDelight, Ktor, Napier and Multiplatform Settings.
 
 ## Usage & API
 CryptoPrice uses APIs from www.coinmarketcap.com, in order to use the app, you need to provide your own API key.
-
-## Support
-Reach out to me at shahryar.kh78@gmail.com
-
-Feel free to make any contributions.
