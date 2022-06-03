@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shahryar.cryptoprice.R
 import com.shahryar.shared.data.CryptoPriceSettings
+import com.shahryar.shared.data.model.Currency
 import com.shahryar.shared.data.model.CurrencyDto
 import com.shahryar.shared.data.repository.CurrencyRepository
 import org.koin.android.ext.android.inject
@@ -79,7 +80,7 @@ class WidgetConfigureActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun CurrencyListView(currencies: List<CurrencyDto>?) {
+    fun CurrencyListView(currencies: List<Currency>?) {
         currencies?.let {
             LazyColumn {
                 items(currencies) { currency ->
@@ -92,7 +93,7 @@ class WidgetConfigureActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun CurrencyItemView(currency: CurrencyDto, onItemClick: () -> Unit) {
+    fun CurrencyItemView(currency: Currency, onItemClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .height(60.dp)
@@ -109,7 +110,7 @@ class WidgetConfigureActivity : AppCompatActivity() {
         }
     }
 
-    private fun onCurrencySelected(currency: CurrencyDto) {
+    private fun onCurrencySelected(currency: Currency) {
         val appWidgetId = intent?.extras?.getInt(
             AppWidgetManager.EXTRA_APPWIDGET_ID,
             AppWidgetManager.INVALID_APPWIDGET_ID

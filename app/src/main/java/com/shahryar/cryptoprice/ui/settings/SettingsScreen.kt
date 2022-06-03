@@ -12,10 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.shahryar.cryptoprice.R
+import com.shahryar.cryptoprice.ui.CryptoPriceTheme
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -24,15 +26,17 @@ fun SettingsScreen(navController: NavController) {
     val settingsViewModel = getViewModel<SettingsViewModel>()
     val apiKey = settingsViewModel.apiKey
 
-    Column {
-        SettingsTopBar({
-            settingsViewModel.saveApiKey()
-            navController.navigateUp()
-        }, {
-            navController.navigateUp()
-        })
-        SettingsContent(apiKey ?: "") {
-            settingsViewModel.onApiKeyChange(it)
+    CryptoPriceTheme {
+        Column {
+            SettingsTopBar({
+                settingsViewModel.saveApiKey()
+                navController.navigateUp()
+            }, {
+                navController.navigateUp()
+            })
+            SettingsContent(apiKey ?: "") {
+                settingsViewModel.onApiKeyChange(it)
+            }
         }
     }
 }
@@ -43,7 +47,7 @@ private fun SettingsTopBar(onSaveClicked: () -> Unit, onBackClicked: () -> Unit)
         title = {
             Text(text = stringResource(R.string.settings), color = colorResource(id = R.color.onPrimary))
         },
-        backgroundColor = colorResource(id = R.color.primary),
+        backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = {
             IconButton(onClick = onBackClicked) {
                 androidx.compose.material.Icon(
@@ -77,6 +81,7 @@ private fun SettingsContent(apiKey: String, onApiKeyChanged: (String) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth(),
             value = apiKey,
+            textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
             onValueChange = onApiKeyChanged
         )
     }

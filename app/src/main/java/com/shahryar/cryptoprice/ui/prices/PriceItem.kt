@@ -18,15 +18,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shahryar.cryptoprice.R
+import com.shahryar.shared.data.model.Currency
 import com.shahryar.shared.data.model.CurrencyDto
 
 @Composable
-fun PriceItem(item: CurrencyDto, onItemClick: (currency: CurrencyDto) -> Unit) {
+fun PriceItem(item: Currency, onItemClick: (currency: Currency) -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()
             .height(150.dp)
-            .padding(15.dp, 8.dp)
             .clickable(
                 indication = rememberRipple(
                     bounded = true,
@@ -37,7 +37,7 @@ fun PriceItem(item: CurrencyDto, onItemClick: (currency: CurrencyDto) -> Unit) {
                 interactionSource = MutableInteractionSource()
             ),
         shape = RoundedCornerShape(20.dp),
-        backgroundColor = colorResource(id = R.color.item_price_card),
+        backgroundColor = androidx.compose.material.MaterialTheme.colors.primaryVariant,
         elevation = 0.dp
     ) {
         Row(
@@ -82,13 +82,8 @@ fun PriceItem(item: CurrencyDto, onItemClick: (currency: CurrencyDto) -> Unit) {
                             verticalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                text = "${
-                                    String.format(
-                                        "%.2f",
-                                        item.percent_change_24h
-                                    )
-                                }%",
-                                color = if (item.percent_change_24h >= 0) colorResource(
+                                text = "${item.percentChange24h}%",
+                                color = if (item.percentChange24h.toDouble() >= 0) colorResource(
                                     id = R.color.green
                                 ) else colorResource(
                                     id = R.color.red
@@ -130,7 +125,7 @@ fun PriceItem(item: CurrencyDto, onItemClick: (currency: CurrencyDto) -> Unit) {
                                 maxLines = 1
                             )
                             Text(
-                                text = "$${item.market_cap}",
+                                text = "$${item.marketCap}",
                                 color = colorResource(id = R.color.text_color),
                                 fontSize = 19.sp,
                                 maxLines = 1
@@ -159,12 +154,9 @@ fun PriceItem(item: CurrencyDto, onItemClick: (currency: CurrencyDto) -> Unit) {
                                 )
                                 Text(
                                     text = "${
-                                        String.format(
-                                            "%.2f",
-                                            item.percent_change_30d
-                                        )
+                                        item.percentChange30d
                                     }%",
-                                    color = if (item.percent_change_30d >= 0) colorResource(
+                                    color = if (item.percentChange30d.toDouble() >= 0) colorResource(
                                         id = R.color.green
                                     ) else colorResource(
                                         id = R.color.red
@@ -189,12 +181,9 @@ fun PriceItem(item: CurrencyDto, onItemClick: (currency: CurrencyDto) -> Unit) {
                                 )
                                 Text(
                                     text = "${
-                                        String.format(
-                                            "%.2f",
-                                            item.percent_change_7d
-                                        )
+                                        item.percentChange7d
                                     }%",
-                                    color = if (item.percent_change_7d >= 0) colorResource(
+                                    color = if (item.percentChange7d.toDouble() >= 0) colorResource(
                                         id = R.color.green
                                     ) else colorResource(
                                         id = R.color.red

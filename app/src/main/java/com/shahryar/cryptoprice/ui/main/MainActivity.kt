@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.shahryar.cryptoprice.ui.CryptoPriceTheme
 import com.shahryar.cryptoprice.ui.prices.PriceScreen
 import com.shahryar.cryptoprice.ui.settings.SettingsScreen
 
@@ -20,7 +21,7 @@ class MainActivity: AppCompatActivity() {
         setContent {
             val navController = rememberNavController()
 
-            MaterialTheme {
+            CryptoPriceTheme {
                 NavHost(navController = navController, startDestination = "priceScreen") {
                     composable("priceScreen") { PriceScreen(navController) }
                     composable("settingsScreen") { SettingsScreen(navController) }

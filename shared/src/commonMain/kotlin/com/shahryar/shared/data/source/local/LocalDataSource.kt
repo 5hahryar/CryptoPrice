@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
 
-    suspend fun getCurrencies(): Resource<List<CurrencyDto>>
+    suspend fun getCurrencies(): List<CurrencyDto>
 
     suspend fun insertCurrencies(currencies: List<CurrencyDto>)
 }

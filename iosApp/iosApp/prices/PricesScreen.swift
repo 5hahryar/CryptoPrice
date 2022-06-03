@@ -33,10 +33,10 @@ struct PricesScreen: View {
 
 private struct PricesList: View {
     
-    var currencies: [CurrencyDto]
+    var currencies: [Currency]
     let onRefresh: () -> Void
     @State private var showSheet: Bool = false
-    @State private var selectedCurrency: CurrencyDto?
+    @State private var selectedCurrency: Currency?
     
     var body: some View {
         ScrollView {
@@ -77,11 +77,11 @@ private struct PricesList: View {
         
     }
     
-    struct CurrencyItem_Previews: PreviewProvider {
-        static var previews: some View {
-            CurrencyItem(currency: CurrencyDto(id: 1, circulating_supply: 6847310.349, cmc_rank: 1, date_added: "", last_updated: "", max_supply: 150000000, name: "Bitcoin", symbol: "BTC", total_supply: 15000000, market_cap: "1236438124", percent_change_1h: 12.34, percent_change_24h: 2.3, percent_change_30d: 55.23, percent_change_7d: -23.32, price: 42342.45, volume_24h: 12353085))
-        }
-    }
+//    struct CurrencyItem_Previews: PreviewProvider {
+//        static var previews: some View {
+//            CurrencyItem(currency: CurrencyDto(id: 1, circulating_supply: 6847310.349, cmc_rank: 1, date_added: "", last_updated: "", max_supply: 150000000, name: "Bitcoin", symbol: "BTC", total_supply: 15000000, market_cap: "1236438124", percent_change_1h: 12.34, percent_change_24h: 2.3, percent_change_30d: 55.23, percent_change_7d: -23.32, price: 42342.45, volume_24h: 12353085))
+//        }
+//    }
     
     struct PricesScreen_Previews: PreviewProvider {
         static var previews: some View {

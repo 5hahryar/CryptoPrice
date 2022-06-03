@@ -7,32 +7,38 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.shahryar.cryptoprice.core.base.BaseViewModel
 import com.shahryar.shared.data.CryptoPriceSettings
+import com.shahryar.shared.data.model.Currency
 import com.shahryar.shared.data.model.CurrencyDto
 import com.shahryar.shared.data.model.Resource
 import com.shahryar.shared.data.repository.CurrencyRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.text.DecimalFormat
+import java.text.NumberFormat
 
 class PriceViewModel(
     private val currencyRepository: CurrencyRepository
 ) :
     BaseViewModel() {
 
-    var uiState by mutableStateOf(UiState(true,
-        isApiKeyAvailable = !CryptoPriceSettings.getSetting(CryptoPriceSettings.KEYS.TOKEN)
-            .isNullOrEmpty()
-    )
+    var uiState by mutableStateOf(
+        UiState(
+            true,
+            isApiKeyAvailable = !CryptoPriceSettings.getSetting(CryptoPriceSettings.KEYS.TOKEN)
+                .isNullOrEmpty()
+        )
     )
         private set
 
-    var selectedCurrency by mutableStateOf<CurrencyDto?>(null)
+    var selectedCurrency by mutableStateOf<Currency?>(null)
         private set
 
     init {
         CryptoPriceSettings.observeToken { token ->
-            uiState = uiState.copy(isApiKeyAvailable = !token.isNullOrEmpty())
-            Log.d("OBS", "is empty: ${token.isNullOrEmpty()}")
+            uiState = uiState.copy(isApiKeyAvailable = token.isNotEmpty())
+            Log.d("OBS", "is empty: ${token.isEmpty()}")
         }
         getCurrencies(true)
     }
@@ -51,7 +57,7 @@ class PriceViewModel(
         }
     }
 
-    fun selectCurrency(currency: CurrencyDto) {
+    fun selectCurrency(currency: Currency) {
         selectedCurrency = currency
     }
 
@@ -66,7 +72,7 @@ class PriceViewModel(
     data class UiState(
         val isRefreshing: Boolean,
         val isApiKeyAvailable: Boolean = false,
-        val prices: List<CurrencyDto>? = null,
+        val prices: List<Currency>? = null,
         val error: String? = null
     )
 }

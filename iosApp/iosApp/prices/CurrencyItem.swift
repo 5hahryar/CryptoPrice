@@ -11,7 +11,7 @@ import shared
 
 struct CurrencyItem: View {
     
-    let currency: CurrencyDto
+    let currency: Currency
     
     var body: some View {
         ZStack(alignment: .leading) {
@@ -27,10 +27,10 @@ struct CurrencyItem: View {
                     .minimumScaleFactor(0.01)
                 Spacer()
                 
-                Text("\(currency.percent_change_24h, specifier: "%.2f")%").foregroundColor(currency.percent_change_24h > 0 ? .green : .red)
+                Text("\(currency.percentChange24h)%").foregroundColor(Int(currency.percentChange24h) ?? 0 > 0 ? .green : .red)
                     .lineLimit(1)
                     .font(.system(size: 20))
-                Text("$\(currency.price, specifier: "%.2f")").font(.system(size: 25).weight(.medium))
+                Text("\(currency.price)").font(.system(size: 25).weight(.medium))
                     .lineLimit(1)
                     .minimumScaleFactor(0.01)
             }.padding()

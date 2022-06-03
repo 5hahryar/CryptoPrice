@@ -1,4 +1,4 @@
-CREATE TABLE currency (
+CREATE TABLE currencyEntity (
     id INTEGER NOT NULL PRIMARY KEY,
     cmc_rank INTEGER NOT NULL,
     name TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE currency (
 );
 
 getCurrencies:
-    SELECT * FROM currency;
+    SELECT * FROM currencyEntity;
 
 addCurrency:
-    INSERT OR REPLACE INTO currency(id, cmc_rank, name, symbol, market_cap, date_added, last_updated, price, circulating_supply, max_supply, total_supply, volume_24h, percent_change_1h, percent_change_24h, percent_change_30d, percent_change_7d) VALUES ?;
+    INSERT OR REPLACE INTO currencyEntity(id, cmc_rank, name, symbol, market_cap, date_added, last_updated, price, circulating_supply, max_supply, total_supply, volume_24h, percent_change_1h, percent_change_24h, percent_change_30d, percent_change_7d) VALUES ?;

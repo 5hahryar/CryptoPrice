@@ -10,7 +10,7 @@ import shared
 
 class PricesViewModel: ObservableObject {
     
-    @Published var currencies: [CurrencyDto] = []
+    @Published var currencies: [Currency] = []
     @Published private (set) var isLoading = true
     @Published private (set) var errorMessage: String? = nil
     
@@ -26,7 +26,7 @@ class PricesViewModel: ObservableObject {
             print("debbug: \(result.description())")
             if result.status == ResourceStatus.success && result
                 .data != nil {
-                self.currencies = result.data as! [CurrencyDto]
+                self.currencies = result.data as! [Currency]
                 self.isLoading = false
             } else {
                 self.isLoading = false

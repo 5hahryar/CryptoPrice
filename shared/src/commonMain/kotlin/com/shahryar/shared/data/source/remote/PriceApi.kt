@@ -13,9 +13,18 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import org.koin.core.parameter.parametersOf
 
 val client = HttpClient {
+
+    expectSuccess = true
+
+    HttpResponseValidator {
+        handleResponseExceptionWithRequest { exception, request ->
+            if (exception !is ClientRequestException) return@handleResponseExceptionWithRequest
+            throw Exception((exception.response.body() as Data).status.error_message)
+        }
+    }
+
     install(Logging) {
         logger = object : Logger {
             override fun log(message: String) {
@@ -23,7 +32,7 @@ val client = HttpClient {
             }
         }
         logger = Logger.DEFAULT
-        level = LogLevel.INFO
+        level = LogLevel.ALL
     }
 
     install(ContentNegotiation) {

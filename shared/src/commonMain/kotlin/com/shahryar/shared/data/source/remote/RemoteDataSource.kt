@@ -5,5 +5,5 @@ import com.shahryar.shared.data.model.Resource
 
 interface RemoteDataSource {
 
-    suspend fun getPrices(): Resource<List<CurrencyDto>>
+    suspend fun getPrices(): List<CurrencyDto>
 }

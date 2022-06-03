@@ -1,8 +1,10 @@
 package com.shahryar.cryptoprice.ui.prices
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,10 +15,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.shahryar.cryptoprice.R
+import com.shahryar.shared.data.model.Currency
 import com.shahryar.shared.data.model.CurrencyDto
 
 @Composable
-fun CurrencyBottomSheetView(currency: CurrencyDto) {
+fun CurrencyBottomSheetView(currency: Currency) {
     Column(
         modifier = Modifier.padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -34,7 +37,7 @@ fun CurrencyBottomSheetView(currency: CurrencyDto) {
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = "$${String.format("%.2f", currency.price)}",
+                text = "$${currency.price}",
                 fontWeight = FontWeight.Medium,
                 fontSize = 23.sp,
                 color = colorResource(
@@ -48,7 +51,7 @@ fun CurrencyBottomSheetView(currency: CurrencyDto) {
         OverView(currency)
         Spacer(modifier = Modifier.height(30.dp))
         Text(
-            text = currency.last_updated,
+            text = currency.lastUpdated,
             fontWeight = FontWeight.Light,
             fontSize = 13.sp,
             color = colorResource(
@@ -59,7 +62,7 @@ fun CurrencyBottomSheetView(currency: CurrencyDto) {
 }
 
 @Composable
-fun OverView(currency: CurrencyDto) {
+fun OverView(currency: Currency) {
     Column(
         modifier = Modifier
             .padding(start = 15.dp, end = 15.dp),
@@ -68,34 +71,34 @@ fun OverView(currency: CurrencyDto) {
         Row {
             Column(modifier = Modifier
                 .weight(1f)) {
-                ItemOverview(label = stringResource(R.string.total_supply), value = "$${String.format("%.2f", currency.total_supply)}")
+                ItemOverview(label = stringResource(R.string.total_supply), value = "$${currency.totalSupply}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
                 ItemOverview(
                     label = "Circulating supply",
-                    value = "$${String.format("%.2f",currency.circulating_supply)}"
+                    value = "$${currency.circulatingSupply}"
                 )
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(R.string.max_supply), value = "$${String.format("%.2f",currency.max_supply)}")
+                ItemOverview(label = stringResource(R.string.max_supply), value = "$${currency.maxSupply}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(R.string.hour_volume_24), value = "$${String.format("%.2f", currency.volume_24h)}")
+                ItemOverview(label = stringResource(R.string.hour_volume_24), value = "$${currency.volume24h}")
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(id = R.string.market_cap), value = "$${currency.market_cap}")
+                ItemOverview(label = stringResource(id = R.string.market_cap), value = "$${currency.marketCap}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(R.string.cmc_rank), value = "${currency.cmc_rank}")
+                ItemOverview(label = stringResource(R.string.cmc_rank), value = "${currency.cmcRank}")
             }
         }
     }
@@ -125,12 +128,12 @@ fun ItemOverview(label: String, value: String) {
 }
 
 @Composable
-fun PercentCard(currency: CurrencyDto) {
+fun PercentCard(currency: Currency) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = colorResource(id = R.color.item_price_card),
+        backgroundColor = MaterialTheme.colors.primaryVariant,
         elevation = 0.dp
     ) {
         Row(
@@ -154,10 +157,10 @@ fun PercentCard(currency: CurrencyDto) {
                     )
                 )
                 Text(
-                    text = "${String.format("%.2f",currency.percent_change_1h)}%",
+                    text = "${currency.percentChange1h}%",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = if (currency.percent_change_1h >= 0) colorResource(
+                    color = if (currency.percentChange1h.toDouble() >= 0) colorResource(
                         id = R.color.green
                     ) else colorResource(
                         id = R.color.red
@@ -180,10 +183,10 @@ fun PercentCard(currency: CurrencyDto) {
                     )
                 )
                 Text(
-                    text = "${String.format("%.2f", currency.percent_change_24h)}%",
+                    text = "${currency.percentChange24h}%",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = if (currency.percent_change_1h >= 0) colorResource(
+                    color = if (currency.percentChange24h.toDouble() >= 0) colorResource(
                         id = R.color.green
                     ) else colorResource(
                         id = R.color.red
@@ -206,10 +209,10 @@ fun PercentCard(currency: CurrencyDto) {
                     )
                 )
                 Text(
-                    text = "${String.format("%.2f", currency.percent_change_7d)}%",
+                    text = "${currency.percentChange7d}%",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = if (currency.percent_change_1h >= 0) colorResource(
+                    color = if (currency.percentChange7d.toDouble() >= 0) colorResource(
                         id = R.color.green
                     ) else colorResource(
                         id = R.color.red

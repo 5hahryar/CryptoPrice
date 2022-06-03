@@ -4,7 +4,7 @@ import kotlin.Double
 import kotlin.Long
 import kotlin.String
 
-public data class Currency(
+public data class CurrencyEntity(
   public val id: Long,
   public val cmc_rank: Long,
   public val name: String,
@@ -23,7 +23,7 @@ public data class Currency(
   public val percent_change_7d: Double
 ) {
   public override fun toString(): String = """
-  |Currency [
+  |CurrencyEntity [
   |  id: $id
   |  cmc_rank: $cmc_rank
   |  name: $name
