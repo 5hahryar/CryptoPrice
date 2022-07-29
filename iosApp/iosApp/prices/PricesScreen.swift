@@ -36,7 +36,7 @@ private struct PricesList: View {
     var currencies: [Currency]
     let onRefresh: () -> Void
     @State private var showSheet: Bool = false
-    @State private var selectedCurrency: Currency?
+    @State private var selectedCurrency: Currency? = nil
     
     var body: some View {
         ScrollView {
@@ -48,7 +48,7 @@ private struct PricesList: View {
                             showSheet = true
                         }
                         .adaptiveSheet(isPresented: $showSheet, detents: [.medium()], smallestUndimmedDetentIdentifier: .large) {
-                            Text("Modal sheet is not implemented yet!")
+                            SheetView(currency: $selectedCurrency)
                         }
                 }
             }.padding(10)
@@ -61,7 +61,7 @@ private struct PricesList: View {
     
     struct SheetView: View {
         @Environment(\.dismiss) var dismiss
-        let currency: CurrencyDto
+        @Binding var currency: Currency?
         
         var body: some View {
             PriceSheet(currency: currency)
