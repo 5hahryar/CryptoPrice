@@ -1,26 +1,25 @@
 package com.shahryar.cryptoprice.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 
 @Composable
 fun CryptoPriceTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colors = if (isSystemInDarkTheme()) DarkColors else LightColors, content = content)
+    MaterialTheme(colorScheme = if (isSystemInDarkTheme()) DarkColors else LightColors, content = content)
 }
 
-private val LightColors = lightColors(
+private val LightColors = lightColorScheme(
     primary = Color.White,
     onPrimary = Color.Black,
-    primaryVariant = Color(247, 247, 247)
+//    primaryVariant = Color(247, 247, 247)
 )
 
-private val DarkColors = darkColors(
+private val DarkColors = darkColorScheme(
     primary = Color(25, 25, 25),
     onPrimary = Color.White,
-    primaryVariant = Color(39, 39, 39, 255)
+//    primaryVariant = Color(39, 39, 39, 255)
 )

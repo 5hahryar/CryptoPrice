@@ -7,7 +7,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -41,16 +47,17 @@ fun SettingsScreen(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsTopBar(onSaveClicked: () -> Unit, onBackClicked: () -> Unit) {
     TopAppBar(
         title = {
             Text(text = stringResource(R.string.settings), color = colorResource(id = R.color.onPrimary))
         },
-        backgroundColor = MaterialTheme.colors.primary,
+//        backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = {
             IconButton(onClick = onBackClicked) {
-                androidx.compose.material.Icon(
+                Icon(
                     Icons.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back),
                     tint = colorResource(id = R.color.onPrimary)
@@ -69,6 +76,7 @@ private fun SettingsTopBar(onSaveClicked: () -> Unit, onBackClicked: () -> Unit)
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsContent(apiKey: String, onApiKeyChanged: (String) -> Unit) {
     Column(
@@ -81,7 +89,7 @@ private fun SettingsContent(apiKey: String, onApiKeyChanged: (String) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth(),
             value = apiKey,
-            textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
+//            textStyle = TextStyle(color = MaterialTheme.colors.onPrimary),
             onValueChange = onApiKeyChanged
         )
     }

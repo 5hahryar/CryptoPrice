@@ -5,8 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,8 +37,8 @@ fun PriceItem(item: Currency, onItemClick: (currency: Currency) -> Unit) {
                 interactionSource = MutableInteractionSource()
             ),
         shape = RoundedCornerShape(20.dp),
-        backgroundColor = androidx.compose.material.MaterialTheme.colors.primaryVariant,
-        elevation = 0.dp
+//        backgroundColor = androidx.compose.material.MaterialTheme.colors.primaryVariant,
+//        elevation = 0.dp
     ) {
         Row(
             Modifier

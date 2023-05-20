@@ -1,5 +1,6 @@
 package com.shahryar.cryptoprice.ui.prices
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
@@ -15,11 +16,17 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,33 +51,33 @@ import com.shahryar.shared.data.model.CurrencyDto
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
-@ExperimentalMaterialApi
 @Composable
 fun PriceScreen(navController: NavController) {
 
     val priceViewModel = getViewModel<PriceViewModel>()
-    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+//    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val pricesState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    val scaffoldState = rememberScaffoldState()
+//    val scaffoldState = rememberScaffoldState()
     val showScrollToTopButton by remember {
         derivedStateOf { pricesState.firstVisibleItemIndex > 0 }
     }
 
     CryptoPriceTheme {
-        ModalBottomSheetLayout(
-            sheetState = sheetState,
-            sheetContent = {
-                priceViewModel.selectedCurrency?.let {
-                    CurrencyBottomSheetView(currency = it)
-                }
-                Text(text = "")
-            },
-            sheetShape = MaterialTheme.shapes.large,
-            sheetBackgroundColor = MaterialTheme.colors.primary,
-            scrimColor = MaterialTheme.colors.primaryVariant.copy(alpha = 0.5f)
-        ) {
+//        ModalBottomSheetLayout(
+//            sheetState = sheetState,
+//            sheetContent = {
+//                priceViewModel.selectedCurrency?.let {
+//                    CurrencyBottomSheetView(currency = it)
+//                }
+//                Text(text = "")
+//            },
+//            sheetShape = MaterialTheme.shapes.large,
+//            sheetBackgroundColor = MaterialTheme.colorScheme.primary,
+//            scrimColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+//        ) {
             Column(
                 Modifier
                     .fillMaxSize()
@@ -80,12 +87,12 @@ fun PriceScreen(navController: NavController) {
                 }
                 Scaffold(
                     Modifier.fillMaxSize(),
-                    scaffoldState = scaffoldState,
+//                    scaffoldState = scaffoldState,
                     floatingActionButton = {
                         if (showScrollToTopButton) {
                             AnimatedVisibility(visible = showScrollToTopButton) {
                                 androidx.compose.material3.FloatingActionButton(
-                                    containerColor = MaterialTheme.colors.primary,
+                                    containerColor = MaterialTheme.colorScheme.primary,
                                     onClick = {
                                         coroutineScope.launch {
                                             pricesState.animateScrollToItem(
@@ -97,7 +104,7 @@ fun PriceScreen(navController: NavController) {
                                         modifier = Modifier.padding(10.dp),
                                         painter = painterResource(id = R.drawable.ic_arrow_upward),
                                         contentDescription = "",
-                                        tint = MaterialTheme.colors.onPrimary
+                                        tint = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
                             }
@@ -110,12 +117,12 @@ fun PriceScreen(navController: NavController) {
                         priceViewModel.uiState.error?.let { error ->
                             if (error.isNotEmpty()) {
                                 LaunchedEffect(key1 = error) {
-                                    val snackResult = scaffoldState.snackbarHostState.showSnackbar(
-                                        message = error,
-                                        actionLabel = "Retry"
-                                    )
-                                    if (snackResult == SnackbarResult.ActionPerformed) priceViewModel.refreshPrices()
-                                    priceViewModel.errorShown()
+//                                    val snackResult = scaffoldState.snackbarHostState.showSnackbar(
+//                                        message = error,
+//                                        actionLabel = "Retry"
+//                                    )
+//                                    if (snackResult == SnackbarResult.ActionPerformed) priceViewModel.refreshPrices()
+//                                    priceViewModel.errorShown()
                                 }
                             }
                         }
@@ -128,7 +135,7 @@ fun PriceScreen(navController: NavController) {
                                     onCurrencyClicked = { clickedCurrency ->
                                         coroutineScope.launch {
                                             priceViewModel.selectCurrency(clickedCurrency)
-                                            sheetState.show()
+//                                            sheetState.show()
                                         }
                                     })
                             } else {
@@ -147,12 +154,11 @@ fun PriceScreen(navController: NavController) {
                         }
                     }
                 }
-            }
+//            }
         }
     }
 }
 
-@ExperimentalMaterialApi
 @Composable
 fun Prices(
     currencies: List<Currency>,
@@ -170,16 +176,17 @@ fun Prices(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PriceTopBar(elevation: Dp = 0.dp, onSettingsActionClicked: () -> Unit) {
     TopAppBar(
-        elevation = elevation,
-        backgroundColor = MaterialTheme.colors.primary,
+//        elevation = elevation,
+//        backgroundColor = MaterialTheme.colors.primary,
         title = {
             Text(
                 text = stringResource(R.string.app_name),
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         actions = {
@@ -187,7 +194,7 @@ fun PriceTopBar(elevation: Dp = 0.dp, onSettingsActionClicked: () -> Unit) {
                 Icon(
                     Icons.Filled.Settings,
                     contentDescription = stringResource(R.string.menu),
-                    tint = MaterialTheme.colors.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
@@ -210,9 +217,9 @@ private fun NoApiKeyError(onGetKeyClicked: () -> Unit, onEnterKeyClicked: () -> 
             Spacer(modifier = Modifier.width(20.dp))
             Button(
                 onClick = onGetKeyClicked, colors = ButtonDefaults.buttonColors(
-                    backgroundColor = colorResource(
-                        id = R.color.black
-                    )
+//                    backgroundColor = colorResource(
+//                        id = R.color.black
+//                    )
                 )
             ) {
                 Text(text = stringResource(R.string.get_api_key), color = Color.White)

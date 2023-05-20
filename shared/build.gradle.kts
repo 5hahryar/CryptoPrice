@@ -16,6 +16,10 @@ kotlin {
         }
     }
 
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -42,7 +46,7 @@ kotlin {
 
                 implementation("com.russhwolf:multiplatform-settings:0.8.1")
 
-                implementation("com.squareup.sqldelight:android-driver:1.5.3")
+                implementation("com.squareup.sqldelight:android-driver:1.5.5")
             }
         }
         val iosSimulatorArm64Main by getting
@@ -54,7 +58,7 @@ kotlin {
 
                 implementation("com.russhwolf:multiplatform-settings:0.8.1")
 
-                implementation("com.squareup.sqldelight:native-driver:1.5.3")
+                implementation("com.squareup.sqldelight:native-driver:1.5.5")
             }
         }
     }
@@ -66,6 +70,12 @@ android {
     defaultConfig {
         minSdk = 21
         targetSdk = 31
+    }
+    namespace = "com.shahryar.shared"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 

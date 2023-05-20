@@ -8,14 +8,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
@@ -54,30 +52,30 @@ class WidgetConfigureActivity : AppCompatActivity() {
 
     @Composable
     fun ContentView() {
-        CurrencyListView(currencies = viewModel.currencies.observeAsState().value)
+//        CurrencyListView(currencies = viewModel.currencies.observeAsState().value)
     }
 
-    @Composable
-    fun TopAppBarView() {
-        TopAppBar(
-            title = {
-                Text(text = "Select Currency", color = colorResource(id = R.color.onPrimary))
-            },
-            backgroundColor = colorResource(id = R.color.primary),
-            navigationIcon = {
-                IconButton(onClick = {
-                    setResult(RESULT_CANCELED)
-                    finish()
-                }) {
-                    Icon(
-                        Icons.Filled.Close,
-                        contentDescription = "Close",
-                        tint = colorResource(id = R.color.onPrimary)
-                    )
-                }
-            }
-        )
-    }
+//    @Composable
+//    fun TopAppBarView() {
+//        TopAppBar(
+//            title = {
+//                Text(text = "Select Currency", color = colorResource(id = R.color.onPrimary))
+//            },
+//            backgroundColor = colorResource(id = R.color.primary),
+//            navigationIcon = {
+//                IconButton(onClick = {
+//                    setResult(RESULT_CANCELED)
+//                    finish()
+//                }) {
+//                    Icon(
+//                        Icons.Filled.Close,
+//                        contentDescription = "Close",
+//                        tint = colorResource(id = R.color.onPrimary)
+//                    )
+//                }
+//            }
+//        )
+//    }
 
     @Composable
     fun CurrencyListView(currencies: List<Currency>?) {

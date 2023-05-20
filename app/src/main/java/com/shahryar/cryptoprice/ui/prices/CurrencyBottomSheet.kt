@@ -3,9 +3,13 @@ package com.shahryar.cryptoprice.ui.prices
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -133,8 +137,8 @@ fun PercentCard(currency: Currency) {
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(15.dp),
-        backgroundColor = MaterialTheme.colors.primaryVariant,
-        elevation = 0.dp
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+        elevation = CardDefaults.cardElevation()
     ) {
         Row(
             modifier = Modifier
