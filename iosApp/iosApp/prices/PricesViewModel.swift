@@ -32,7 +32,7 @@ class PricesViewModel: ObservableObject {
                 self.isLoading = false
                 self.errorMessage = result.message
             }
-        }, completionHandler: { result, error in
+        }, completionHandler: { error in
             // Flow completed
             print("Flow completed")
         })

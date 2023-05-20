@@ -47,9 +47,9 @@ private struct PricesList: View {
                             selectedCurrency = item
                             showSheet = true
                         }
-                        .adaptiveSheet(isPresented: $showSheet, detents: [.medium()], smallestUndimmedDetentIdentifier: .large) {
-                            SheetView(currency: $selectedCurrency)
-                        }
+//                        .adaptiveSheet(isPresented: $showSheet, detents: [.medium()], smallestUndimmedDetentIdentifier: .large) {
+//                            SheetView(currency: $selectedCurrency)
+//                        }
                 }
             }.padding(10)
                 .refreshable {
