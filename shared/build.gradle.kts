@@ -3,6 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.21"
     id("com.android.library")
     id("com.squareup.sqldelight")
+    id("org.jetbrains.compose")
 }
 
 kotlin {
@@ -12,7 +13,10 @@ kotlin {
     }
     iosSimulatorArm64 {
         binaries {
-            framework { baseName = "shared" }
+            framework {
+                baseName = "shared"
+                isStatic = true
+            }
         }
     }
 
@@ -38,6 +42,15 @@ kotlin {
                 implementation("com.russhwolf:multiplatform-settings:0.9")
                 implementation("com.russhwolf:multiplatform-settings-no-arg:0.9")
                 implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:0.9")
+
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
+
+                implementation("com.arkivanov.decompose:decompose:2.0.0-compose-experimental-alpha-02")
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.0.0-compose-experimental-alpha-02")
             }
         }
         val androidMain by getting {
