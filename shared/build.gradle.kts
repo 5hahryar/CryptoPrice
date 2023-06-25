@@ -51,6 +51,10 @@ kotlin {
 
                 implementation("com.arkivanov.decompose:decompose:2.0.0-compose-experimental-alpha-02")
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.0.0-compose-experimental-alpha-02")
+
+                implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-rc05")
+                implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:1.0.0-rc05")
+                implementation("cafe.adriel.voyager:voyager-transitions:1.0.0-rc05")
             }
         }
         val androidMain by getting {

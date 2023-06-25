@@ -1,6 +1,7 @@
 package com.shahryar.shared.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.transitions.ScaleTransition
+import cafe.adriel.voyager.transitions.SlideTransition
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.plus
@@ -41,17 +45,12 @@ import com.shahryar.shared.ui.prices.PricesComponent
 import com.shahryar.shared.ui.prices.PricesScreen
 import com.shahryar.shared.ui.settings.SettingsComponent
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun CryptoPriceApp(component: RootComponent) {
+fun CryptoPriceApp() {
     CryptoPriceTheme {
-        Children(
-            stack = component.stack,
-            animation = stackAnimation(fade() + scale()),
-        ) {
-            when (val child = it.instance) {
-                is RootComponent.Child.PricesComponent -> PricesComponent(child.component)
-                is RootComponent.Child.SettingsComponent -> SettingsComponent(child.component)
-            }
+        Navigator(PricesScreen) {
+            ScaleTransition(it)
         }
     }
 }

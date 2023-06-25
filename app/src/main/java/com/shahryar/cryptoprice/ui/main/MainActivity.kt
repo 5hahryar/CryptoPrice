@@ -11,20 +11,19 @@ import com.shahryar.cryptoprice.ui.CryptoPriceTheme
 import com.shahryar.cryptoprice.ui.prices.PriceScreen
 import com.shahryar.cryptoprice.ui.settings.SettingsScreen
 import com.shahryar.shared.ui.CryptoPriceApp
-import com.shahryar.shared.ui.DefaultRootComponent
 
 class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val root =
-            DefaultRootComponent(
-                componentContext = defaultComponentContext(),
-            )
+//        val root =
+//            DefaultRootComponent(
+//                componentContext = defaultComponentContext(),
+//            )
 
         setContent {
-            CryptoPriceApp(root)
+            CryptoPriceApp()
         }
     }
 }
