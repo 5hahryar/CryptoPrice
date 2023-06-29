@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.transitions.ScaleTransition
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
@@ -45,12 +47,14 @@ import com.shahryar.shared.ui.prices.PricesComponent
 import com.shahryar.shared.ui.prices.PricesScreen
 import com.shahryar.shared.ui.settings.SettingsComponent
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun CryptoPriceApp() {
     CryptoPriceTheme {
-        Navigator(PricesScreen) {
-            ScaleTransition(it)
+        BottomSheetNavigator {
+            Navigator(PricesScreen) {
+                ScaleTransition(it)
+            }
         }
     }
 }

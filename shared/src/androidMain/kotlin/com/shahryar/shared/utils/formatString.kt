@@ -3,8 +3,8 @@ package com.shahryar.shared.utils
 import java.lang.Exception
 import java.math.BigDecimal
 
-actual fun formatString(number: Any): String {
-    return try {
+actual fun formatString(number: Any): String =
+    try {
         when (number) {
             is String -> {
                 String.format(
@@ -21,4 +21,3 @@ actual fun formatString(number: Any): String {
         e.printStackTrace()
         "NaN"
     }
-}

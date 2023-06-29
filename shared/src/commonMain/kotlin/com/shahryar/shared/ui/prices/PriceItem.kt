@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.shahryar.shared.data.model.Currency
 
 @Composable
-fun PriceItem(item: Currency, onItemClick: (currency: Currency) -> Unit) {
+fun PriceItem(item: Currency, onItemClick: () -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()
@@ -26,7 +26,7 @@ fun PriceItem(item: Currency, onItemClick: (currency: Currency) -> Unit) {
                     bounded = true,
                     color = Color.LightGray
                 ),
-                onClick = { onItemClick(item) },
+                onClick = onItemClick,
                 enabled = true,
                 interactionSource = MutableInteractionSource()
             ),
