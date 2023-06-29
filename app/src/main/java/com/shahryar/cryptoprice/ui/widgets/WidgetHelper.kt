@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import com.shahryar.cryptoprice.R
-import com.shahryar.cryptoprice.ui.main.MainActivity
+import com.shahryar.cryptoprice.ui.MainActivity
 import com.shahryar.shared.data.repository.CurrencyRepository
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

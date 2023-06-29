@@ -1,4 +1,4 @@
-package com.shahryar.shared.ui.prices
+package com.shahryar.shared.ui.screens.prices
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +32,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,9 +43,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.shahryar.shared.data.model.Currency
-import com.shahryar.shared.ui.prices.currency.CurrencyBottomSheet
-import com.shahryar.shared.ui.settings.SettingsScreen
-import org.jetbrains.compose.resources.ExperimentalResourceApi
+import com.shahryar.shared.ui.screens.prices.currency.CurrencyBottomSheet
+import com.shahryar.shared.ui.screens.settings.SettingsScreen
 
 object PricesScreen : Screen {
     @Composable
@@ -56,7 +54,6 @@ object PricesScreen : Screen {
         val screenModel = rememberScreenModel { PricesScreenModel() }
         val uiState by screenModel.uiState.collectAsState(PricesScreenModel.UiState.Loading)
         val pricesState = rememberLazyListState()
-        val coroutineScope = rememberCoroutineScope()
         val showScrollToTopButton by remember {
             derivedStateOf { pricesState.firstVisibleItemIndex > 0 }
         }
@@ -65,11 +62,11 @@ object PricesScreen : Screen {
             uiState = uiState,
             showScrollToTopButton = showScrollToTopButton,
             onSettingsActionClicked = { navigator.push(SettingsScreen) },
-            onCurrencyClicked = { sheetNavigator.show(CurrencyBottomSheet(it)) })
+            onCurrencyClicked = { sheetNavigator.show(CurrencyBottomSheet(it)) }
+        )
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun PricesScreenContent(
     uiState: PricesScreenModel.UiState,
@@ -121,7 +118,6 @@ private fun PricesScreenContent(
                 is PricesScreenModel.UiState.Success -> {
                     Prices(
                         currencies = uiState.prices,
-//                        pricesState,
                         onCurrencyClicked = onCurrencyClicked
                     )
                 }
@@ -154,16 +150,14 @@ private fun NoApiKeyError(onGetKeyClicked: () -> Unit, onEnterKeyClicked: () -> 
 @Composable
 fun Prices(
     currencies: List<Currency>,
-//    pricesState: LazyListState,
     onCurrencyClicked: (currency: Currency) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 15.dp),
         verticalArrangement = Arrangement.spacedBy(17.dp),
-//        state = pricesState
     ) {
         items(currencies) { item ->
-            PriceItem(item = item) {
+            PriceExtendedCard(item = item) {
                 onCurrencyClicked(item)
             }
         }

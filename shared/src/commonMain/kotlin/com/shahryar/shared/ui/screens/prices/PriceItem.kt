@@ -1,4 +1,4 @@
-package com.shahryar.shared.ui.prices
+package com.shahryar.shared.ui.screens.prices
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.shahryar.shared.data.model.Currency
 
 @Composable
-fun PriceItem(item: Currency, onItemClick: () -> Unit) {
+fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
     Card(
         Modifier
             .fillMaxWidth()

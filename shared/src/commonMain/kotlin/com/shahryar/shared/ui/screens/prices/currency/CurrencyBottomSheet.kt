@@ -1,4 +1,4 @@
-package com.shahryar.shared.ui.prices.currency
+package com.shahryar.shared.ui.screens.prices.currency
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

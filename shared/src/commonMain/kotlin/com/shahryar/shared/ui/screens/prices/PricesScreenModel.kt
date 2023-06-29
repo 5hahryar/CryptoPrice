@@ -1,4 +1,4 @@
-package com.shahryar.shared.ui.prices
+package com.shahryar.shared.ui.screens.prices
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
@@ -7,8 +7,6 @@ import com.shahryar.shared.data.model.Currency
 import com.shahryar.shared.data.model.Resource
 import com.shahryar.shared.data.repository.CurrencyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent

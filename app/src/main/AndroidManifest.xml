@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.shahryar.cryptoprice.ui.main.MainActivity"
+            android:name="com.shahryar.cryptoprice.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
