@@ -1,4 +1,4 @@
-![alt text](https://github.com/5hahryar/CryptoPrice/blob/master/ScreenShot.png?raw=true)
+![alt text](https://github.com/5hahryar/CryptoPrice/blob/master/Screenshot.png?raw=true)
 
 # CryptoPrice
 CryptoPrice is a simple app made with the help of Kotlin Multiplatform.
