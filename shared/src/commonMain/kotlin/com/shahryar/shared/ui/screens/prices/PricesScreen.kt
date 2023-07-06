@@ -1,6 +1,8 @@
 package com.shahryar.shared.ui.screens.prices
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,8 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
@@ -32,9 +36,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -42,9 +48,12 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.shahryar.shared.SharedRes
 import com.shahryar.shared.data.model.Currency
 import com.shahryar.shared.ui.screens.prices.currency.CurrencyBottomSheet
 import com.shahryar.shared.ui.screens.settings.SettingsScreen
+import dev.icerock.moko.resources.compose.stringResource
+import kotlinx.coroutines.launch
 
 object PricesScreen : Screen {
     @Composable
@@ -53,14 +62,9 @@ object PricesScreen : Screen {
         val sheetNavigator = LocalBottomSheetNavigator.current
         val screenModel = rememberScreenModel { PricesScreenModel() }
         val uiState by screenModel.uiState.collectAsState(PricesScreenModel.UiState.Loading)
-        val pricesState = rememberLazyListState()
-        val showScrollToTopButton by remember {
-            derivedStateOf { pricesState.firstVisibleItemIndex > 0 }
-        }
 
         PricesScreenContent(
             uiState = uiState,
-            showScrollToTopButton = showScrollToTopButton,
             onSettingsActionClicked = { navigator.push(SettingsScreen) },
             onCurrencyClicked = { sheetNavigator.show(CurrencyBottomSheet(it)) }
         )
@@ -70,18 +74,28 @@ object PricesScreen : Screen {
 @Composable
 private fun PricesScreenContent(
     uiState: PricesScreenModel.UiState,
-    showScrollToTopButton: Boolean,
     onSettingsActionClicked: () -> Unit,
     onCurrencyClicked: (currency: Currency) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
+    val pricesListState = rememberLazyListState()
+    val hasAppBarElevation by derivedStateOf {
+        pricesListState.canScrollBackward
+    }
+    val isScrollToTopVisible by remember {
+        derivedStateOf { pricesListState.firstVisibleItemIndex > 0 }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
+                elevation = if (hasAppBarElevation) AppBarDefaults.TopAppBarElevation else 0.dp,
                 title = {
                     Text(
-                        text = "CryptoPrice",
+                        text = stringResource(SharedRes.strings.app_name),
                         style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onPrimary
+                        color = MaterialTheme.colors.onPrimary,
+                        fontWeight = FontWeight.Medium
                     )
                 },
                 actions = {
@@ -96,15 +110,15 @@ private fun PricesScreenContent(
             )
         },
         floatingActionButton = {
-            AnimatedVisibility(visible = showScrollToTopButton) {
+            AnimatedVisibility(visible = isScrollToTopVisible, enter = fadeIn(), exit = fadeOut()) {
                 FloatingActionButton(
-                    onClick = {}
+                    onClick = { scope.launch { pricesListState.animateScrollToItem(0) } }
                 ) {
                     Icon(
                         modifier = Modifier.padding(10.dp),
                         imageVector = Icons.Rounded.KeyboardArrowUp,
                         contentDescription = null,
-                        tint = MaterialTheme.colors.onPrimary
+                        tint = MaterialTheme.colors.onSecondary
                     )
                 }
             }
@@ -118,6 +132,7 @@ private fun PricesScreenContent(
                 is PricesScreenModel.UiState.Success -> {
                     Prices(
                         currencies = uiState.prices,
+                        listState = pricesListState,
                         onCurrencyClicked = onCurrencyClicked
                     )
                 }
@@ -133,16 +148,16 @@ private fun NoApiKeyError(onGetKeyClicked: () -> Unit, onEnterKeyClicked: () -> 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Api key not available", textAlign = TextAlign.Center)
+        Text(text = stringResource(SharedRes.strings.no_api_key_message), textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.height(20.dp))
         Row {
             OutlinedButton(onClick = onEnterKeyClicked) {
-                Text(text = "Enter API key")
+                Text(text = stringResource(SharedRes.strings.enter_api_key))
             }
             Spacer(modifier = Modifier.width(20.dp))
             Button(
                 onClick = onGetKeyClicked, colors = ButtonDefaults.buttonColors()
-            ) { Text("Get API key", color = Color.White) }
+            ) { Text(stringResource(SharedRes.strings.get_api_key), color = Color.White) }
         }
     }
 }
@@ -150,9 +165,11 @@ private fun NoApiKeyError(onGetKeyClicked: () -> Unit, onEnterKeyClicked: () -> 
 @Composable
 fun Prices(
     currencies: List<Currency>,
+    listState: LazyListState = rememberLazyListState(),
     onCurrencyClicked: (currency: Currency) -> Unit
 ) {
     LazyColumn(
+        state = listState,
         contentPadding = PaddingValues(10.dp, 15.dp, 10.dp, 15.dp),
         verticalArrangement = Arrangement.spacedBy(17.dp),
     ) {
