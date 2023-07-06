@@ -16,9 +16,5 @@ open class CryptoPriceApplication: Application() {
             androidContext(applicationContext)
             modules(cryptoPriceModules)
         }
-
-        CryptoPriceSettings.observeToken { token ->
-            Log.d("OBS", "is empty: ${token.isNullOrEmpty()}")
-        }
     }
 }
