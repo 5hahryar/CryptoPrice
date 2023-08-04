@@ -4,15 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -22,7 +14,6 @@ import androidx.compose.ui.unit.sp
 import com.shahryar.cryptoprice.R
 import com.shahryar.shared.data.CryptoPriceSettings
 import com.shahryar.shared.data.model.Currency
-import com.shahryar.shared.data.model.CurrencyDto
 import com.shahryar.shared.data.repository.CurrencyRepository
 import org.koin.android.ext.android.inject
 
@@ -43,7 +34,7 @@ class WidgetConfigureActivity : AppCompatActivity() {
 
     @Composable
     fun ConfigureActivityView() {
-        Text(text = "Widgets are temporarily disabled!")
+//        Text(text = "Widgets are temporarily disabled!")
 //        Column {
 //            TopAppBarView()
 //            ContentView()
@@ -77,36 +68,36 @@ class WidgetConfigureActivity : AppCompatActivity() {
 //        )
 //    }
 
-    @Composable
-    fun CurrencyListView(currencies: List<Currency>?) {
-        currencies?.let {
-            LazyColumn {
-                items(currencies) { currency ->
-                    CurrencyItemView(currency = currency) {
-                        onCurrencySelected(currency)
-                    }
-                }
-            }
-        }
-    }
+//    @Composable
+//    fun CurrencyListView(currencies: List<Currency>?) {
+//        currencies?.let {
+//            LazyColumn {
+//                items(currencies) { currency ->
+//                    CurrencyItemView(currency = currency) {
+//                        onCurrencySelected(currency)
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-    @Composable
-    fun CurrencyItemView(currency: Currency, onItemClick: () -> Unit) {
-        Box(
-            modifier = Modifier
-                .height(60.dp)
-                .fillMaxWidth()
-                .padding(5.dp)
-                .clickable(onClick = onItemClick),
-        ) {
-            Text(
-                modifier = Modifier.fillMaxHeight(),
-                text = currency.name,
-                color = colorResource(id = R.color.text_color),
-                fontSize = 16.sp
-            )
-        }
-    }
+//    @Composable
+//    fun CurrencyItemView(currency: Currency, onItemClick: () -> Unit) {
+//        Box(
+//            modifier = Modifier
+//                .height(60.dp)
+//                .fillMaxWidth()
+//                .padding(5.dp)
+//                .clickable(onClick = onItemClick),
+//        ) {
+////            Text(
+////                modifier = Modifier.fillMaxHeight(),
+////                text = currency.name,
+////                color = colorResource(id = R.color.text_color),
+////                fontSize = 16.sp
+////            )
+//        }
+//    }
 
     private fun onCurrencySelected(currency: Currency) {
         val appWidgetId = intent?.extras?.getInt(

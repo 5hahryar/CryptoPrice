@@ -4,10 +4,11 @@ plugins {
     id("com.android.library")
     id("com.squareup.sqldelight")
     id("org.jetbrains.compose")
+    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
 }
 
 kotlin {
-    android()
+    androidTarget()
     ios {
         binaries { framework { baseName = "shared" } }
     }
@@ -35,8 +36,6 @@ kotlin {
                 implementation("ch.qos.logback:logback-classic:1.2.11")
                 implementation("io.github.aakira:napier:2.5.0")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
-
                 implementation("io.insert-koin:koin-core:3.1.4")
 
                 implementation("com.russhwolf:multiplatform-settings:0.9")
@@ -49,12 +48,11 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
-                implementation("com.arkivanov.decompose:decompose:2.0.0-compose-experimental-alpha-02")
-                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:2.0.0-compose-experimental-alpha-02")
-
                 implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-rc05")
                 implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:1.0.0-rc05")
                 implementation("cafe.adriel.voyager:voyager-transitions:1.0.0-rc05")
+
+                implementation("cafe.adriel.lyricist:lyricist:1.4.2")
             }
         }
         val androidMain by getting {

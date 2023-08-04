@@ -15,11 +15,15 @@ fun CryptoPriceTheme(content: @Composable () -> Unit) {
 private val LightColors = lightColors(
     primary = Color.White,
     onPrimary = Color.Black,
-    primaryVariant = Color(247, 247, 247)
+    primaryVariant = Color(247, 247, 247),
+    secondary = Color.Black,
+    onSecondary = Color.White
 )
 
 private val DarkColors = darkColors(
     primary = Color(25, 25, 25),
     onPrimary = Color.White,
-    primaryVariant = Color(39, 39, 39, 255)
+    primaryVariant = Color(39, 39, 39, 255),
+    secondary = Color.White,
+    onSecondary = Color.Black
 )

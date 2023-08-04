@@ -41,7 +41,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 
     kotlinOptions {
@@ -74,14 +74,8 @@ dependencies {
 
     // Compose
     implementation(composeBom)
-    implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.activity:activity-compose:1.7.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.18.0")
-    implementation("com.arkivanov.decompose:decompose:2.0.0-compose-experimental-alpha-02")
 
     // DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -89,5 +83,4 @@ dependencies {
     //Koin
     implementation("io.insert-koin:koin-core:3.1.5")
     implementation("io.insert-koin:koin-android:3.1.5")
-    implementation("io.insert-koin:koin-androidx-compose:3.1.5")
 }
