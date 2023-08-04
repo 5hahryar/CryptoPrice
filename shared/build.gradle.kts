@@ -4,19 +4,12 @@ plugins {
     id("com.android.library")
     id("com.squareup.sqldelight")
     id("org.jetbrains.compose")
-    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 kotlin {
     android()
     ios {
-        binaries {
-            framework {
-                baseName = "shared"
-                export("dev.icerock.moko:resources:0.23.0")
-                export("dev.icerock.moko:graphics:0.9.0")
-            }
-        }
+        binaries { framework { baseName = "shared" } }
     }
     iosSimulatorArm64 {
         binaries {
@@ -62,9 +55,6 @@ kotlin {
                 implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-rc05")
                 implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:1.0.0-rc05")
                 implementation("cafe.adriel.voyager:voyager-transitions:1.0.0-rc05")
-
-                api("dev.icerock.moko:resources:0.23.0")
-                api("dev.icerock.moko:resources-compose:0.23.0")
             }
         }
         val androidMain by getting {
@@ -110,9 +100,4 @@ sqldelight {
     database("CryptoPriceDb") {
         packageName = "com.shahryar.shared"
     }
-}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "com.shahryar.shared"
-    multiplatformResourcesClassName = "SharedRes"
 }

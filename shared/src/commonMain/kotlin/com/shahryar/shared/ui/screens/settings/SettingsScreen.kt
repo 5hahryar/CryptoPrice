@@ -19,14 +19,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.shahryar.shared.SharedRes
 import com.shahryar.shared.data.CryptoPriceSettings
-import dev.icerock.moko.resources.compose.stringResource
 
 object SettingsScreen: Screen {
 
@@ -47,10 +44,9 @@ fun SettingsScreenContent(onNavigateBack: () -> Unit) {
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(SharedRes.strings.settings),
+                        text = "Settings",
                         style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.onPrimary,
-                        fontWeight = FontWeight.Medium
+                        color = MaterialTheme.colors.onPrimary
                     )
                 },
                 navigationIcon = {
@@ -83,7 +79,7 @@ fun SettingsScreenContent(onNavigateBack: () -> Unit) {
                 .padding(16.dp)
         ) {
             OutlinedTextField(
-                label = { Text(text = stringResource(SharedRes.strings.api_key)) },
+                label = { Text(text = "Api key") },
                 modifier = Modifier
                     .fillMaxWidth(),
                 value = apiKey,

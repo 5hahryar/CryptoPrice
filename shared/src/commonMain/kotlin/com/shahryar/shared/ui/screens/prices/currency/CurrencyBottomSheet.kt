@@ -16,10 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
-import com.shahryar.shared.SharedRes
 import com.shahryar.shared.data.model.Currency
-import dev.icerock.moko.resources.compose.colorResource
-import dev.icerock.moko.resources.compose.stringResource
 
 data class CurrencyBottomSheet(val currency: Currency): Screen {
 
@@ -42,18 +39,18 @@ fun CurrencyBottomSheetViewContent(currency: Currency) {
                 text = currency.name,
                 fontWeight = FontWeight.Medium,
                 fontSize = 22.sp,
-                color = colorResource(
-                    SharedRes.colors.text_color
-                )
+//                color = colorResource(
+//                    id = R.color.text_color
+//                )
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = "$${currency.price}",
                 fontWeight = FontWeight.Medium,
                 fontSize = 23.sp,
-                color = colorResource(
-                    SharedRes.colors.text_color
-                )
+//                color = colorResource(
+//                    id = R.color.text_color
+//                )
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
@@ -65,9 +62,9 @@ fun CurrencyBottomSheetViewContent(currency: Currency) {
             text = currency.lastUpdated,
             fontWeight = FontWeight.Light,
             fontSize = 13.sp,
-            color = colorResource(
-                SharedRes.colors.text_alpha
-            )
+//            color = colorResource(
+//                id = R.color.text_alpha
+//            )
         )
     }
 }
@@ -82,12 +79,12 @@ fun OverView(currency: Currency) {
         Row {
             Column(modifier = Modifier
                 .weight(1f)) {
-                ItemOverview(label = stringResource(SharedRes.strings.total_supply), value = "$${currency.totalSupply}")
+                ItemOverview(label = "Total supply", value = "$${currency.totalSupply}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
                 ItemOverview(
-                    label = stringResource(SharedRes.strings.circulating_supply),
+                    label = "Circulating supply",
                     value = "$${currency.circulatingSupply}"
                 )
             }
@@ -95,21 +92,21 @@ fun OverView(currency: Currency) {
         Spacer(modifier = Modifier.height(20.dp))
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(SharedRes.strings.max_supply), value = "$${currency.maxSupply}")
+                ItemOverview(label = "Max supply", value = "$${currency.maxSupply}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(SharedRes.strings.hour_24), value = "$${currency.volume24h}")
+                ItemOverview(label = "24 Hour", value = "$${currency.volume24h}")
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row {
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(SharedRes.strings.market_cap), value = "$${currency.marketCap}")
+                ItemOverview(label = "Market cap", value = "$${currency.marketCap}")
             }
             Spacer(modifier = Modifier.weight(0.2f))
             Column(modifier = Modifier.weight(1f)) {
-                ItemOverview(label = stringResource(SharedRes.strings.cmc_rank), value = "${currency.cmcRank}")
+                ItemOverview(label = "CMC rank", value = "${currency.cmcRank}")
             }
         }
     }
@@ -123,17 +120,17 @@ fun ItemOverview(label: String, value: String) {
             text = label,
             fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
-            color = colorResource(
-                SharedRes.colors.text_alpha
-            )
+//            color = colorResource(
+//                id = R.color.text_alpha
+//            )
         )
         Text(
             text = value,
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
-            color = colorResource(
-                SharedRes.colors.text_color
-            )
+//            color = colorResource(
+//                id = R.color.text_color
+//            )
         )
     }
 }
@@ -160,22 +157,22 @@ fun PercentCard(currency: Currency) {
                 Text(
                     modifier = Modifier
                         .padding(bottom = 5.dp),
-                    text = stringResource(SharedRes.strings.hour_1),
+                    text = "1 Hour",
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
-                    color = colorResource(
-                        SharedRes.colors.text_color
-                    )
+//                    color = colorResource(
+//                        id = R.color.text_color
+//                    )
                 )
                 Text(
                     text = "${currency.percentChange1h}%",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = if (currency.percentChange1h.toDouble() >= 0) colorResource(
-                        SharedRes.colors.green
-                    ) else colorResource(
-                        SharedRes.colors.red
-                    )
+//                    color = if (currency.percentChange1h.toDouble() >= 0) colorResource(
+//                        id = R.color.green
+//                    ) else colorResource(
+//                        id = R.color.red
+//                    )
                 )
             }
             Column(
@@ -186,22 +183,22 @@ fun PercentCard(currency: Currency) {
                 Text(
                     modifier = Modifier
                         .padding(bottom = 5.dp),
-                    text = stringResource(SharedRes.strings.hour_24),
+                    text = "24 Hour",
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
-                    color = colorResource(
-                        SharedRes.colors.text_color
-                    )
+//                    color = colorResource(
+//                        id = R.color.text_color
+//                    )
                 )
                 Text(
                     text = "${currency.percentChange24h}%",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = if (currency.percentChange24h.toDouble() >= 0) colorResource(
-                        SharedRes.colors.green
-                    ) else colorResource(
-                        SharedRes.colors.red
-                    )
+//                    color = if (currency.percentChange24h.toDouble() >= 0) colorResource(
+//                        id = R.color.green
+//                    ) else colorResource(
+//                        id = R.color.red
+//                    )
                 )
             }
             Column(
@@ -212,22 +209,22 @@ fun PercentCard(currency: Currency) {
                 Text(
                     modifier = Modifier
                         .padding(bottom = 5.dp),
-                    text = stringResource(SharedRes.strings.day_7),
+                    text = "7 Day",
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
-                    color = colorResource(
-                        SharedRes.colors.text_color
-                    )
+//                    color = colorResource(
+//                        id = R.color.text_color
+//                    )
                 )
                 Text(
                     text = "${currency.percentChange7d}%",
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = if (currency.percentChange7d.toDouble() >= 0) colorResource(
-                        SharedRes.colors.green
-                    ) else colorResource(
-                        SharedRes.colors.red
-                    )
+//                    color = if (currency.percentChange7d.toDouble() >= 0) colorResource(
+//                        id = R.color.green
+//                    ) else colorResource(
+//                        id = R.color.red
+//                    )
                 )
             }
         }

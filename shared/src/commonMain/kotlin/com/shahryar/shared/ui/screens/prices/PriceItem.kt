@@ -13,10 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.shahryar.shared.SharedRes
 import com.shahryar.shared.data.model.Currency
-import dev.icerock.moko.resources.compose.colorResource
-import dev.icerock.moko.resources.compose.stringResource
 
 @Composable
 fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
@@ -55,13 +52,13 @@ fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
                         Column(verticalArrangement = Arrangement.aligned(Alignment.CenterVertically)) {
                             Text(
                                 text = item.symbol,
-                                color = colorResource(SharedRes.colors.text_alpha),
+//                                color = colorResource(id = R.color.text_alpha),
                                 fontSize = 14.sp,
                                 maxLines = 1
                             )
                             Text(
                                 text = item.name,
-                                color = colorResource(SharedRes.colors.text_color),
+//                                color = colorResource(id = R.color.text_color),
                                 fontSize = 20.sp,
                                 maxLines = 1
                             )
@@ -78,13 +75,13 @@ fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
                         ) {
                             Text(
                                 text = "${item.percentChange24h}%",
-                                color = if (item.percentChange24h.toDouble() >= 0) colorResource(SharedRes.colors.green) else colorResource(SharedRes.colors.red),
+//                                color = if (item.percentChange24h.toDouble() >= 0) Color.Green else Color.Red,
                                 fontSize = 14.sp,
                                 maxLines = 1,
                             )
                             Text(
                                 text = "$${item.price}",
-                                color = colorResource(SharedRes.colors.text_color),
+//                                color = colorResource(id = R.color.text_color),
                                 fontSize = 20.sp,
                                 maxLines = 1,
                             )
@@ -110,14 +107,14 @@ fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
                     ) {
                         Column(verticalArrangement = Arrangement.aligned(Alignment.CenterVertically)) {
                             Text(
-                                text = stringResource(SharedRes.strings.market_cap),
-                                color = colorResource(SharedRes.colors.text_alpha),
+                                text = "Market cap",
+//                                color = colorResource(id = R.color.text_alpha),
                                 fontSize = 14.sp,
                                 maxLines = 1
                             )
                             Text(
                                 text = "$${item.marketCap}",
-                                color = colorResource(SharedRes.colors.text_color),
+//                                color = colorResource(id = R.color.text_color),
                                 fontSize = 19.sp,
                                 maxLines = 1
                             )
@@ -127,6 +124,7 @@ fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
+//                                            .background(color = Color.Cyan)
                     ) {
                         Row {
                             Column(
@@ -136,18 +134,20 @@ fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = stringResource(SharedRes.strings.day_30),
-                                    color = colorResource(SharedRes.colors.text_alpha),
+                                    text = "30 Day",
+//                                    color = colorResource(id = R.color.text_alpha),
                                     fontSize = 14.sp,
                                     maxLines = 1,
+//                                                    modifier = Modifier.background(Color.Yellow)
                                 )
                                 Text(
                                     text = "${
                                         item.percentChange30d
                                     }%",
-                                    color = if (item.percentChange30d.toDouble() >= 0) colorResource(SharedRes.colors.green) else colorResource(SharedRes.colors.red),
+//                                    color = if (item.percentChange30d.toDouble() >= 0) Color.Green else Color.Red,
                                     fontSize = 19.sp,
                                     maxLines = 1,
+//                                                    modifier = Modifier.background(Color.Red)
                                 )
                             }
                             Column(
@@ -157,16 +157,17 @@ fun PriceExtendedCard(item: Currency, onItemClick: () -> Unit) {
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 Text(
-                                    text = stringResource(SharedRes.strings.day_7),
-                                    color = colorResource(SharedRes.colors.text_alpha),
+                                    text = "7 Day",
+//                                    color = colorResource(id = R.color.text_alpha),
                                     fontSize = 14.sp,
                                     maxLines = 1,
+//                                                    modifier = Modifier.background(Color.Yellow)
                                 )
                                 Text(
                                     text = "${
                                         item.percentChange7d
                                     }%",
-                                    color = if (item.percentChange7d.toDouble() >= 0) colorResource(SharedRes.colors.green) else colorResource(SharedRes.colors.red),
+//                                    color = if (item.percentChange7d.toDouble() >= 0) Color.Green else Color.Red,
                                     fontSize = 19.sp,
                                     maxLines = 1,
                                 )
